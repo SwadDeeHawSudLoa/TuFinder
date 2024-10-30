@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import prisma from "../../lib/prisma"; // or the correct path
+import { NextResponse } from "next/server"; 
+import prisma from "../../lib/prisma"; // ตรวจสอบเส้นทางให้ถูกต้อง
 
 export const dynamic = "force-dynamic";
 
@@ -27,18 +27,18 @@ export async function GET() {
       where: { status: "สถานะถูกรับไปเเล้ว" },
     });
 
-    // Fetch recent 4 posts (รายการล่าสุด 4 โพสต์)
+    // Fetch recent 4 posts
     const recentPosts = await prisma.post.findMany({
       orderBy: {
-        date: "desc", // เรียงตามวันที่จากใหม่ไปเก่า
+        date: "desc",
       },
-      take: 4, // จำนวนโพสต์ล่าสุดที่ต้องการดึง
+      take: 4,
     });
 
-    // Fetch all posts (ดึงโพสต์ทั้งหมด)
+    // Fetch all posts
     const allPosts = await prisma.post.findMany({
       orderBy: {
-        date: "desc", // เรียงตามวันที่จากใหม่ไปเก่า
+        date: "desc",
       },
     });
 
@@ -49,11 +49,11 @@ export async function GET() {
       statusCountInStock,
       statusCountNotInStock,
       statusCountReceived,
-      recentPosts, // ส่ง recentPosts กลับไปด้วย
-      allPosts, // ส่ง allPosts กลับไปด้วย
+      recentPosts,
+      allPosts,
     });
   } catch (error) {
     console.error("Error fetching data:", error);
-    return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });
+    return NextResponse.json({ error: "Error fetching data" }, { status: 500 });
   }
 }
