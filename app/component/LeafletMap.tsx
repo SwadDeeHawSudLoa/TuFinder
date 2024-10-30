@@ -1,7 +1,8 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import React, { useEffect, useState, useRef } from "react";
-
+export const runtime = 'edge' // optional
+export const dynamic = "force-dynamic";
 // Define a custom icon
 const customIcon = new L.Icon({
   iconUrl:

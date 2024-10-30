@@ -5,6 +5,9 @@ import Image from "next/image";
 import axios from "axios";
 import dynamic from "next/dynamic";
 
+export const runtime = 'edge' // optional
+export const renderMode = "force-dynamic";
+
 const LeafletMap = dynamic(() => import("../component/LeafletMap"), {
   ssr: false,
 });
