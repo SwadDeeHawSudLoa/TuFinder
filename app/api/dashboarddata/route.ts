@@ -1,20 +1,18 @@
 import { NextResponse } from "next/server"; 
-import prisma from "../../lib/prisma"; // ตรวจสอบเส้นทางให้ถูกต้อง
-
-export const dynamic = "force-dynamic";
+import prisma from "../../lib/prisma"; // Check the path is correct
 
 export async function GET() {
   try {
-    // นับจำนวนโพสต์ทั้งหมด
+    // Count total posts
     const totalPosts = await prisma.post.count();
 
-    // นับจำนวนผู้ใช้งานทั้งหมด
+    // Count total users
     const totalUsers = await prisma.user.count();
 
-    // นับจำนวนแอดมินทั้งหมด
+    // Count total admins
     const totalAdmins = await prisma.admin.count();
 
-    // นับจำนวน status แยกตามประเภท
+    // Count statuses
     const statusCountInStock = await prisma.post.count({
       where: { status: "สถานะอยู่ในคลัง" },
     });
