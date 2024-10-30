@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "../../lib/prisma"; // หรือเส้นทางที่ถูกต้อง
-export const runtime = 'edge' // optional
-export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     // นับจำนวนโพสต์ทั้งหมด
