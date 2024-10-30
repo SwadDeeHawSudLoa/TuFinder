@@ -1,6 +1,5 @@
 "use client";
 export const runtime = 'edge' // optional
-export const renderMode = "force-dynamic";
 import React, { FormEvent, useEffect, useState } from "react";
 import Navbar from "../component/navbar";
 import Cookies from "js-cookie";
