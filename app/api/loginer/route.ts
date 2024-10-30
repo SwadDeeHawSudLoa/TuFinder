@@ -29,4 +29,5 @@ export async function POST(request: Request) {
     console.error('Error making request:', error);
     return NextResponse.json({ error: 'Error verifying user' }, { status: 500 });
   }
+  
 }
