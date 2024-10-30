@@ -1,7 +1,7 @@
 // app/api/users/route.ts
 import { NextResponse } from 'next/server';
 import prisma from '../../lib/prisma' ; // ปรับเส้นทางให้ตรงกับตำแหน่งจริงของ prisma instance
-
+export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const users = await prisma.user.findMany({
