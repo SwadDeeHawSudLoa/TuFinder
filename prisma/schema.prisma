@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  user_id    String   @id 
+  first_name String
+  last_name  String
+  Post       Post[]
+}
+
+model Admin {
+  admin_id   String   @id
+  first_name String
+  last_name  String
+  Post       Post[]
+}
+
+model Post {
+  post_id      Int      @id @default(autoincrement())
+  userIdEdit   String?  // Optional to allow either User or Admin to be associated
+  adminIdEdit  String?  // Optional to allow either User or Admin to be associated
+  title        String
+  username     String
+  tel          String
+  category     String
+  image        String
+  status       String
+  description  String
+  date         DateTime @default(now())
+  lat          Float
+  long         Float
+  location     String
+  author       User?    @relation(fields: [userIdEdit], references: [user_id])
+  author2      Admin?   @relation(fields: [adminIdEdit], references: [admin_id])
+}
