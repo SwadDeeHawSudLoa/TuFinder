@@ -73,7 +73,10 @@ const PostList: React.FC = () => {
   useEffect(() => {
     // Check if filters are empty, if so fetch default posts
     const isFiltersEmpty =
-      !filters.title && !filters.category && !filters.location && !filters.status;
+      !filters.title &&
+      !filters.category &&
+      !filters.location &&
+      !filters.status;
 
     if (isFiltersEmpty) {
       fetchPosts(); // Fetch default posts if no filters are provided
@@ -134,14 +137,14 @@ const PostList: React.FC = () => {
               </div>
               <button
                 onClick={() => handleButtonClick(post)}
-                className={`focus:ring-opacity-50 flex-grow transform rounded-lg px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 ${
+                className={`flex-grow transform rounded-lg px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 ${
                   post.status === "สถานะถูกรับไปเเล้ว"
                     ? "bg-orange-500 hover:bg-orange-600"
                     : post.status === "สถานะไม่อยู่ในคลัง"
-                    ? "bg-red-500 hover:bg-red-600"
-                    : post.status === "สถานะอยู่ในคลัง"
-                    ? "bg-green-500 hover:bg-green-600"
-                    : ""
+                      ? "bg-red-500 hover:bg-red-600"
+                      : post.status === "สถานะอยู่ในคลัง"
+                        ? "bg-green-500 hover:bg-green-600"
+                        : ""
                 } w-full rounded-md px-4 py-2 text-center`}
               >
                 {post.status}

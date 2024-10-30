@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 .transition-delay {
-    transition: left 10s ease-in-out 0.5s; /* Adjust duration and delay as needed */
-  }
+  transition: left 10s ease-in-out 0.5s; /* Adjust duration and delay as needed */
+}
 
-  /* CSS สำหรับ modal */
+/* CSS สำหรับ modal */
 .modal-overlay {
   position: fixed;
   top: 0;

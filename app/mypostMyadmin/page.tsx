@@ -60,15 +60,18 @@ const PostList: React.FC = () => {
 
   useEffect(() => {
     if (adminIdEdit) {
-       // Check if filters are empty, if so fetch default posts
-    const isFiltersEmpty =
-    !filters.title && !filters.category && !filters.location && !filters.status;
+      // Check if filters are empty, if so fetch default posts
+      const isFiltersEmpty =
+        !filters.title &&
+        !filters.category &&
+        !filters.location &&
+        !filters.status;
 
-  if (isFiltersEmpty) {
-   fetchPost(adminIdEdit);  // Fetch default posts if no filters are provided
-  } else {
-    fetchSearchResults(filters); // Fetch search results if filters are applied
-  }
+      if (isFiltersEmpty) {
+        fetchPost(adminIdEdit); // Fetch default posts if no filters are provided
+      } else {
+        fetchSearchResults(filters); // Fetch search results if filters are applied
+      }
     }
 
     async function fetchPost(userId: string) {
@@ -80,9 +83,9 @@ const PostList: React.FC = () => {
         console.error("Error fetching user name", error);
       }
     }
-  }, [adminIdEdit,adminIdEdit]);
-   // Function to fetch search results
-   const fetchSearchResults = async (searchFilters: {
+  }, [adminIdEdit, adminIdEdit]);
+  // Function to fetch search results
+  const fetchSearchResults = async (searchFilters: {
     title: string;
     category: string;
     location: string;
@@ -136,7 +139,7 @@ const PostList: React.FC = () => {
   return (
     <>
       <Navbar />
-      
+
       <div className="ml-64 flex-grow text-4xl">โพสต์ของฉัน</div>
 
       <div className="ml-64 grid flex-grow grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

@@ -73,7 +73,10 @@ const PostList: React.FC = () => {
   useEffect(() => {
     // Check if filters are empty, if so fetch default posts
     const isFiltersEmpty =
-      !filters.title && !filters.category && !filters.location && !filters.status;
+      !filters.title &&
+      !filters.category &&
+      !filters.location &&
+      !filters.status;
 
     if (isFiltersEmpty) {
       fetchPosts(); // Fetch default posts if no filters are provided
@@ -81,7 +84,7 @@ const PostList: React.FC = () => {
       fetchSearchResults(filters); // Fetch search results if filters are applied
     }
   }, [filters]); // Re-run whenever filters change
- const handleSearch = (searchFilters: {
+  const handleSearch = (searchFilters: {
     title?: string;
     category?: string;
     location?: string;

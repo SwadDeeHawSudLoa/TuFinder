@@ -21,8 +21,8 @@ const Login = () => {
       });
 
       if (username === "123" && password === "123") {
-        const first_name ="รณพี"
-        const last_name = "ศรีนอก"
+        const first_name = "รณพี";
+        const last_name = "ศรีนอก";
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("username", username);
         await fetch("/api/saveAdmin", {
@@ -31,9 +31,9 @@ const Login = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            admin_id : username, // Adjust according to your response
-            first_name:first_name, // Adjust according to your response
-            last_name:last_name , // Adjust according to your response
+            admin_id: username, // Adjust according to your response
+            first_name: first_name, // Adjust according to your response
+            last_name: last_name, // Adjust according to your response
           }),
         });
         router.push("/mainAdmin");

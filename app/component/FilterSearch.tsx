@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 
 interface FilterSearchProps {
-  onSearch: (filters: { title?: string; category?: string; location?: string; status?: string }) => void;
+  onSearch: (filters: {
+    title?: string;
+    category?: string;
+    location?: string;
+    status?: string;
+  }) => void;
 }
 
 export default function FilterSearch({ onSearch }: FilterSearchProps) {
@@ -48,7 +53,9 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
         className="w-full rounded border px-4 py-2 sm:w-auto"
       >
         <option value="">สถานที่</option>
-        <option value="มหาวิทยาลัยธรรมศาสตร์ รังสิต">มหาวิทยาลัยธรรมศาสตร์ รังสิต</option>
+        <option value="มหาวิทยาลัยธรรมศาสตร์ รังสิต">
+          มหาวิทยาลัยธรรมศาสตร์ รังสิต
+        </option>
         <option value="จุฬาลงกรณ์มหาวิทยาลัย">จุฬาลงกรณ์มหาวิทยาลัย</option>
         <option value="มหาวิทยาลัยมหิดล">มหาวิทยาลัยมหิดล</option>
       </select>

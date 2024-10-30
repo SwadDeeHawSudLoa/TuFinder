@@ -60,15 +60,18 @@ const PostList: React.FC = () => {
 
   useEffect(() => {
     if (userIdEdit) {
-     // Check if filters are empty, if so fetch default posts
-    const isFiltersEmpty =
-      !filters.title && !filters.category && !filters.location && !filters.status;
+      // Check if filters are empty, if so fetch default posts
+      const isFiltersEmpty =
+        !filters.title &&
+        !filters.category &&
+        !filters.location &&
+        !filters.status;
 
-    if (isFiltersEmpty) {
-     fetchPost(userIdEdit);  // Fetch default posts if no filters are provided
-    } else {
-      fetchSearchResults(filters); // Fetch search results if filters are applied
-    }
+      if (isFiltersEmpty) {
+        fetchPost(userIdEdit); // Fetch default posts if no filters are provided
+      } else {
+        fetchSearchResults(filters); // Fetch search results if filters are applied
+      }
     }
 
     async function fetchPost(userId: string) {
@@ -80,36 +83,36 @@ const PostList: React.FC = () => {
         console.error("Error fetching user name", error);
       }
     }
-  }, [userIdEdit,filters]);
-    // Function to fetch search results
-    const fetchSearchResults = async (searchFilters: {
-      title: string;
-      category: string;
-      location: string;
-      status: string;
-    }) => {
-      try {
-        const res = await axios.get("/api/search", { params: searchFilters });
-        const postsData: Post[] = res.data;
-        setPosts(postsData);
-      } catch (error) {
-        console.error("Error fetching search results:", error);
-      }
-    };
-    const handleSearch = (searchFilters: {
-      title?: string;
-      category?: string;
-      location?: string;
-      status?: string;
-    }) => {
-      setFilters({
-        title: searchFilters.title || "",
-        category: searchFilters.category || "",
-        location: searchFilters.location || "",
-        status: searchFilters.status || "",
-      });
-      setCurrentPage(1); // Reset to page 1 after search
-    };
+  }, [userIdEdit, filters]);
+  // Function to fetch search results
+  const fetchSearchResults = async (searchFilters: {
+    title: string;
+    category: string;
+    location: string;
+    status: string;
+  }) => {
+    try {
+      const res = await axios.get("/api/search", { params: searchFilters });
+      const postsData: Post[] = res.data;
+      setPosts(postsData);
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+    }
+  };
+  const handleSearch = (searchFilters: {
+    title?: string;
+    category?: string;
+    location?: string;
+    status?: string;
+  }) => {
+    setFilters({
+      title: searchFilters.title || "",
+      category: searchFilters.category || "",
+      location: searchFilters.location || "",
+      status: searchFilters.status || "",
+    });
+    setCurrentPage(1); // Reset to page 1 after search
+  };
   const handleButtonClick = (post: Post) => {
     setSelectedPost(post);
     setShowModal(true);

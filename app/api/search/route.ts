@@ -3,12 +3,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
-export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   try {
     // Get the URL parameters from the request
     const { searchParams } = new URL(request.url);
-    
+
     const title = searchParams.get("title") || undefined;
     const category = searchParams.get("category") || undefined;
     const location = searchParams.get("location") || undefined;

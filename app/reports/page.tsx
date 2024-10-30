@@ -138,7 +138,6 @@ const ReportPage = () => {
 
   // ฟังก์ชันสำหรับตรวจจับตำแหน่งของผู้ใช้
 
-
   if (isSubmitted) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
@@ -257,7 +256,6 @@ const ReportPage = () => {
               />
             </div>
 
-
             <div className="mb-4 flex justify-between">
               <input
                 ref={inputRef}
@@ -265,8 +263,6 @@ const ReportPage = () => {
                 className="file-input file-input-bordered file-input-info w-full max-w-xs"
               />
             </div>
-            
-        
 
             <div className="flex justify-center">
               <button

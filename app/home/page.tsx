@@ -1,10 +1,8 @@
 "use client";
 
 import Navbar from "../component/AdminNavbar";
-import React, { useState, useEffect } from 'react';
-import UserTable from '../component/UserTable'; 
-
-
+import React, { useState, useEffect } from "react";
+import UserTable from "../component/UserTable";
 
 interface User {
   user_id: string;
@@ -29,7 +27,7 @@ export default function Home() {
   // ฟังก์ชันดึงโพสต์เมื่อคลิกที่ปุ่มจำนวน post ของ user_id
   const handleShowPosts = async (user_id: string) => {
     setSelectedUserId(user_id);
-    
+
     try {
       const response = await fetch(`/api/mypost/${user_id}`);
       const data = await response.json();
@@ -43,14 +41,16 @@ export default function Home() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('/api/users');
+        const response = await fetch("/api/users");
         const data = await response.json();
-        setUsers(data.map((user: any) => ({
-          user_id: user.user_id,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          post: user.Post.length, // จำนวน post ของ user
-        })));
+        setUsers(
+          data.map((user: any) => ({
+            user_id: user.user_id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            post: user.Post.length, // จำนวน post ของ user
+          })),
+        );
       } catch (error) {
         console.error("Error fetching users", error);
       }
@@ -67,7 +67,7 @@ export default function Home() {
   return (
     <div>
       <Navbar />
-      
+
       {/* ตารางของผู้ใช้ */}
       <UserTable users={users} onShowPosts={handleShowPosts} />
 
@@ -76,9 +76,7 @@ export default function Home() {
         <div className="modal-overlay">
           <div className="modal-content">
             <h2>โพสต์ของผู้ใช้ User ID: {selectedUserId}</h2>
-            <ul>
-           
-            </ul>
+            <ul></ul>
             <button onClick={handleCloseModal}>Close</button>
           </div>
         </div>

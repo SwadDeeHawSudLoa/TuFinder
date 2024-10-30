@@ -3,12 +3,14 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
-export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   try {
     // Extract cookies from the request headers
     const cookieHeader = request.headers.get("cookie");
-    const cookies = Object.fromEntries(cookieHeader?.split('; ').map(c => c.split('=')) || []);
+    const cookies = Object.fromEntries(
+      cookieHeader?.split("; ").map((c) => c.split("=")) || [],
+    );
 
     // Get user_id from the cookies
     const userId = cookies.user_id;
@@ -24,7 +26,7 @@ export async function GET(request: Request) {
 
     // Get the URL parameters from the request
     const { searchParams } = new URL(request.url);
-    
+
     const title = searchParams.get("title") || undefined;
     const category = searchParams.get("category") || undefined;
     const location = searchParams.get("location") || undefined;
@@ -51,12 +53,12 @@ export async function GET(request: Request) {
 
     // Fetch posts with dynamic filtering
     const posts = await prisma.post.findUnique({
-        where: {
-          userIdEdit: userId,
-          ...whereClause // Spread the additional conditions
-        }
-      });
-      
+      where: {
+        userIdEdit: userId,
+        ...whereClause, // Spread the additional conditions
+      },
+    });
+
     return new Response(JSON.stringify(posts), {
       status: 200,
       headers: {

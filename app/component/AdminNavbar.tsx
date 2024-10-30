@@ -63,7 +63,7 @@ const Navbar: React.FC = () => {
             >
               {isMenuOpen ? (
                 <svg
-                  className="w-6 h-6"
+                  className="h-6 w-6"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -78,7 +78,7 @@ const Navbar: React.FC = () => {
                 </svg>
               ) : (
                 <svg
-                  className="w-6 h-6"
+                  className="h-6 w-6"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -183,10 +183,10 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="absolute right-0 w-48 bg-orange-600 shadow-lg rounded-lg z-50 transition-opacity opacity-100">
+          <div className="absolute right-0 z-50 w-48 rounded-lg bg-orange-600 opacity-100 shadow-lg transition-opacity">
             <a
               href="/reportMyAdmins"
-              className="block text-white text-lg font-semibold hover:bg-orange-600 px-4 py-2"
+              className="block px-4 py-2 text-lg font-semibold text-white hover:bg-orange-600"
               onClick={() => {
                 handleReportClick();
                 setIsMenuOpen(false); // Close the menu on click
@@ -195,41 +195,44 @@ const Navbar: React.FC = () => {
               แจ้งพบของหาย
             </a>
             {!isAdmin && (
-              <><a
-                href="/mypostMyadmin"
-                className="block  text-white text-lg font-semibold hover:bg-orange-600 px-4 py-2 "
-                onClick={() => setIsMenuOpen(false)} // Close the menu on click
-              >
-                โพสต์ของฉัน
-              </a><a
-                href="/home"
-                className=" block  text-white text-lg font-semibold hover:bg-orange-600 px-4 py-2"
-              >
+              <>
+                <a
+                  href="/mypostMyadmin"
+                  className="block px-4 py-2 text-lg font-semibold text-white hover:bg-orange-600"
+                  onClick={() => setIsMenuOpen(false)} // Close the menu on click
+                >
+                  โพสต์ของฉัน
+                </a>
+                <a
+                  href="/home"
+                  className="block px-4 py-2 text-lg font-semibold text-white hover:bg-orange-600"
+                >
                   ตรวจสอบผู้ใช้
-                </a></>
+                </a>
+              </>
             )}
             {!isAdmin && (
-                  <a
-                    href="/dashboard"
-                    className="block  text-white text-lg font-semibold hover:bg-orange-600 px-4 py-2"
-                  >
-                    Dashboard
-                  </a>
-                )}
+              <a
+                href="/dashboard"
+                className="block px-4 py-2 text-lg font-semibold text-white hover:bg-orange-600"
+              >
+                Dashboard
+              </a>
+            )}
             {isLoggedIn ? (
               <button
                 onClick={() => {
                   handleLogout();
                   setIsMenuOpen(false); // Close the menu on click
                 }}
-                className="block  text-white text-lg font-semibold hover:bg-orange-600 px-4 py-2 "
+                className="block px-4 py-2 text-lg font-semibold text-white hover:bg-orange-600"
               >
                 Logout
               </button>
             ) : (
               <a
                 href="/login"
-                className="block  text-white text-lg font-semibold hover:bg-orange-600 px-4 py-2 "
+                className="block px-4 py-2 text-lg font-semibold text-white hover:bg-orange-600"
                 onClick={() => setIsMenuOpen(false)} // Close the menu on click
               >
                 Login

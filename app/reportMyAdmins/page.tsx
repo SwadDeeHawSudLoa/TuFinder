@@ -110,7 +110,6 @@ const ReportMyAdmins = () => {
 
     try {
       await axios.post("/api/posts", {
-       
         adminIdEdit,
         title,
         username,
@@ -245,12 +244,12 @@ const ReportMyAdmins = () => {
                 ตำแหน่งบนแผนที่
               </label>
               <Map
-               posix={[lat, long]}
-               zoom={13}
-               key={mapKey}
-               onMapClick={handleMapClick}
-               onLocationUpdate={handleMapClick}
-               style={{ height: "200px", width: "100%" }}
+                posix={[lat, long]}
+                zoom={13}
+                key={mapKey}
+                onMapClick={handleMapClick}
+                onLocationUpdate={handleMapClick}
+                style={{ height: "200px", width: "100%" }}
               />
             </div>
 

@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
-export const dynamic = "force-dynamic";
+
 export async function PUT(
   request: Request,
   { params }: { params: { id: number } }, // Make sure the id type is number

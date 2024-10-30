@@ -12,7 +12,6 @@ const Navbar: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-
   useEffect(() => {
     // Check login state from local storage
     const loggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -59,15 +58,15 @@ const Navbar: React.FC = () => {
               TU ItemFinder
             </span>
           </a>
-         {/* Mobile Menu Button */}
-         <div className="md:hidden lg:hidden">
+          {/* Mobile Menu Button */}
+          <div className="md:hidden lg:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-white focus:outline-none"
             >
               {isMenuOpen ? (
                 <svg
-                  className="w-6 h-6"
+                  className="h-6 w-6"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -82,7 +81,7 @@ const Navbar: React.FC = () => {
                 </svg>
               ) : (
                 <svg
-                  className="w-6 h-6"
+                  className="h-6 w-6"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -173,59 +172,53 @@ const Navbar: React.FC = () => {
             )}
           </div>
         </div>
-      
-  {/* Mobile Menu */}
-  {isMenuOpen && (
-          <div className="absolute rounded-sm right-0 w-48 bg-orange-600 shadow-lg z-50 transition-opacity opacity-100">
-    
-    <button
-                      onClick={handleReportClick}
-                      className="block text-white text-lg  hover:bg-orange-600 px-4 py-2"
-                    >
-                      เเจ้งพบของหาย
-                    </button>
 
-          {isLoggedIn ? (
-            <>
-              {!isAdmin && (
-                <div className="absolute rounded-sm right-0 w-48 bg-orange-600 shadow-lg  z-50 transition-opacity opacity-100">
-                  <a
-                    href="/myposts"
-                    className="block text-white text-lg font-semibold hover:bg-orange-600 px-4 py-2"
-                  >
-                    โพสต์ของฉัน
-                  </a>
-                 
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="absolute right-0 z-50 w-48 rounded-sm bg-orange-600 opacity-100 shadow-lg transition-opacity">
+            <button
+              onClick={handleReportClick}
+              className="block px-4 py-2 text-lg text-white hover:bg-orange-600"
+            >
+              เเจ้งพบของหาย
+            </button>
+
+            {isLoggedIn ? (
+              <>
+                {!isAdmin && (
+                  <div className="absolute right-0 z-50 w-48 rounded-sm bg-orange-600 opacity-100 shadow-lg transition-opacity">
+                    <a
+                      href="/myposts"
+                      className="block px-4 py-2 text-lg font-semibold text-white hover:bg-orange-600"
+                    >
+                      โพสต์ของฉัน
+                    </a>
+
                     <button
                       onClick={handleLogout}
-                      className="block text-white text-lg  hover:bg-orange-600 px-4 py-2"
+                      className="block px-4 py-2 text-lg text-white hover:bg-orange-600"
                     >
                       Logout
                     </button>
-                 
-                
-              
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="block px-4 py-2 text-lg font-semibold text-white hover:bg-orange-600">
+                <div className="block px-4 py-2 text-lg font-semibold text-white hover:bg-orange-600">
+                  <a
+                    href="/login"
+                    className="block px-4 py-2 text-lg font-semibold text-white hover:bg-orange-600"
+                  >
+                    Login
+                  </a>
                 </div>
-              )}
-  
-                  
-            </>
-          ) : (
-            <div className="block text-white text-lg font-semibold hover:bg-orange-600 px-4 py-2">
-              <div className="block text-white text-lg font-semibold hover:bg-orange-600 px-4 py-2">
-                <a
-                  href="/login"
-                  className="block text-white text-lg font-semibold hover:bg-orange-600 px-4 py-2"
-                >
-                  Login
-                </a>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
         )}
-</nav>
-{/* Modal */}
+      </nav>
+      {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="relative w-1/3 rounded-lg bg-white p-10 shadow-2xl">
