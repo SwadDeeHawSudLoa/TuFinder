@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
-import prisma from "../../lib/prisma"; // หรือเส้นทางที่ถูกต้อง
+import prisma from "../../lib/prisma"; // or the correct path
 
 export const dynamic = "force-dynamic";
+
 export async function GET() {
+  try {
     // นับจำนวนโพสต์ทั้งหมด
     const totalPosts = await prisma.post.count();
 
@@ -50,4 +52,8 @@ export async function GET() {
       recentPosts, // ส่ง recentPosts กลับไปด้วย
       allPosts, // ส่ง allPosts กลับไปด้วย
     });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });
   }
+}
