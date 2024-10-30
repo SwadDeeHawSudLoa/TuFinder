@@ -1,5 +1,6 @@
 "use client";
-
+export const runtime = 'edge' // optional
+export const dynamic = "force-dynamic";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../component/AdminNavbar";
