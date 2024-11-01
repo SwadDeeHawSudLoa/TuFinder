@@ -14,13 +14,16 @@ const LeafletMap = dynamic(() => import("../component/LeafletMap"), {
 
 interface Post1 {
   post_id: number;
-  userIdEdit?: string;
+ userIdEdit?: string;
   adminIdEdit?: string;
-  title: string;
+ title: string;
   username: string;
+  adminusername?:string;//เพิ่มชื่อ admin 
   tel: string;
+  teluser: string;// เพิ่มเบอร์มือถือของผู้ใช้ 
   category: string;
   image: string;
+  imageAdmin?: string; //เพิ่มรูปภาพเเนบรูปหลังฐานที่จะเเสดงเฉพาะadmin เท่านั้น
   status: string;
   description: string;
   date: Date;

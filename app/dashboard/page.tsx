@@ -35,16 +35,19 @@ function Pagination({
 
 interface Post {
   post_id: number;
-  userIdEdit: string; // Updated to match Prisma schema
-  adminIdEdit: string; // Updated to match Prisma schema
-  title: string;
+ userIdEdit?: string;
+  adminIdEdit?: string;
+ title: string;
   username: string;
+  adminusername?:string;//เพิ่มชื่อ admin 
   tel: string;
+  teluser: string;// เพิ่มเบอร์มือถือของผู้ใช้ 
   category: string;
   image: string;
+ imageAdmin?: string; //เพิ่มรูปภาพเเนบรูปหลังฐานที่จะเเสดงเฉพาะadmin เท่านั้น
   status: string;
   description: string;
-  date: Date; // Ensure correct handling of Date
+  date: Date;
   lat: number;
   long: number;
   location: string;

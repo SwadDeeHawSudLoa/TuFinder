@@ -7,15 +7,18 @@ import FilterSearch from "../component/FilterSearch";
 import Modal from "../component/Modal";
 import axios from "axios";
 
-interface Post {
+interface Post{
   post_id: number;
-  userIdEdit: string; // Optional based on your Prisma schema
-  adminIdEdit: string; // Optional based on your Prisma schema
+  userIdEdit?: string;
+  adminIdEdit?: string;
   title: string;
   username: string;
+  adminusername?:string;//เพิ่มชื่อ admin 
   tel: string;
+  teluser: string;// เพิ่มเบอร์มือถือของผู้ใช้ 
   category: string;
   image: string;
+  imageAdmin?: string; //เพิ่มรูปภาพเเนบรูปหลังฐานที่จะเเสดงเฉพาะadmin เท่านั้น
   status: string;
   description: string;
   date: Date;
@@ -23,7 +26,6 @@ interface Post {
   long: number;
   location: string;
 }
-
 const PostList: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [currentPage, setCurrentPage] = useState(1);

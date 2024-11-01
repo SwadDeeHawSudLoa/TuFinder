@@ -11,13 +11,16 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 interface Post {
   post_id: number;
-  userIdEdit: string; // Optional based on your Prisma schema
-  adminIdEdit: string; // Optional based on your Prisma schema
-  title: string;
+ userIdEdit?: string;
+  adminIdEdit?: string;
+ title: string;
   username: string;
+  adminusername?:string;//เพิ่มชื่อ admin 
   tel: string;
+  teluser: string;// เพิ่มเบอร์มือถือของผู้ใช้ 
   category: string;
   image: string;
+ imageAdmin?: string; //เพิ่มรูปภาพเเนบรูปหลังฐานที่จะเเสดงเฉพาะadmin เท่านั้น
   status: string;
   description: string;
   date: Date;
@@ -25,7 +28,6 @@ interface Post {
   long: number;
   location: string;
 }
-
 const PostList: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [userIdEdit, setUserIdEdit] = useState<string | null>(null);
