@@ -51,14 +51,14 @@ const ReportPage = () => {
 
     async function fetchAdminUserName() {
       try {
-        const response = await axios.get(`/api/saveUser`);
+        const response = await axios.get(`/api/saveAdmin`);
         const name = response.data;
-        setUsername(name);
+        setAdminusername(name);
       } catch (error) {
         console.error("Error fetching user name", error);
       }
     }
-
+    fetchAdminUserName();
     const admin = "123";
     setAdminIdEdit(admin);
 

@@ -42,3 +42,18 @@ export async function POST(request: Request) {
   }
 }
 
+export async function GET() {
+  const user = await prisma.admin.findFirst();
+
+  if (!user) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
+  }
+
+  const name = `${user.first_name ?? ""} ${user.last_name ?? ""}`.trim();
+  return NextResponse.json(name);
+
+
+
+
+
+}
