@@ -8,11 +8,12 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model User {
-  user_id    String   @id 
-  first_name String
-  last_name  String
-  Post       Post[]
+	model User {
+  		user_id    String   @id 
+  		first_name String
+  		last_name  String
+		  tel String // เพิ่มเบอร์มือถือของผู้ใช้ 
+  		Post       Post[]
 }
 
 model Admin {
@@ -23,20 +24,24 @@ model Admin {
 }
 
 model Post {
-  post_id      Int      @id @default(autoincrement())
-  userIdEdit   String?  // Optional to allow either User or Admin to be associated
-  adminIdEdit  String?  // Optional to allow either User or Admin to be associated
-  title        String
-  username     String
-  tel          String
-  category     String
-  image        String
-  status       String
-  description  String
-  date         DateTime @default(now())
-  lat          Float
-  long         Float
-  location     String
-  author       User?    @relation(fields: [userIdEdit], references: [user_id])
-  author2      Admin?   @relation(fields: [adminIdEdit], references: [admin_id])
-}
+ 		 				post_id      Int      @id @default(autoincrement())
+  						userIdEdit   String?  // Optional to allow either User or Admin to be associated
+  						adminIdEdit  String?  // Optional to allow either User or Admin to be associated
+  						title        String
+  						username     String
+  						adminusername String //เพิ่มชื่อ admin 
+  						tel          String
+ 						teluser String// เพิ่มเบอร์มือถือของผู้ใช้ 
+  						category     String
+  						image        String
+  						imageAdmin String? //เพิ่มรูปภาพเเนบรูปหลังฐานที่จะเเสดงเฉพาะadmin เท่านั้น
+  						status       String
+  						description  String
+  						date         DateTime @default(now())
+  						lat          Float
+  						long         Float
+  						location     String
+  						author       User?    @relation(fields: [userIdEdit], references: [user_id])
+  						author2      Admin?   @relation(fields: [adminIdEdit], references: [admin_id])
+
+						}
