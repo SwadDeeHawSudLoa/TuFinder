@@ -1,10 +1,23 @@
 "use client";
-export const runtime = 'edge' // optional
-export const dynamic = "force-dynamic";
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../component/AdminNavbar";
 import Modal from "../component/Modal";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+// Register ChartJS components
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 // Pagination Component
 function Pagination({
@@ -17,11 +30,11 @@ function Pagination({
   onPageChange: (page: number) => void;
 }) {
   return (
-    <div className="mt-4 flex justify-center">
+    <div className="flex justify-center mt-4">
       {Array.from({ length: totalPages }, (_, index) => (
         <button
           key={index}
-          className={`mx-1 rounded px-3 py-1 ${
+          className={`px-3 py-1 mx-1 rounded ${
             index + 1 === currentPage ? "bg-blue-500 text-white" : "bg-gray-200"
           }`}
           onClick={() => onPageChange(index + 1)}
@@ -44,7 +57,7 @@ interface Post {
   teluser: string;// เพิ่มเบอร์มือถือของผู้ใช้ 
   category: string;
   image: string;
- imageAdmin?: string; //เพิ่มรูปภาพเเนบรูปหลังฐานที่จะเเสดงเฉพาะadmin เท่านั้น
+  imageAdmin?: string; //เพิ่มรูปภาพเเนบรูปหลังฐานที่จะเเสดงเฉพาะadmin เท่านั้น
   status: string;
   description: string;
   date: Date;
@@ -52,6 +65,7 @@ interface Post {
   long: number;
   location: string;
 }
+
 
 interface DashboardData {
   recentPosts: Post[];
@@ -65,19 +79,16 @@ interface DashboardData {
 }
 
 export default function DashboardAdmin() {
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(
-    null,
-  );
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [recentPage, setRecentPage] = useState(1);
   const [allPage, setAllPage] = useState(1);
   const [modalView, setModalView] = useState<"status" | "ตรวจสอบ">("status");
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [timeFrame, setTimeFrame] = useState<"daily" | "monthly" | "yearly">("daily");
 
-  const itemsPerPage = 5; // Number of items per page
+  const itemsPerPage = 5;
 
-  // Fetch Dashboard Data from API
   const fetchDashboardData = async () => {
     try {
       const response = await axios.get("/api/dashboarddata");
@@ -86,22 +97,9 @@ export default function DashboardAdmin() {
       console.error("Error fetching dashboard data:", error);
     }
   };
-  const fetchPosts = async () => {
-    try {
-      const res = await axios.get("/api/posts"); // Adjust endpoint if necessary
-      const posts1: Post[] = res.data; // Axios automatically parses JSON response
-      setPosts(posts1);
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-    }
-  };
 
   useEffect(() => {
-    fetchDashboardData(); // Fetch data when the component is mounted
-  }, []);
-
-  useEffect(() => {
-    fetchPosts(); // Fetch data when the component is mounted
+    fetchDashboardData();
   }, []);
 
   if (!dashboardData) {
@@ -118,208 +116,148 @@ export default function DashboardAdmin() {
     setSelectedPost(null);
   };
 
-  // Pagination logic
-  const totalRecentPages = Math.ceil(
-    dashboardData.recentPosts.length / itemsPerPage,
-  );
+  const totalRecentPages = Math.ceil(dashboardData.recentPosts.length / itemsPerPage);
   const totalAllPages = Math.ceil(dashboardData.allPosts.length / itemsPerPage);
 
   const recentPostsToShow = dashboardData.recentPosts.slice(
     (recentPage - 1) * itemsPerPage,
-    recentPage * itemsPerPage,
+    recentPage * itemsPerPage
   );
-
   const allPostsToShow = dashboardData.allPosts.slice(
     (allPage - 1) * itemsPerPage,
-    allPage * itemsPerPage,
+    allPage * itemsPerPage
   );
+
+  // Prepare data for chart based on time frame
+  const getPostCounts = (timeFrame: "daily" | "monthly" | "yearly") => {
+    const counts: { [key: string]: number } = {};
+
+    dashboardData.allPosts.forEach((post) => {
+      const date = new Date(post.date);
+      let key = "";
+
+      if (timeFrame === "daily") key = date.toISOString().split("T")[0];
+      if (timeFrame === "monthly") key = `${date.getFullYear()}-${(date.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}`;
+      if (timeFrame === "yearly") key = date.getFullYear().toString();
+
+      counts[key] = (counts[key] || 0) + 1;
+    });
+
+    const labels = Object.keys(counts).sort();
+    const data = labels.map((label) => counts[label]);
+
+    return { labels, data };
+  };
+
+  const postCounts = getPostCounts(timeFrame);
+
+  const chartData = {
+    labels: postCounts.labels,
+    datasets: [
+      {
+        label: "Number of Posts",
+        data: postCounts.data,
+        borderColor: "rgba(75, 192, 192, 1)",
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        fill: true,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+    },
+    scales: {
+      x: {
+        title: { display: true, text: "Date" },
+      },
+      y: {
+        title: { display: true, text: "Post Count" },
+      },
+    },
+  };
 
   return (
     <div style={{ padding: "0px" }}>
       <Navbar />
       <h1>Admin Dashboard</h1>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          maxWidth: "600px",
-        }}
-      >
-        <div
-          style={{
-            backgroundColor: "#f1f1f1",
-            padding: "20px",
-            borderRadius: "5px",
-          }}
-        >
+      <div style={{ display: "flex", justifyContent: "space-between", maxWidth: "600px" }}>
+        <div style={{ backgroundColor: "#f1f1f1", padding: "20px", borderRadius: "5px" }}>
           <h2>Total Posts</h2>
           <p>{dashboardData.totalPosts}</p>
         </div>
-        <div
-          style={{
-            backgroundColor: "#f1f1f1",
-            padding: "20px",
-            borderRadius: "5px",
-          }}
-        >
+        <div style={{ backgroundColor: "#f1f1f1", padding: "20px", borderRadius: "5px" }}>
           <h2>Total Users</h2>
           <p>{dashboardData.totalUsers}</p>
         </div>
-        <div
-          style={{
-            backgroundColor: "#f1f1f1",
-            padding: "20px",
-            borderRadius: "5px",
-          }}
-        >
+        <div style={{ backgroundColor: "#f1f1f1", padding: "20px", borderRadius: "5px" }}>
           <h2>Total Admins</h2>
           <p>{dashboardData.totalAdmins}</p>
         </div>
       </div>
 
       <h2 style={{ marginTop: "20px" }}>Post Status Summary</h2>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          maxWidth: "800px",
-        }}
-      >
-        <div
-          style={{
-            backgroundColor: "#e0f7fa",
-            padding: "20px",
-            borderRadius: "5px",
-          }}
-        >
+      <div style={{ display: "flex", justifyContent: "space-between", maxWidth: "800px" }}>
+        <div style={{ backgroundColor: "#e0f7fa", padding: "20px", borderRadius: "5px" }}>
           <h3>ถูกรับไปแล้ว</h3>
           <p>{dashboardData.statusCountReceived}</p>
         </div>
-        <div
-          style={{
-            backgroundColor: "#ffccbc",
-            padding: "20px",
-            borderRadius: "5px",
-          }}
-        >
+        <div style={{ backgroundColor: "#ffccbc", padding: "20px", borderRadius: "5px" }}>
           <h3>ไม่อยู่ในคลัง</h3>
           <p>{dashboardData.statusCountNotInStock}</p>
         </div>
-        <div
-          style={{
-            backgroundColor: "#c8e6c9",
-            padding: "20px",
-            borderRadius: "5px",
-          }}
-        >
+        <div style={{ backgroundColor: "#c8e6c9", padding: "20px", borderRadius: "5px" }}>
           <h3>อยู่ในคลัง</h3>
           <p>{dashboardData.statusCountInStock}</p>
         </div>
       </div>
 
-      {/* Recent Items */}
       <div className="mt-8">
-        <h2 className="text-lg font-semibold">Recent Items</h2>
-        <div className="mt-4 space-y-4">
-          {recentPostsToShow.map((post) => (
-            <div
-              key={post.post_id}
-              className="flex items-center justify-between rounded-lg bg-white p-4 shadow-sm"
-            >
-              <div>
-                <h3 className="font-medium">{post.title}</h3>
-                <p className="text-sm text-gray-500">
-                  {new Date(post.date).toLocaleDateString()}
-                </p>
-              </div>
-              <span
-                className={`rounded-full px-3 py-1 text-sm font-medium ${
-                  post.status === "สถานะไม่อยู่ในคลัง"
-                    ? "bg-red-100 text-red-600"
-                    : post.status === "สถานะอยู่ในคลัง"
-                      ? "bg-green-100 text-green-600"
-                      : post.status === "สถานะถูกรับไปเเล้ว"
-                        ? "bg-blue-100 text-blue-600"
-                        : "bg-orange-100 text-orange-600"
-                }`}
-              >
-                {post.status}
-              </span>
+        <h2 className="text-lg font-semibold">Posts Over Time</h2>
+        <div style={{ width: "500px", height: "300px", margin: "auto" }}>
+          <select
+            value={timeFrame}
+            onChange={(e) => setTimeFrame(e.target.value as "daily" | "monthly" | "yearly")}
+            className="mb-4"
+          >
+            <option value="daily">Daily</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+          </select>
+          <Line data={chartData} options={chartOptions} />
+        </div>
+      </div>
+
+      
+
+      <div className="mt-8">
+        <h2 className="text-lg font-semibold">All Items</h2>
+        <div className="grid gap-4">
+          {allPostsToShow.map((post) => (
+            <div key={post.post_id} className="border p-4 rounded">
+              <h3>{post.title}</h3>
+              <button onClick={() => handleButtonClick(post, "ตรวจสอบ")}>ตรวจสอบ</button>
             </div>
           ))}
         </div>
-        <Pagination
-          currentPage={recentPage}
-          totalPages={totalRecentPages}
-          onPageChange={setRecentPage}
-        />
+        <Pagination currentPage={allPage} totalPages={totalAllPages} onPageChange={setAllPage} />
       </div>
 
-      {/* All Items */}
-      <div className="mt-8">
-        <h2 className="text-lg font-semibold">All Items</h2>
-        <div className="mt-4 rounded-lg bg-white p-4 shadow-sm">
-          <table className="min-w-full text-left text-sm">
-            <thead>
-              <tr>
-                <th className="px-6 py-2 font-medium text-gray-900">Name</th>
-                <th className="px-6 py-2 font-medium text-gray-900">
-                  Category
-                </th>
-                <th className="px-6 py-2 font-medium text-gray-900">Status</th>
-                <th className="px-6 py-2 font-medium text-gray-900">Date</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {allPostsToShow.map((post) => (
-                <tr key={post.post_id}>
-                  <td className="px-6 py-4">{post.title}</td>
-                  <td className="px-6 py-4">{post.category}</td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={`rounded-full px-3 py-1 text-sm font-medium ${
-                        post.status === "สถานะไม่อยู่ในคลัง"
-                          ? "bg-red-100 text-red-600"
-                          : post.status === "สถานะอยู่ในคลัง"
-                            ? "bg-green-100 text-green-600"
-                            : post.status === "สถานะถูกรับไปเเล้ว"
-                              ? "bg-blue-100 text-blue-600"
-                              : "bg-orange-100 text-orange-600"
-                      }`}
-                    >
-                      {post.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    {new Date(post.date).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4">
-                    <button
-                      onClick={() => handleButtonClick(post, "ตรวจสอบ")}
-                      className="text-black-900 rounded-full bg-green-500 px-3 py-1 text-sm font-medium"
-                    >
-                      ตรวจสอบ
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <Pagination
-            currentPage={allPage}
-            totalPages={totalAllPages}
-            onPageChange={setAllPage}
-          />
-          {selectedPost && (
-            <Modal
-              show={showModal}
-              onClose={handleCloseModal}
-              post={selectedPost}
-              view={modalView}
-            />
-          )}
-        </div>
-      </div>
+      {/* Modal Component */}
+      {showModal && selectedPost && (
+        <Modal
+          show={showModal}
+          post={selectedPost}
+          view={modalView}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 }
