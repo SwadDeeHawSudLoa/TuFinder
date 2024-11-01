@@ -166,7 +166,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
                     </div>
                     <div className="flex justify-center">
                       <p>
-                        <strong>ชื่อ:</strong> {post.username}
+                        <strong>ชื่อ:</strong> {post.adminusername}
                       </p>
                     </div>
                     <div className="flex justify-center rounded-2xl border bg-slate-100">
