@@ -36,6 +36,7 @@ const ReportPage = () => {
   const [long, setLong] = useState(100.6164); // Default long
   const [location, setLocation] = useState("");
   const[teluser,setTeluser] =useState("");
+  
   const [adminusername,setAdminusername]=useState("");
   const [selectedLocation, setSelectedLocation] = useState<{
     name: string;
@@ -61,7 +62,8 @@ const ReportPage = () => {
     fetchAdminUserName();
     const admin = "123";
     setAdminIdEdit(admin);
-
+    const phoneAdmin = "043311286";
+    setTel(phoneAdmin);
     const userIdFromCookie = Cookies.get("user_id");
     if (userIdFromCookie) {
       setUserIdEdit(userIdFromCookie);

@@ -156,7 +156,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
                 </div>
                 <div className="flex justify-center rounded-2xl border bg-slate-100">
                   <p>
-                    <strong>เบอร์โทร:</strong> {post.tel}
+                    <strong>เบอร์โทร:</strong> {post.teluser}
                   </p>
                 </div>
                 {post.status !== "สถานะไม่อยู่ในคลัง" && (
