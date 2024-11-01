@@ -22,7 +22,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     // Parse the request body
-    const { user_id, first_name, last_name } = await request.json();
+    const { user_id, first_name, last_name ,tel} = await request.json();
 
     // Check if the user already exists
     const existingUser = await prisma.user.findUnique({
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     } else {
       // Create a new user
       const newUser = await prisma.user.create({
-        data: { user_id, first_name, last_name },
+        data: { user_id, first_name, last_name ,tel},
       });
 
       response = NextResponse.json(newUser);
