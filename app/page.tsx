@@ -15,7 +15,7 @@ interface Post {
   username: string;
   adminusername?:string;//เพิ่มชื่อ admin 
   tel: string;
-                                    teluser: string;// เพิ่มเบอร์มือถือของผู้ใช้ 
+  teluser: string;// เพิ่มเบอร์มือถือของผู้ใช้ 
   category: string;
   image: string;
  imageAdmin?: string; //เพิ่มรูปภาพเเนบรูปหลังฐานที่จะเเสดงเฉพาะadmin เท่านั้น
