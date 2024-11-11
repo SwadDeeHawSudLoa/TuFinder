@@ -13,35 +13,7 @@ const picturePage = ({ params }: { params: { id: string } }) => {
     const inputRef = React.useRef<HTMLInputElement>(null);
     const router = useRouter();
     const { id } = params;
-    async function handleSubmit(
-        event: FormEvent<HTMLFormElement>,
-      ): Promise<void> {
-        event.preventDefault();
-        let downloadURL = "";
-        const file = inputRef.current?.files ? inputRef.current.files[0] : null;
-        if (file) {
-          try {
-            const fileRef = ref(storage, `images/${file.name}`);
-            await uploadBytes(fileRef, file);
-            downloadURL = await getDownloadURL(fileRef);
-            console.log(downloadURL);
-          } catch (error) {
-            console.error("File upload error:", error);
-          }
-        } else {
-          console.error("No file selected.");
-        }
-    
-        try {
-          await axios.put(`/api/posts/${id}`, {
-            image: downloadURL,
-          });
-          router.push("/mypostMyadmin");
-        } catch (error) {
-          console.error("Error submitting post:", error);
-          alert("Something went wrong");
-        }
-      }
+ 
     return (
 <>
 <Navbar />
