@@ -197,42 +197,97 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
           </div>
 
           <h2 className="text-xl text-center text-black font-bold">เเก้ไขแจ้งพบของสูญหายโพสต์ที่ <>{id}</></h2>
-
+ <label className="mb-1 block text-sm font-bold text-gray-700">
+  ตำแหน่งบนแผนที่
+</label>
           <form onSubmit={handleSubmit}>
-            <div className="mb-3">
+          <div className="mb-1 flex justify-center items-center z-auto">
+   
+<Map
+    posix={[lat, long]}
+    zoom={13}
+    key={mapKey}
+    onMapClick={handleMapClick}
+    onLocationUpdate={handleMapClick}
+    style={{ height: "100px", width: "100%" }}
+  />
+</div> 
+<div className="mb-1">
               <label className="block text-sm font-bold text-gray-700">ชื่อสิ่งของ</label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="กรุณาระบุชื่อสิ่งของ"
-                className="mt-1 w-full px-2 py-1 text-sm rounded-lg border focus:border-blue-500"
+                className="mt-1 text-white w-full px-2 py-1 text-sm rounded-lg border focus:border-blue-500"
               />
             </div>
 
-            <div className="mb-3">
+            <div className="mb-1">
               <label className="block text-sm font-bold text-gray-700">เบอร์มือถือของคุณ</label>
               <input
                 type="text"
                 value={teluser}
                 onChange={(e) => setTeluser(e.target.value)}
                 placeholder="กรุณาระบุเบอร์มือถือ"
-                className="mt-1 w-full px-2 py-1 text-sm rounded-lg border focus:border-blue-500"
+                className="mt-1 text-white w-full px-2 py-1 text-sm rounded-lg border focus:border-blue-500"
               />
             </div>
 
-            <div className="mb-3">
+            <div className="mb-1">
+    <label className="mb-1 block text-sm font-bold text-gray-700">
+      หมวดหมู่
+    </label>
+    <select
+      value={category}
+      onChange={(e) => setCategory(e.target.value)}
+      className="w-full rounded-lg border px-3 py-2 text-white text-sm focus:border-blue-500 focus:outline-none"
+    >
+      <option value="">กรุณาเลือกหมวดหมู่</option>
+      <option value="documents">เอกสารสำคัญ</option>
+      <option value="personal_items">สิ่งของส่วนบุคคล</option>
+      <option value="electronics">อุปกรณ์อิเล็กทรอนิกส์</option>
+    </select>
+  </div>
+            <div className="mb-1">
               <label className="text-sm font-bold text-gray-700">รายละเอียดเพิ่มเติม</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="รายละเอียดเพิ่มเติม"
-                className="mt-1 w-full text-sm px-2 py-1 rounded-lg border focus:border-blue-500"
+                className="mt-1 w-full text-sm  text-white px-2 py-1 rounded-lg border focus:border-blue-500"
               />
             </div>
 
 
-            <div className="mb-4">
+
+
+
+            <div className="mb-1">
+    <label className="mb-1 block text-sm font-bold text-gray-700">
+      สถานที่พบของหาย
+    </label>
+    <select
+      value={location}
+      onChange={(e) => {
+        const selected = predefinedLocations.find(
+          (loc) => loc.name === e.target.value
+        );
+        setSelectedLocation(selected || null);
+      }}
+      className="w-full  text-sm rounded-lg border px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+    >
+      <option value="">กรุณาเลือกสถานที่</option>
+      {predefinedLocations.map((loc) => (
+        <option key={loc.name} value={loc.name}>
+          {loc.name}
+        </option>
+      ))}
+    </select>
+  </div>
+ 
+
+            <div className="mb-1">
               <label className="text-sm font-bold text-gray-700">รูปภาพ</label>
               {existingImage && (
                 <div>
@@ -245,71 +300,33 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
                   </button>
                 </div>
               )}
-              <input
-                type="file"
-                ref={inputRef}
-                accept="image/*"
-                className="mt-2 block w-full text-gray-700"
-              />
+             <input
+      ref={inputRef}
+      type="file"
+      className="file-input file-input-bordered file-input-info w-full max-w-xs"
+    />
             </div>
 
             {isImagePopupVisible && (
-              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
-                <div className="w-3/4 max-w-3xl p-4 bg-white rounded shadow-lg">
-                  <button
-                    className="float-right text-xl"
-                    onClick={toggleImagePopup}
-                  >
-                    ×
-                  </button>
-                  <img
-                    src={existingImage}
-                    alt="Old Post Image"
-                    className="w-full h-auto"
-                  />
-                </div>
-              </div>
-            )}
-
-
-
-            <div className="mb-4">
-    <label className="mb-2 block text-sm font-bold text-gray-700">
-      สถานที่พบของหาย
-    </label>
-    <select
-      value={selectedLocation ? selectedLocation.name : ""}
-      onChange={(e) => {
-        const selected = predefinedLocations.find(
-          (loc) => loc.name === e.target.value
-        );
-        setSelectedLocation(selected || null);
-      }}
-      className="w-full rounded-lg border px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
-    >
-      <option value="">กรุณาเลือกสถานที่</option>
-      {predefinedLocations.map((loc) => (
-        <option key={loc.name} value={loc.name}>
-          {loc.name}
-        </option>
-      ))}
-    </select>
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-10000">
+    <div className="w-3/4 max-w-3xl p-4 bg-white rounded shadow-lg relative">
+      <button
+        className="absolute top-2 right-2 text-xl"
+        onClick={toggleImagePopup}
+      >
+        ×
+      </button>
+      <img
+        src={existingImage}
+        alt="Old Post Image"
+        className="w-full h-auto items-center"
+        style={{ height: "180px", width: "50%" }}
+      />
+    </div>
   </div>
+)}
 
-  <div className="mb-4">
-    <label className="mb-2 block text-sm font-bold text-gray-700">
-      ตำแหน่งบนแผนที่
-    </label>
-    <Map
-      posix={[lat, long]}
-      zoom={13}
-      key={mapKey}
-      onMapClick={handleMapClick}
-      onLocationUpdate={handleMapClick}
-      style={{ height: "200px", width: "100%" }}
-    />
-  </div>
-            <div className="mb-3">
+            <div className="mb-1">
               <button
                 type="submit"
                 className="w-full px-4 py-2 text-sm font-bold text-white bg-green-600 rounded-lg hover:bg-green-700"

@@ -1,6 +1,6 @@
 "use client";
 import React, { FormEvent, useEffect, useState } from "react";
-import Navbar from "@/app/component/AdminNavbar";
+import Navbar from "@/app/component/navbar";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -29,12 +29,14 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
   const [tel, setTel] = useState("");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState("");
+  const [existingImage, setExistingImage] = useState("");
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState("");
   const [description, setDescription] = useState("");
-  const [lat, setLat] = useState(14.0254); // Default lat
-  const [long, setLong] = useState(100.6164); // Default long
+  const [lat, setLat] = useState(14.0254);
+  const [long, setLong] = useState(100.6164);
   const [location, setLocation] = useState("");
+  const [teluser, setTeluser] = useState("");
   const [selectedLocation, setSelectedLocation] = useState<{
     name: string;
     lat: number;
@@ -42,19 +44,20 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
   } | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [mapKey, setMapKey] = useState<number>(0);
+  const [isImagePopupVisible, setIsImagePopupVisible] = useState(false); // New state for the image popup
   const { id } = params;
   const router = useRouter();
-  const[teluser,setTeluser] =useState("");
+
   const fetchPost = async (id: Number) => {
     try {
       const res = await axios.get(`/api/posts/${id}`);
       setUserIdEdit(res.data.userIdEdit);
-      setTel(res.data.teluser);
+      setTeluser(res.data.teluser);
       setTitle(res.data.title);
       setLocation(res.data.location);
       setDescription(res.data.description);
-      setLocation(res.data.location);
       setCategory(res.data.category);
+      setExistingImage(res.data.image);
     } catch (error) {
       console.error(error);
     }
@@ -109,28 +112,22 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
     }
   }, [selectedLocation]);
 
-  async function handleSubmit(
-    event: FormEvent<HTMLFormElement>,
-  ): Promise<void> {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
-    let downloadURL = "";
+    let downloadURL = existingImage;
     const file = inputRef.current?.files ? inputRef.current.files[0] : null;
     if (file) {
       try {
         const fileRef = ref(storage, `images/${file.name}`);
         await uploadBytes(fileRef, file);
         downloadURL = await getDownloadURL(fileRef);
-        console.log(downloadURL);
       } catch (error) {
         console.error("File upload error:", error);
       }
-    } else {
-      console.error("No file selected.");
     }
 
     try {
       await axios.put(`/api/posts/${id}`, {
-        userIdEdit,
         adminIdEdit,
         title,
         username,
@@ -154,33 +151,29 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
   const handleMapClick = (newPosition: LatLngTuple) => {
     setLat(newPosition[0]);
     setLong(newPosition[1]);
-    setMapKey((prevKey) => prevKey + 1); // Refresh map with new position
+    setMapKey((prevKey) => prevKey + 1);
+  };
+
+  const toggleImagePopup = () => {
+    setIsImagePopupVisible(!isImagePopupVisible);
   };
 
   if (isSubmitted) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-        <div className="w-3/4 max-w-lg rounded-lg bg-white p-6 text-center">
+        <div className="w-3/4 max-w-lg rounded-lg bg-white p-4 text-center">
           <div className="flex justify-end">
             <button
               onClick={() => window.history.back()}
-              className="rounded text-xl text-black"
+              className="text-xl text-black"
             >
               ×
             </button>
           </div>
-          <h2 className="mb-4 text-xl font-bold text-green-600">
-            ส่งเสร็จสิ้น!
-          </h2>
-          <p className="mb-4 text-black">โปรดนำของหายไปให้เจ้าหน้าที่ที่ SC1</p>
-          <p className="mb-4 text-gray-700">
-            หากไม่ทราบว่าต้องนำของไปไว้ที่ส่วนไหนของ SC1 โปรดกดปุ่ม “ดูตำแหน่ง
-            SC1” ด้านล่าง
-          </p>
-          <button
-            type="button"
-            className="focus:shadow-outline rounded bg-green-400 px-4 py-2 font-bold text-white hover:bg-green-500 focus:outline-none"
-          >
+          <h2 className="text-xl font-bold text-green-600">ส่งเสร็จสิ้น!</h2>
+          <p className="text-black">โปรดนำของหายไปให้เจ้าหน้าที่ที่ SC1</p>
+          <p className="text-gray-700">หากไม่ทราบว่าต้องนำของไปไว้ที่ส่วนไหนของ SC1 โปรดกดปุ่ม “ดูตำแหน่ง SC1” ด้านล่าง</p>
+          <button className="bg-green-400 px-4 py-2 text-white rounded hover:bg-green-500">
             ดูตำแหน่ง SC1
           </button>
         </div>
@@ -192,135 +185,159 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
     <>
       <Navbar />
       <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-        <div className="w-3/4 max-w-lg rounded-lg bg-white p-6">
+        <div className="w-3/4 max-w-lg rounded-lg bg-white p-4">
           <div className="flex justify-end">
             <button
               onClick={() => window.history.back()}
-              className="rounded text-xl text-black"
+              className="text-xl text-black"
             >
               ×
             </button>
           </div>
 
-          <h2 className="mb-4 text-center text-xl font-bold">
-            แจ้งพบของสูญหาย
-          </h2>
-
+          <h2 className="text-xl text-center text-black font-bold">เเก้ไขแจ้งพบของสูญหายโพสต์ที่ <>{id}</></h2>
+ <label className="mb-1 block text-sm font-bold text-gray-700">
+  ตำแหน่งบนแผนที่
+</label>
           <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label className="mb-2 block text-sm font-bold text-gray-700">
-                ชื่อสิ่งของ
-              </label>
+          <div className="mb-1 flex justify-center items-center z-auto">
+   
+<Map
+    posix={[lat, long]}
+    zoom={13}
+    key={mapKey}
+    onMapClick={handleMapClick}
+    onLocationUpdate={handleMapClick}
+    style={{ height: "100px", width: "100%" }}
+  />
+</div> 
+<div className="mb-1">
+              <label className="block text-sm font-bold text-gray-700">ชื่อสิ่งของ</label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="กรุณาระบุชื่อสิ่งของ"
-                className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+                className="mt-1 text-white w-full px-2 py-1 text-sm rounded-lg border focus:border-blue-500"
               />
             </div>
-            <div className="flex items-center space-x-4">
-        <label className="w-32 text-sm font-bold text-gray-700">
-          เบอร์มือถือของคุณ
-        </label>
-        <input
-          type="text"
-          value={teluser}
-          onChange={(e) => setTeluser(e.target.value)}
-          placeholder="กรุณาระบุเบอร์มือถือ"
-          className="flex-grow rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
-        />
-      </div>
-            <div className="mb-4">
-              <label className="mb-2 block text-sm font-bold text-gray-700">
-                หมวดหมู่
-              </label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
-              >
-                <option value="">กรุณาเลือกหมวดหมู่</option>
-                <option value="documents">เอกสารสำคัญ</option>
-                <option value="personal_items">สิ่งของส่วนบุคคล</option>
-                <option value="electronics">อุปกรณ์อิเล็กทรอนิกส์</option>
-              </select>
+
+            <div className="mb-1">
+              <label className="block text-sm font-bold text-gray-700">เบอร์มือถือของคุณ</label>
+              <input
+                type="text"
+                value={teluser}
+                onChange={(e) => setTeluser(e.target.value)}
+                placeholder="กรุณาระบุเบอร์มือถือ"
+                className="mt-1 text-white w-full px-2 py-1 text-sm rounded-lg border focus:border-blue-500"
+              />
             </div>
 
-            <div className="mb-4">
-              <label className="mb-2 block text-sm font-bold text-gray-700">
-                รายละเอียดของสภาพสิ่งของ
-              </label>
+            <div className="mb-1">
+    <label className="mb-1 block text-sm font-bold text-gray-700">
+      หมวดหมู่
+    </label>
+    <select
+      value={category}
+      onChange={(e) => setCategory(e.target.value)}
+      className="w-full rounded-lg border px-3 py-2 text-white text-sm focus:border-blue-500 focus:outline-none"
+    >
+      <option value="">กรุณาเลือกหมวดหมู่</option>
+      <option value="documents">เอกสารสำคัญ</option>
+      <option value="personal_items">สิ่งของส่วนบุคคล</option>
+      <option value="electronics">อุปกรณ์อิเล็กทรอนิกส์</option>
+    </select>
+  </div>
+            <div className="mb-1">
+              <label className="text-sm font-bold text-gray-700">รายละเอียดเพิ่มเติม</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="กรุณาระบุรายละเอียด"
-                className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+                placeholder="รายละเอียดเพิ่มเติม"
+                className="mt-1 w-full text-sm  text-white px-2 py-1 rounded-lg border focus:border-blue-500"
               />
             </div>
 
-           
 
-            <div className="mb-4">
-              <label className="mb-2 block text-sm font-bold text-gray-700">
-                สถานที่พบของ
-              </label>
-              <select
-                value={location|| ""}
-                onChange={(e) => {
-                  const location = predefinedLocations.find(
-                    (loc) => loc.name === e.target.value,
-                  );
-                  setSelectedLocation(location || null);
-                }}
-                className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
-              >
-                <option value="">กรุณาเลือกสถานที่</option>
-                {predefinedLocations.map((loc) => (
-                  <option key={loc.name} value={loc.name}>
-                    {loc.name}
-                  </option>
-                ))}
-              </select>
+
+
+
+            <div className="mb-1">
+    <label className="mb-1 block text-sm font-bold text-gray-700">
+      สถานที่พบของหาย
+    </label>
+    <select
+      value={location}
+      onChange={(e) => {
+        const selected = predefinedLocations.find(
+          (loc) => loc.name === e.target.value
+        );
+        setSelectedLocation(selected || null);
+      }}
+      className="w-full  text-sm rounded-lg border px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+    >
+      <option value="">กรุณาเลือกสถานที่</option>
+      {predefinedLocations.map((loc) => (
+        <option key={loc.name} value={loc.name}>
+          {loc.name}
+        </option>
+      ))}
+    </select>
+  </div>
+ 
+
+            <div className="mb-1">
+              <label className="text-sm font-bold text-gray-700">รูปภาพ</label>
+              {existingImage && (
+                <div>
+                  <button
+                    type="button"
+                    onClick={toggleImagePopup}
+                    className="text-blue-500 underline"
+                  >
+                    ดูรูปภาพเก่า
+                  </button>
+                </div>
+              )}
+             <input
+      ref={inputRef}
+      type="file"
+      className="file-input file-input-bordered file-input-info w-full max-w-xs"
+    />
             </div>
 
-            <div className="mb-4">
-              <Map
-                posix={[lat, long]}
-                zoom={13}
-                key={mapKey}
-                onMapClick={handleMapClick}
-                onLocationUpdate={handleMapClick}
-                style={{ height: "200px", width: "100%" }}
-              />
-            </div>
-            <div className="mb-4 flex justify-between">
-  <input
-    ref={inputRef}
-   
-    type="file"
-    className="file-input file-input-bordered file-input-info w-full max-w-xs"
-    onChange={(e) => {
-      // You can handle the file selection here if needed
-      const file = e.target.files ? e.target.files[0] : null;
-      if (file) {
-        console.log("File selected:", file.name);
-      }
-    }}
-  />
-</div>
+            {isImagePopupVisible && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-10000">
+    <div className="w-3/4 max-w-3xl p-4 bg-white rounded shadow-lg relative">
+      <button
+        className="absolute top-2 right-2 text-xl"
+        onClick={toggleImagePopup}
+      >
+        ×
+      </button>
+      <img
+        src={existingImage}
+        alt="Old Post Image"
+        className="w-full h-auto items-center"
+        style={{ height: "180px", width: "50%" }}
+      />
+    </div>
+  </div>
+)}
 
-            <div className="flex justify-end">
+            <div className="mb-1">
               <button
                 type="submit"
-                className="focus:shadow-outline rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-600 focus:outline-none"
+                className="w-full px-4 py-2 text-sm font-bold text-white bg-green-600 rounded-lg hover:bg-green-700"
               >
-                ส่ง
+                อัพเดทข้อมูล
               </button>
             </div>
           </form>
         </div>
       </div>
+
+     
     </>
   );
 };
