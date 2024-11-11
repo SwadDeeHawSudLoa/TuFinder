@@ -50,7 +50,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
     try {
       const res = await axios.get(`/api/posts/${id}`);
       setUserIdEdit(res.data.userIdEdit);
-      setTel(res.data.teluser);
+      setTeluser(res.data.teluser);
       setTitle(res.data.title);
       setLocation(res.data.location);
       setDescription(res.data.description);
@@ -203,8 +203,8 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
             </button>
           </div>
 
-          <h2 className="mb-4 text-center text-xl font-bold">
-            แจ้งพบของสูญหาย
+          <h2 className="mb-4 text-center text-xl text-black font-bold">
+            เเก้ไขแจ้งพบของสูญหายโพสต์ที่ <>{id}</>
           </h2>
 
           <form onSubmit={handleSubmit}>
@@ -219,7 +219,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="กรุณาระบุชื่อสิ่งของ"
-          className="flex-grow rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+          className="flex-grow rounded-lg border px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
         />
       </div>
       <div className="flex items-center space-x-4">
@@ -231,7 +231,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
           value={teluser}
           onChange={(e) => setTeluser(e.target.value)}
           placeholder="กรุณาระบุเบอร์มือถือ"
-          className="flex-grow rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+          className="flex-grow rounded-lg border px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
         />
       </div>
     </div>
@@ -244,7 +244,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
     <select
       value={category}
       onChange={(e) => setCategory(e.target.value)}
-      className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+      className="w-full rounded-lg border px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
     >
       <option value="">กรุณาเลือกหมวดหมู่</option>
       <option value="documents">เอกสารสำคัญ</option>
@@ -261,7 +261,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
       value={description}
       onChange={(e) => setDescription(e.target.value)}
       placeholder="กรุณาระบุรายละเอียด"
-      className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+      className="w-full rounded-lg border px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
     />
   </div>
 
@@ -270,14 +270,14 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
       สถานที่พบของหาย
     </label>
     <select
-      value={selectedLocation ? selectedLocation.name : ""}
+      value={location}
       onChange={(e) => {
         const selected = predefinedLocations.find(
           (loc) => loc.name === e.target.value
         );
         setSelectedLocation(selected || null);
       }}
-      className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+      className="w-full rounded-lg border px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
     >
       <option value="">กรุณาเลือกสถานที่</option>
       {predefinedLocations.map((loc) => (
