@@ -86,6 +86,7 @@ export default function DashboardAdmin() {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [timeFrame, setTimeFrame] = useState<"daily" | "monthly" | "yearly">("daily");
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
   const itemsPerPage = 5;
 
@@ -101,6 +102,26 @@ export default function DashboardAdmin() {
   useEffect(() => {
     fetchDashboardData();
   }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatDateTime = (date: Date) => {
+    return new Intl.DateTimeFormat('th-TH', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    }).format(date);
+  };
 
   if (!dashboardData) {
     return <p>Loading...</p>;
@@ -184,72 +205,165 @@ export default function DashboardAdmin() {
   };
 
   return (
-    <div style={{ padding: "0px" }}>
+    
+    <div className="p-6 bg-white">
       <Navbar />
-      <h1>Admin Dashboard</h1>
-      <div style={{ display: "flex", justifyContent: "space-between", maxWidth: "600px" }}>
-        <div style={{ backgroundColor: "#f1f1f1", padding: "20px", borderRadius: "5px" }}>
-          <h2>Total Posts</h2>
-          <p>{dashboardData.totalPosts}</p>
-        </div>
-        <div style={{ backgroundColor: "#f1f1f1", padding: "20px", borderRadius: "5px" }}>
-          <h2>Total Users</h2>
-          <p>{dashboardData.totalUsers}</p>
-        </div>
-        <div style={{ backgroundColor: "#f1f1f1", padding: "20px", borderRadius: "5px" }}>
-          <h2>Total Admins</h2>
-          <p>{dashboardData.totalAdmins}</p>
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            
+            <span className="text-gray-600">{formatDateTime(currentDateTime)}</span>
+          </div>
         </div>
       </div>
 
-      <h2 style={{ marginTop: "20px" }}>Post Status Summary</h2>
-      <div style={{ display: "flex", justifyContent: "space-between", maxWidth: "800px" }}>
-        <div style={{ backgroundColor: "#e0f7fa", padding: "20px", borderRadius: "5px" }}>
-          <h3>ถูกรับไปแล้ว</h3>
-          <p>{dashboardData.statusCountReceived}</p>
+      {/* Tabs */}
+      <div className="flex gap-4 p-1 bg-gray-100 rounded-lg w-fit mb-6">
+        <button className="px-4 py-2 bg-white rounded-md shadow-sm">Overview</button>
+        <button className="px-4 py-2 text-gray-500">Analytics</button>
+        <button className="px-4 py-2 text-gray-500">Reports</button>
+        <button className="px-4 py-2 text-gray-500">Notifications</button>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-4 gap-4 mb-6">
+        <div className="bg-white p-4 rounded-lg shadow-sm">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-gray-600">Total Posts</span>
+            <span className="text-gray-400">📝</span>
+          </div>
+          <div className="text-2xl font-bold mb-1">{dashboardData.totalPosts}</div>
+          
         </div>
-        <div style={{ backgroundColor: "#ffccbc", padding: "20px", borderRadius: "5px" }}>
-          <h3>ไม่อยู่ในคลัง</h3>
-          <p>{dashboardData.statusCountNotInStock}</p>
+
+        <div className="bg-white p-4 rounded-lg shadow-sm">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-gray-600">Total Users</span>
+            <span className="text-gray-400">👤</span>
+          </div>
+          <div className="text-2xl font-bold mb-1">{dashboardData.totalUsers}</div>
+          
         </div>
-        <div style={{ backgroundColor: "#c8e6c9", padding: "20px", borderRadius: "5px" }}>
-          <h3>อยู่ในคลัง</h3>
-          <p>{dashboardData.statusCountInStock}</p>
+
+        <div className="bg-white p-4 rounded-lg shadow-sm">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-gray-600">Total Admins</span>
+            <span className="text-gray-400">🛡️</span>
+          </div>
+          <div className="text-2xl font-bold mb-1">{dashboardData.totalAdmins}</div>
+          
+        </div>
+
+        
+      </div>
+
+      {/* Status Cards */}
+      <div className="grid grid-cols-4 gap-4 mb-6">
+        <div className="bg-white p-4 rounded-lg shadow-sm">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-gray-600">ถูกรับไปแล้ว</span>
+            <span className="text-gray-400">📦</span>
+          </div>
+          <div className="text-2xl font-bold mb-1">{dashboardData.statusCountReceived}</div>
+          <div className="h-2 w-full bg-[#e0f7fa] rounded-full"></div>
+        </div>
+
+        <div className="bg-white p-4 rounded-lg shadow-sm">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-gray-600">ไม่อยู่ในคลัง</span>
+            <span className="text-gray-400">❌</span>
+          </div>
+          <div className="text-2xl font-bold mb-1">{dashboardData.statusCountNotInStock}</div>
+          <div className="h-2 w-full bg-[#ffccbc] rounded-full"></div>
+        </div>
+
+        <div className="bg-white p-4 rounded-lg shadow-sm">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-gray-600">อยู่ในคลัง</span>
+            <span className="text-gray-400">✅</span>
+          </div>
+          <div className="text-2xl font-bold mb-1">{dashboardData.statusCountInStock}</div>
+          <div className="h-2 w-full bg-[#c8e6c9] rounded-full"></div>
+        </div>
+
+        <div className="bg-white p-4 rounded-lg shadow-sm">
+          <div className="text-2xl font-bold mb-1">
+            
+          </div>
+          
         </div>
       </div>
 
-      <div className="mt-8">
-        <h2 className="text-lg font-semibold">Posts Over Time</h2>
-        <div style={{ width: "500px", height: "300px", margin: "auto" }}>
-          <select
-            value={timeFrame}
-            onChange={(e) => setTimeFrame(e.target.value as "daily" | "monthly" | "yearly")}
-            className="mb-4"
-          >
-            <option value="daily">Daily</option>
-            <option value="monthly">Monthly</option>
-            <option value="yearly">Yearly</option>
-          </select>
-          <Line data={chartData} options={chartOptions} />
+      {/* Main Content */}
+      <div className="grid grid-cols-3 gap-6">
+        {/* Chart Section */}
+        <div className="col-span-2 bg-white p-6 rounded-lg shadow-sm">
+          <h2 className="text-lg font-semibold mb-4">Overview</h2>
+          <div className="h-[300px]">
+            <Line data={chartData} options={{
+              ...chartOptions,
+              scales: {
+                ...chartOptions.scales,
+                y: {
+                  ...chartOptions.scales.y,
+                  ticks: {
+                    callback: (value) => `$${value}`
+                  },
+                  grid: {
+                    color: '#f0f0f0'
+                  }
+                },
+                x: {
+                  grid: {
+                    display: false
+                  }
+                }
+              }
+            }} />
+          </div>
+        </div>
+
+        {/* All Items Section (styled as Recent Sales) */}
+        <div className="bg-white p-6 rounded-lg shadow-sm">
+          <h2 className="text-lg font-semibold mb-2">All Items</h2>
+          <p className="text-gray-500 text-sm mb-6">You made {allPostsToShow.length} posts this month.</p>
+          
+          <div className="space-y-4">
+            {allPostsToShow.map((post) => (
+              <div key={post.post_id} className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-gray-200 rounded-full overflow-hidden">
+                    {post.image && <img src={post.image} alt="" className="w-full h-full object-cover" />}
+                  </div>
+                  <div>
+                    <p className="font-medium">{post.title}</p>
+                    <p className="text-sm text-gray-500">{post.username}</p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => handleButtonClick(post, "ตรวจสอบ")}
+                  className="text-right font-medium text-black bg-green-500 px-3 py-1.5 rounded-md hover:bg-green-600 text-sm"
+                >
+                  ตรวจสอบ
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* Added Pagination */}
+          <div className="mt-6">
+            <Pagination 
+              currentPage={allPage} 
+              totalPages={totalAllPages} 
+              onPageChange={setAllPage} 
+            />
+          </div>
         </div>
       </div>
 
-      
-
-      <div className="mt-8">
-        <h2 className="text-lg font-semibold">All Items</h2>
-        <div className="grid gap-4">
-          {allPostsToShow.map((post) => (
-            <div key={post.post_id} className="border p-4 rounded">
-              <h3>{post.title}</h3>
-              <button onClick={() => handleButtonClick(post, "ตรวจสอบ")}>ตรวจสอบ</button>
-            </div>
-          ))}
-        </div>
-        <Pagination currentPage={allPage} totalPages={totalAllPages} onPageChange={setAllPage} />
-      </div>
-
-      {/* Modal Component */}
+      {/* Existing Modal */}
       {showModal && selectedPost && (
         <Modal
           show={showModal}
