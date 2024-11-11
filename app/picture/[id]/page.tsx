@@ -52,3 +52,4 @@ const picturePage = ({ params }: { params: { id: string } }) => {
 
 
 };
+export default picturePage;
