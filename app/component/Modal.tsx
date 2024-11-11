@@ -1,11 +1,10 @@
-// Modal.tsx
-
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import axios from "axios";
 import dynamic from "next/dynamic";
+import Cookies from "js-cookie"; // Import js-cookie
 
-export const runtime = 'edge' // optional
+export const runtime = 'edge'; // optional
 export const renderMode = "force-dynamic";
 
 const LeafletMap = dynamic(() => import("../component/LeafletMap"), {
@@ -14,16 +13,16 @@ const LeafletMap = dynamic(() => import("../component/LeafletMap"), {
 
 interface Post1 {
   post_id: number;
- userIdEdit?: string;
+  userIdEdit?: string;
   adminIdEdit?: string;
- title: string;
+  title: string;
   username: string;
-  adminusername?:string;//เพิ่มชื่อ admin 
+  adminusername?: string; // Added admin name
   tel: string;
-  teluser: string;// เพิ่มเบอร์มือถือของผู้ใช้ 
+  teluser: string; // Added user's phone number
   category: string;
   image: string;
-  imageAdmin?: string; //เพิ่มรูปภาพเเนบรูปหลังฐานที่จะเเสดงเฉพาะadmin เท่านั้น
+  imageAdmin?: string; // Image for evidence shown only to admin
   status: string;
   description: string;
   date: Date;
@@ -43,11 +42,13 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
   const [username, setUsername] = useState<string | null>(null);
   const [showContact, setShowContact] = useState<boolean>(false);
   const [isClient, setIsClient] = useState<boolean>(false);
-
+  const [userid, setUserid] = useState<string | null>(null);
+  const userIdCookie = Cookies.get("user_id");
   useEffect(() => {
     if (typeof window !== "undefined") {
       setIsClient(true);
       setUsername(localStorage.getItem("username"));
+      setUserid(userIdCookie || null); // Get 'userid' from cookies
     }
   }, []);
 
@@ -65,7 +66,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
     }
   }
 
-  const isAdmin = username === "123";
+  const isAdmin = userid === "123"; // Check if 'userid' from cookies equals '123'
 
   async function handleUpdateClick(post: Post1, status: string): Promise<void> {
     await fetchpostId(post, status);
@@ -182,7 +183,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
               <button className="rounded bg-blue-300 px-4 py-2 text-blue-500">
                 ดูหมุด
               </button>
-              {post.status === "สถานะถูกรับไปเเล้ว" && (
+              {isAdmin && post.status === "สถานะถูกรับไปเเล้ว" && (
                 <div className="flex flex-1 justify-center">
                   <button className="rounded bg-blue-400 px-4 py-2 text-gray-950">
                     ดูรูปหลักฐาน
@@ -194,10 +195,10 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
                   post.status === "สถานะถูกรับไปเเล้ว"
                     ? "text-orange-500"
                     : post.status === "สถานะไม่อยู่ในคลัง"
-                      ? "text-red-500"
-                      : post.status === "สถานะอยู่ในคลัง"
-                        ? "text-green-500"
-                        : ""
+                    ? "text-red-500"
+                    : post.status === "สถานะอยู่ในคลัง"
+                    ? "text-green-500"
+                    : ""
                 } rounded-md px-2 py-1`}
               >
                 <strong>สถานะ:</strong> {post.status}

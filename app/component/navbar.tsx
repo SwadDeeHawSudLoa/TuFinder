@@ -35,6 +35,7 @@ const Navbar: React.FC = () => {
   };
 
   const handleLogout = () => {
+    document.cookie = "user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("userEmail");
     setIsLoggedIn(false);
