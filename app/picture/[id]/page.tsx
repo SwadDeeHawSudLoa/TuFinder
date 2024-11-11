@@ -29,7 +29,7 @@ interface Post {
   }
   
 const picturePage = ({ params }: { params: { id: string } }) => {
-   
+    
     return (
 <>
 <Navbar />

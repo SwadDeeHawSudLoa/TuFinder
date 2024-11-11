@@ -50,7 +50,9 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
     try {
       const res = await axios.get(`/api/posts/${id}`);
       setUserIdEdit(res.data.userIdEdit);
+      setTel(res.data.teluser);
       setTitle(res.data.title);
+      setLocation(res.data.location);
       setDescription(res.data.description);
       setLocation(res.data.location);
       setCategory(res.data.category);

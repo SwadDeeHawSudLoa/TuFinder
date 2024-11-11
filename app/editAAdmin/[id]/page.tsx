@@ -44,12 +44,14 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
   const [mapKey, setMapKey] = useState<number>(0);
   const { id } = params;
   const router = useRouter();
-
+  const[teluser,setTeluser] =useState("");
   const fetchPost = async (id: Number) => {
     try {
       const res = await axios.get(`/api/posts/${id}`);
       setUserIdEdit(res.data.userIdEdit);
+      setTel(res.data.teluser);
       setTitle(res.data.title);
+      setLocation(res.data.location);
       setDescription(res.data.description);
       setLocation(res.data.location);
       setCategory(res.data.category);
@@ -68,7 +70,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
     const statusO = "สถานะไม่อยู่ในคลัง";
     setStatus(statusO);
 
-    const number = "0982192286";
+    const number = "043311286";
     setTel(number);
 
     const admin = "123";
@@ -128,9 +130,12 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
 
     try {
       await axios.put(`/api/posts/${id}`, {
+        userIdEdit,
         adminIdEdit,
         title,
+        username,
         tel,
+        teluser,
         category,
         image: downloadURL,
         status,
@@ -214,7 +219,18 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
                 className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
               />
             </div>
-
+            <div className="flex items-center space-x-4">
+        <label className="w-32 text-sm font-bold text-gray-700">
+          เบอร์มือถือของคุณ
+        </label>
+        <input
+          type="text"
+          value={teluser}
+          onChange={(e) => setTeluser(e.target.value)}
+          placeholder="กรุณาระบุเบอร์มือถือ"
+          className="flex-grow rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+        />
+      </div>
             <div className="mb-4">
               <label className="mb-2 block text-sm font-bold text-gray-700">
                 หมวดหมู่
@@ -243,23 +259,14 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
               />
             </div>
 
-            <div className="mb-4">
-              <label className="mb-2 block text-sm font-bold text-gray-700">
-                รูปภาพ
-              </label>
-              <input
-                ref={inputRef}
-                type="file"
-                className="block w-full text-sm text-gray-500"
-              />
-            </div>
+           
 
             <div className="mb-4">
               <label className="mb-2 block text-sm font-bold text-gray-700">
                 สถานที่พบของ
               </label>
               <select
-                value={selectedLocation?.name || ""}
+                value={location|| ""}
                 onChange={(e) => {
                   const location = predefinedLocations.find(
                     (loc) => loc.name === e.target.value,
@@ -287,6 +294,21 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
                 style={{ height: "200px", width: "100%" }}
               />
             </div>
+            <div className="mb-4 flex justify-between">
+  <input
+    ref={inputRef}
+   
+    type="file"
+    className="file-input file-input-bordered file-input-info w-full max-w-xs"
+    onChange={(e) => {
+      // You can handle the file selection here if needed
+      const file = e.target.files ? e.target.files[0] : null;
+      if (file) {
+        console.log("File selected:", file.name);
+      }
+    }}
+  />
+</div>
 
             <div className="flex justify-end">
               <button

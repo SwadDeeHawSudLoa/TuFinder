@@ -36,7 +36,7 @@ const ReportMyAdmins = () => {
   const [long, setLong] = useState(100.6164); // Default long
   const [location, setLocation] = useState("");
   const[teluser,setTeluser] =useState("");
-
+  
   const [adminusername,setAdminusername]=useState("");
   const [selectedLocation, setSelectedLocation] = useState<{
     name: string;
@@ -49,7 +49,6 @@ const ReportMyAdmins = () => {
   useEffect(() => {
     const statusO = "สถานะไม่อยู่ในคลัง";
     setStatus(statusO);
-
     async function fetchAdminUserName() {
       try {
         const response = await axios.get(`/api/saveAdmin`);
@@ -59,9 +58,12 @@ const ReportMyAdmins = () => {
         console.error("Error fetching user name", error);
       }
     }
-    fetchAdminUserName();
     const admin = "123";
     setAdminIdEdit(admin);
+
+ fetchAdminUserName();
+    const phoneAdmin  = "0982192286";
+    setTel(phoneAdmin);
 
     const userIdFromCookie = Cookies.get("user_id");
     if (userIdFromCookie) {
@@ -106,7 +108,6 @@ const ReportMyAdmins = () => {
       return;
     }
 
-    
     let downloadURL = "";
     const file = inputRef.current?.files ? inputRef.current.files[0] : null;
     if (file) {
@@ -121,7 +122,7 @@ const ReportMyAdmins = () => {
 
     try {
       await axios.post("/api/posts", {
-        userIdEdit,
+       
         adminIdEdit,
         title,
         username,
@@ -172,7 +173,7 @@ const ReportMyAdmins = () => {
 
   return (
     <>
-      <Navbar />
+     <Navbar />
       <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
         <div className="w-3/4 max-w-lg rounded-lg bg-white p-6">
           <div className="flex justify-end">
@@ -187,7 +188,6 @@ const ReportMyAdmins = () => {
           <h2 className="mb-4 text-center text-xl font-bold">
             แจ้งพบของสูญหาย
           </h2>
-
           <form onSubmit={handleSubmit}>
   <div className="mb-4">
     <div className="flex flex-col space-y-4">
@@ -300,6 +300,7 @@ const ReportMyAdmins = () => {
     </button>
   </div>
 </form>
+
         </div>
       </div>
     </>
