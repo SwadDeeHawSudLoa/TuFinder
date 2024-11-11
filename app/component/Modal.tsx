@@ -3,7 +3,7 @@ import Image from "next/image";
 import axios from "axios";
 import dynamic from "next/dynamic";
 import Cookies from "js-cookie"; // Import js-cookie
-
+import { useRouter } from "next/navigation";
 export const runtime = 'edge'; // optional
 export const renderMode = "force-dynamic";
 
@@ -39,6 +39,7 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
+  const router = useRouter();
   const [username, setUsername] = useState<string | null>(null);
   const [showContact, setShowContact] = useState<boolean>(false);
   const [isClient, setIsClient] = useState<boolean>(false);
@@ -71,7 +72,9 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
   async function handleUpdateClick(post: Post1, status: string): Promise<void> {
     await fetchpostId(post, status);
   }
-
+async function handleAddPictureClick(post_id: number) {
+  router.push(`/picture/${post_id}`);
+}
   const renderStatusButton = (
     post: Post1,
     status: string,
@@ -215,7 +218,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
               </div>
 
               <div className="mt-4 flex items-center justify-between space-x-2">
-                <button className="flex-grow transform rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50">
+                <button  onClick={() => handleAddPictureClick(post.post_id)} className="flex-grow transform rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50">
                   เเนบรูป
                 </button>
                 {renderStatusButton(
