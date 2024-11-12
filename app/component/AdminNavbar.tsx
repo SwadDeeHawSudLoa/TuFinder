@@ -118,7 +118,7 @@ const Navbar: React.FC = () => {
                 )}
                 {!isAdmin && (
                   <a
-                    href="/home"
+                    href="/checkuser"
                     className="rounded-lg bg-yellow-500 px-4 py-2 text-sm font-semibold text-black transition duration-300 ease-in-out hover:bg-yellow-600"
                   >
                     ตรวจสอบผู้ใช้
@@ -205,7 +205,7 @@ const Navbar: React.FC = () => {
                   โพสต์ของฉัน
                 </a>
                 <a
-                  href="/home"
+                  href="/checkuser"
                   className="block px-4 py-2 text-lg font-semibold text-white hover:bg-orange-600"
                 >
                   ตรวจสอบผู้ใช้
