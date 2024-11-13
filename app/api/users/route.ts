@@ -1,17 +1,28 @@
-// app/api/users/route.ts
+//api นับ จำนวน users และ post
+import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
-import prisma from "../../lib/prisma"; // ปรับเส้นทางให้ตรงกับตำแหน่งจริงของ prisma instance
+
+const prisma = new PrismaClient();
 
 export async function GET() {
   try {
     const users = await prisma.user.findMany({
-      include: {
-        Post: true,
-      },
+      select: {
+        user_id: true,
+        first_name: true,
+        last_name: true,
+        _count: {
+          select: { 
+            Post: true 
+          }
+        }
+      }
     });
-
     return NextResponse.json(users);
   } catch (error) {
-    return NextResponse.error();
+    console.error("Error fetching users:", error);
+    return NextResponse.json({ error: "Error fetching users" }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
   }
 }
