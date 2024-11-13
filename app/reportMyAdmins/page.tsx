@@ -17,9 +17,11 @@ const Map = dynamic(() => import("../component/LeafletMap"), {
 
 const predefinedLocations = [
   { name: "มหาวิทยาลัยธรรมศาสตร์ รังสิต", lat: 14.0254, long: 100.6164 },
-  { name: "จุฬาลงกรณ์มหาวิทยาลัย", lat: 13.7464, long: 100.533 },
-  { name: "มหาวิทยาลัยมหิดล", lat: 13.78, long: 100.305 },
+  { name: "อาคารเรียนรวมสังคมศาสตร์ 3 (SC3)", lat: 14.07049939996706, long: 100.6059014796119 },
+  { name: "อาคารบรรยายเรียนรวม 3 (บร.3)", lat: 14.07252874469262, long: 100.6062930821281 },
+  { name: "อาคารบรรยายเรียนรวม 5 (บร.5)", lat: 14.07378276665719, long: 100.6078541277748 },
 ];
+
 
 const ReportMyAdmins = () => {
   const [userIdEdit, setUserIdEdit] = useState<string | null>(null);
