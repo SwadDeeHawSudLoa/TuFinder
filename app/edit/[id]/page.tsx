@@ -148,6 +148,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
       alert("Something went wrong");
     }
   }
+  
 
   const handleMapClick = (newPosition: LatLngTuple) => {
     setLat(newPosition[0]);
