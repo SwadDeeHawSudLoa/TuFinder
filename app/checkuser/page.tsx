@@ -43,6 +43,7 @@ export default function UserTable() {
       console.error('Error fetching posts:', error);
     }
   };
+  
 
   return (
     <>
