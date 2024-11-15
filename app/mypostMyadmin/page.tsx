@@ -143,9 +143,8 @@ const PostList: React.FC = () => {
     <>
       <Navbar />
 
-      <div className="ml-64 flex-grow text-4xl">โพสต์ของฉัน</div>
-
-      <div className="ml-64 grid flex-grow grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="justify-center items-center text-center flex-grow text-4xl">โพสต์ของฉัน</div>
+      <div className="sm:ml-90 md:ml-70 ml-64 grid flex-grow grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {currentPosts.map((post) => (
           <div
             key={post.post_id}
