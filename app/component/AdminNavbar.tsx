@@ -20,6 +20,36 @@ const Navbar: React.FC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMenuOpen(false);
+      }
+    };
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const sidebar = document.getElementById('sidebar');
+      const menuButton = document.getElementById('menu-button');
+      
+      if (
+        sidebar &&
+        !sidebar.contains(event.target as Node) &&
+        menuButton &&
+        !menuButton.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscKey);
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscKey);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const handleReportClick = () => {
     if (!isLoggedIn) {
       setIsModalOpen(true);
@@ -42,18 +72,43 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <button 
-        onClick={() => setIsMenuOpen(!isMenuOpen)} 
-        className="fixed left-4 top-4 z-50 rounded-lg bg-orange-400 p-3 shadow-lg"
-      >
-        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
+      {!isMenuOpen && (
+        <button 
+          id="menu-button"
+          onClick={() => setIsMenuOpen(!isMenuOpen)} 
+          className="fixed left-4 top-4 z-50 rounded-lg bg-orange-400 p-3 shadow-lg"
+        >
+          <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      )}
 
-      <div className={`fixed left-0 top-0 z-40 h-screen w-64 transform bg-orange-400 shadow-lg transition-transform duration-300 ${
-        isMenuOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
+      <div 
+        id="sidebar"
+        className={`fixed left-0 top-0 z-40 h-screen w-64 transform bg-orange-400 shadow-lg transition-transform duration-300 ${
+          isMenuOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <button
+          onClick={() => setIsMenuOpen(false)}
+          className="absolute right-4 top-4 p-2 hover:bg-orange-500 rounded-lg"
+        >
+          <svg 
+            className="h-6 w-6" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth="2" 
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+
         <div className="flex h-full flex-col">
           <div className="flex items-center p-4">
             <span className="text-xl font-semibold">TuItemFinder</span>
