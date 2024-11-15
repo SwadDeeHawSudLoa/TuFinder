@@ -46,6 +46,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
   const [isClient, setIsClient] = useState<boolean>(false);
   const [userid, setUserid] = useState<string | null>(null);
   const [showEvidence, setShowEvidence] = useState<boolean>(false);
+  const [showEvidencePopup, setShowEvidencePopup] = useState<boolean>(false); // New state for evidence popup
   const userIdCookie = Cookies.get("user_id");
 
   useEffect(() => {
@@ -192,10 +193,10 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
               {isAdmin && post.status === "สถานะถูกรับไปเเล้ว" && (
                 <div className="flex flex-1 justify-center">
                   <button
-                    onClick={() => setShowEvidence(!showEvidence)}
+                    onClick={() => setShowEvidencePopup(!showEvidencePopup)} // Toggle evidence popup
                     className="rounded bg-blue-400 px-4 py-2 text-gray-950"
                   >
-                    {showEvidence ? "ซ่อนรูปหลักฐาน" : "ดูรูปหลักฐาน"}
+                    {showEvidencePopup ? "ซ่อนรูปหลักฐาน" : "ดูรูปหลักฐาน"}
                   </button>
                 </div>
               )}
@@ -251,6 +252,28 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
               </div>
             </>
           )
+        )}
+
+        {/* Popup modal for showing imageAdmin */}
+        {showEvidencePopup && post.imageAdmin && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+            <div className="relative w-80 h-80 bg-white rounded-lg shadow-lg">
+              <button
+                onClick={() => setShowEvidencePopup(false)}
+                className="absolute top-2 right-2 text-xl text-black"
+                aria-label="Close evidence popup"
+              >
+                ×
+              </button>
+              <Image
+                src={post.imageAdmin}
+                alt="หลักฐาน"
+                layout="fill"
+                objectFit="contain"
+                className="rounded-lg z-2000" 
+              />
+            </div>
+          </div>
         )}
       </div>
     </div>
