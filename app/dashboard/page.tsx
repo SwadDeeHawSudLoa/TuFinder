@@ -206,145 +206,126 @@ export default function DashboardAdmin() {
 
   return (
     
-    <div className="p-6 bg-white">
+    <div className="min-h-screen bg-orange-50/50 p-3">
       <Navbar />
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-orange-950">Dashboard</h1>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            
-            <span className="text-gray-600">{formatDateTime(currentDateTime)}</span>
+            <span className="text-orange-700">{formatDateTime(currentDateTime)}</span>
           </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-4 p-1 bg-gray-100 rounded-lg w-fit mb-6">
-        <button className="px-4 py-2 bg-white rounded-md shadow-sm">Overview</button>
-        <button className="px-4 py-2 text-gray-500">Analytics</button>
-        <button className="px-4 py-2 text-gray-500">Reports</button>
-        <button className="px-4 py-2 text-gray-500">Notifications</button>
+      <div className="flex gap-4 p-1 bg-white/50 rounded-lg w-fit mb-6">
+        <button className="px-4 py-2 bg-white rounded-md shadow-sm text-orange-700">Overview</button>
+        <button className="px-4 py-2 text-orange-500">Analytics</button>
+        <button className="px-4 py-2 text-orange-500">Reports</button>
+        <button className="px-4 py-2 text-orange-500">Notifications</button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-4 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-lg shadow-sm">
+      <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="bg-orange-50 p-4 rounded-lg shadow-sm">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-600">Total Posts</span>
-            <span className="text-gray-400">📝</span>
+            <span className="text-orange-800">Total Posts</span>
+            <span className="text-orange-600">📝</span>
           </div>
-          <div className="text-2xl font-bold mb-1">{dashboardData.totalPosts}</div>
-          
+          <div className="text-2xl font-bold mb-1 text-orange-900">{dashboardData.totalPosts}</div>
         </div>
 
-        <div className="bg-white p-4 rounded-lg shadow-sm">
+        <div className="bg-orange-50 p-4 rounded-lg shadow-sm">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-600">Total Users</span>
-            <span className="text-gray-400">👤</span>
+            <span className="text-orange-800">Total Users</span>
+            <span className="text-orange-600">👤</span>
           </div>
-          <div className="text-2xl font-bold mb-1">{dashboardData.totalUsers}</div>
-          
+          <div className="text-2xl font-bold mb-1 text-orange-900">{dashboardData.totalUsers}</div>
         </div>
 
-        <div className="bg-white p-4 rounded-lg shadow-sm">
+        <div className="bg-orange-50 p-4 rounded-lg shadow-sm">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-600">Total Admins</span>
-            <span className="text-gray-400">🛡️</span>
+            <span className="text-orange-800">Total Admins</span>
+            <span className="text-orange-600">🛡️</span>
           </div>
-          <div className="text-2xl font-bold mb-1">{dashboardData.totalAdmins}</div>
-          
+          <div className="text-2xl font-bold mb-1 text-orange-900">{dashboardData.totalAdmins}</div>
         </div>
-
-        
       </div>
 
       {/* Status Cards */}
-      <div className="grid grid-cols-4 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-lg shadow-sm">
+      <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="bg-orange-50 p-4 rounded-lg shadow-sm">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-600">ถูกรับไปแล้ว</span>
-            <span className="text-gray-400">📦</span>
+            <span className="text-orange-800">ถูกรับไปแล้ว</span>
+            <span className="text-orange-600">📦</span>
           </div>
-          <div className="text-2xl font-bold mb-1">{dashboardData.statusCountReceived}</div>
-          <div className="h-2 w-full bg-[#e0f7fa] rounded-full"></div>
+          <div className="text-2xl font-bold mb-1 text-orange-900">{dashboardData.statusCountReceived}</div>
+          <div className="h-2 w-full bg-orange-200 rounded-full"></div>
         </div>
 
-        <div className="bg-white p-4 rounded-lg shadow-sm">
+        <div className="bg-orange-50 p-4 rounded-lg shadow-sm">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-600">ไม่อยู่ในคลัง</span>
-            <span className="text-gray-400">❌</span>
+            <span className="text-orange-800">ไม่อยู่ในคลัง</span>
+            <span className="text-orange-600">❌</span>
           </div>
-          <div className="text-2xl font-bold mb-1">{dashboardData.statusCountNotInStock}</div>
-          <div className="h-2 w-full bg-[#ffccbc] rounded-full"></div>
+          <div className="text-2xl font-bold mb-1 text-orange-900">{dashboardData.statusCountNotInStock}</div>
+          <div className="h-2 w-full bg-orange-200 rounded-full"></div>
         </div>
 
-        <div className="bg-white p-4 rounded-lg shadow-sm">
+        <div className="bg-orange-50 p-4 rounded-lg shadow-sm">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-600">อยู่ในคลัง</span>
-            <span className="text-gray-400">✅</span>
+            <span className="text-orange-800">อยู่ในคลัง</span>
+            <span className="text-orange-600">✅</span>
           </div>
-          <div className="text-2xl font-bold mb-1">{dashboardData.statusCountInStock}</div>
-          <div className="h-2 w-full bg-[#c8e6c9] rounded-full"></div>
-        </div>
-
-        <div className="bg-white p-4 rounded-lg shadow-sm">
-          <div className="text-2xl font-bold mb-1">
-            
-          </div>
-          
+          <div className="text-2xl font-bold mb-1 text-orange-900">{dashboardData.statusCountInStock}</div>
+          <div className="h-2 w-full bg-orange-200 rounded-full"></div>
         </div>
       </div>
 
       {/* Main Content */}
       <div className="grid grid-cols-3 gap-6">
         {/* Chart Section */}
-        <div className="col-span-2 bg-white p-6 rounded-lg shadow-sm">
-          <h2 className="text-lg font-semibold mb-4">Overview</h2>
+        <div className="col-span-2 bg-orange-50 p-6 rounded-lg shadow-sm">
+          <h2 className="text-lg font-semibold mb-4 text-orange-900">Overview</h2>
           <div className="h-[300px]">
-            <Line data={chartData} options={{
-              ...chartOptions,
-              scales: {
-                ...chartOptions.scales,
-                y: {
-                  ...chartOptions.scales.y,
-                  ticks: {
-                    callback: (value) => `$${value}`
-                  },
-                  grid: {
-                    color: '#f0f0f0'
-                  }
-                },
-                x: {
-                  grid: {
-                    display: false
-                  }
-                }
-              }
-            }} />
+            <Line data={{
+              ...chartData,
+              datasets: [{
+                ...chartData.datasets[0],
+                borderColor: "rgba(249, 115, 22, 1)", // orange-500
+                backgroundColor: "rgba(249, 115, 22, 0.1)",
+              }]
+            }} options={chartOptions} />
           </div>
         </div>
 
-        {/* All Items Section (styled as Recent Sales) */}
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h2 className="text-lg font-semibold mb-2">All Items</h2>
-          <p className="text-gray-500 text-sm mb-6">You made {allPostsToShow.length} posts this month.</p>
+        {/* All Items Section */}
+        <div className="bg-orange-50 p-6 rounded-lg shadow-sm">
+          <h2 className="text-lg font-semibold mb-2 text-orange-900">All Items</h2>
+          <p className="text-orange-700 text-sm mb-6">
+            วันนี้มีจำนวนโพสต์ใหม่: {
+              getPostCounts("daily").data[getPostCounts("daily").labels.indexOf(
+                new Date().toISOString().split("T")[0]
+              )] || 0
+            } รายการ
+          </p>
           
           <div className="space-y-4">
             {allPostsToShow.map((post) => (
               <div key={post.post_id} className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="w-8 h-8 bg-orange-200 rounded-full overflow-hidden">
                     {post.image && <img src={post.image} alt="" className="w-full h-full object-cover" />}
                   </div>
                   <div>
-                    <p className="font-medium">{post.title}</p>
-                    <p className="text-sm text-gray-500">{post.username}</p>
+                    <p className="font-medium text-orange-900">{post.title}</p>
+                    <p className="text-sm text-orange-600">{post.username}</p>
                   </div>
                 </div>
                 <button 
                   onClick={() => handleButtonClick(post, "ตรวจสอบ")}
-                  className="text-right font-medium text-black bg-green-500 px-3 py-1.5 rounded-md hover:bg-green-600 text-sm"
+                  className="text-right font-medium text-white bg-orange-500 px-4 py-1.5 rounded-md hover:bg-orange-600 text-sm"
                 >
                   ตรวจสอบ
                 </button>

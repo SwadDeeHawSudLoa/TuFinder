@@ -42,208 +42,101 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="bg-orange-700 shadow-lg">
-        <div className="container mx-auto flex items-center justify-between p-4">
-          {/* Logo */}
-          <a href="/mainAdmin" className="flex items-center space-x-3">
-            <img
-              src="https://firebasestorage.googleapis.com/v0/b/tuitemfider.appspot.com/o/private%2FEmblem_of_Thammasat_University.svg.png?alt=media&token=84f87b8e-14a9-43c9-a7e7-af310885d844"
-              className="h-8"
-              alt="Logo"
-            />
-            <span className="text-2xl font-semibold text-white">
-              TuItemFinder <br /> ByAdmin
-            </span>
-          </a>
+      <aside className="group fixed left-0 top-0 z-50 flex h-screen w-[70px] flex-col bg-orange-400 shadow-lg transition-all duration-300 hover:w-64">
+        <a href="/mainAdmin" className="flex items-center p-4">
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/tuitemfider.appspot.com/o/private%2FEmblem_of_Thammasat_University.svg.png?alt=media&token=84f87b8e-14a9-43c9-a7e7-af310885d844"
+            className="h-8 w-8"
+            alt="Logo"
+          />
+          <span className="ml-3 whitespace-nowrap text-xl font-semibold opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            TuItemFinder
+          </span>
+        </a>
 
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-white focus:outline-none"
-            >
-              {isMenuOpen ? (
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              )}
-            </button>
-          </div>
-
-          {/* Desktop Menu */}
-          <div className="hidden space-x-6 lg:flex">
-            <div className="relative">
-              <button
-                onClick={handleReportClick}
-                className="flex items-center justify-center rounded-lg bg-yellow-500 px-4 py-2 text-sm font-semibold text-black transition duration-300 ease-in-out hover:bg-yellow-600 focus:outline-none"
-              >
-                แจ้งพบของหาย
-              </button>
-            </div>
-            {isLoggedIn ? (
-              <>
-                {!isAdmin && (
-                  <a
-                    href="/mypostMyadmin"
-                    className="rounded-lg bg-yellow-500 px-4 py-2 text-sm font-semibold text-black transition duration-300 ease-in-out hover:bg-yellow-600"
-                  >
-                    โพสต์ของฉัน
-                  </a>
-                )}
-                {!isAdmin && (
-                  <a
-                    href="/checkuser"
-                    className="rounded-lg bg-yellow-500 px-4 py-2 text-sm font-semibold text-black transition duration-300 ease-in-out hover:bg-yellow-600"
-                  >
-                    ตรวจสอบผู้ใช้
-                  </a>
-                )}
-                {!isAdmin && (
-                  <a
-                    href="/dashboard"
-                    className="rounded-lg bg-yellow-500 px-4 py-2 text-sm font-semibold text-black transition duration-300 ease-in-out hover:bg-yellow-600"
-                  >
-                    Dashboard
-                  </a>
-                )}
-                <div className="relative">
-                  <button
-                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                    className="flex items-center space-x-2 focus:outline-none"
-                  >
-                    <img
-                      src="/ggg.png"
-                      className="h-8 w-8 rounded-full"
-                      alt="User Avatar"
-                    />
-                    <svg
-                      className="h-5 w-5 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </button>
-
-                  {/* Dropdown Menu */}
-                  {isDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-48 rounded-md bg-white py-2 shadow-lg transition duration-300 ease-in-out">
-                      <button
-                        onClick={handleLogout}
-                        className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </>
-            ) : (
-              <a
-                href="/login"
-                className="rounded-lg bg-yellow-500 px-4 py-2 text-sm font-semibold text-black transition duration-300 ease-in-out hover:bg-yellow-600"
-              >
-                Login
-              </a>
-            )}
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="absolute right-0 z-50 w-48 rounded-lg bg-orange-600 opacity-100 shadow-lg transition-opacity">
-            <a
-              href="/reportMyAdmins"
-              className="block px-4 py-2 text-lg font-semibold text-white hover:bg-orange-600"
-              onClick={() => {
-                handleReportClick();
-                setIsMenuOpen(false); // Close the menu on click
-              }}
-            >
+        <nav className="flex flex-1 flex-col gap-2 p-2">
+          <button
+            onClick={handleReportClick}
+            className="flex items-center rounded-lg p-3 hover:bg-gray-100"
+          >
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+            </svg>
+            <span className="ml-3 whitespace-nowrap opacity-0 transition-opacity duration-300 group-hover:opacity-100">
               แจ้งพบของหาย
-            </a>
-            {!isAdmin && (
-              <>
-                <a
-                  href="/mypostMyadmin"
-                  className="block px-4 py-2 text-lg font-semibold text-white hover:bg-orange-600"
-                  onClick={() => setIsMenuOpen(false)} // Close the menu on click
-                >
+            </span>
+          </button>
+
+          {isLoggedIn && !isAdmin && (
+            <>
+              <a
+                href="/mypostMyadmin"
+                className="flex items-center rounded-lg p-3 hover:bg-gray-100"
+              >
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <span className="ml-3 whitespace-nowrap opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                   โพสต์ของฉัน
-                </a>
-                <a
-                  href="/checkuser"
-                  className="block px-4 py-2 text-lg font-semibold text-white hover:bg-orange-600"
-                >
+                </span>
+              </a>
+
+              <a
+                href="/checkuser"
+                className="flex items-center rounded-lg p-3 hover:bg-gray-100"
+              >
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <span className="ml-3 whitespace-nowrap opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                   ตรวจสอบผู้ใช้
-                </a>
-              </>
-            )}
-            {!isAdmin && (
+                </span>
+              </a>
+
               <a
                 href="/dashboard"
-                className="block px-4 py-2 text-lg font-semibold text-white hover:bg-orange-600"
+                className="flex items-center rounded-lg p-3 hover:bg-gray-100"
               >
-                Dashboard
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <span className="ml-3 whitespace-nowrap opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  Dashboard
+                </span>
               </a>
-            )}
-            {isLoggedIn ? (
-              <button
-                onClick={() => {
-                  handleLogout();
-                  setIsMenuOpen(false); // Close the menu on click
-                }}
-                className="block px-4 py-2 text-lg font-semibold text-white hover:bg-orange-600"
-              >
-                Logout
-              </button>
-            ) : (
-              <a
-                href="/login"
-                className="block px-4 py-2 text-lg font-semibold text-white hover:bg-orange-600"
-                onClick={() => setIsMenuOpen(false)} // Close the menu on click
-              >
-                Login
-              </a>
-            )}
-          </div>
-        )}
-      </nav>
+            </>
+          )}
+        </nav>
 
-      {/* Modal */}
+        <div className="border-t p-2">
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="flex w-full items-center rounded-lg p-3 hover:bg-gray-100"
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              <span className="ml-3 whitespace-nowrap opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                Logout
+              </span>
+            </button>
+          ) : (
+            <a
+              href="/login"
+              className="flex items-center rounded-lg p-3 hover:bg-gray-100"
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+              </svg>
+              <span className="ml-3 whitespace-nowrap opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                Login
+              </span>
+            </a>
+          )}
+        </div>
+      </aside>
+
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="relative w-1/3 rounded-lg bg-white p-10 shadow-2xl">
