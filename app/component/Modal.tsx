@@ -101,7 +101,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
       aria-labelledby="modal-title"
       aria-describedby="modal-description"
     >
-      <div className="w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">
+      <div className="overflow-y-auto overflow-auto max-h-screen w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">
         <div className="flex justify-end">
           <button
             onClick={onClose}
