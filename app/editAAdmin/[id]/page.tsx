@@ -1,6 +1,6 @@
 "use client";
 import React, { FormEvent, useEffect, useState } from "react";
-import Navbar from "@/app/component/navbar";
+import Navbar from "@/app/component/AdminNavbar";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -47,13 +47,17 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
   const [isImagePopupVisible, setIsImagePopupVisible] = useState(false); // New state for the image popup
   const { id } = params;
   const router = useRouter();
+  const  [adminUsername, setaAminUsername] = useState<number>(0);
 
   const fetchPost = async (id: Number) => {
     try {
       const res = await axios.get(`/api/posts/${id}`);
       setUserIdEdit(res.data.userIdEdit);
       setTeluser(res.data.teluser);
+      setStatus(res.data.status);
       setTitle(res.data.title);
+      setUsername(res.data.username);
+      setaAminUsername(res.data.adminUsername)
       setLocation(res.data.location);
       setDescription(res.data.description);
       setCategory(res.data.category);
@@ -61,7 +65,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
     } catch (error) {
       console.error(error);
     }
-  };
+  }; 
 
   useEffect(() => {
     if (id) {
@@ -70,18 +74,17 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
   }, [id]);
 
   useEffect(() => {
-    const statusO = "สถานะไม่อยู่ในคลัง";
-    setStatus(statusO);
+    
+    setStatus(status);
 
     const number = "043311286";
     setTel(number);
 
-    const admin = "123";
-    setAdminIdEdit(admin);
+    setUserIdEdit(userIdEdit);
 
     const userIdFromCookie = Cookies.get("user_id");
     if (userIdFromCookie) {
-      setUserIdEdit(userIdFromCookie);
+      setAdminIdEdit(userIdFromCookie);
     } else {
       console.error("User ID cookie not found.");
     }
@@ -96,7 +99,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
       try {
         const response = await axios.get(`/api/saveAdmin/${adminId}`);
         const name = response.data;
-        setUsername(name);
+        setaAminUsername(name);
       } catch (error) {
         console.error("Error fetching user name", error);
       }
@@ -131,6 +134,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
         adminIdEdit,
         title,
         username,
+        adminUsername,
         tel,
         teluser,
         category,

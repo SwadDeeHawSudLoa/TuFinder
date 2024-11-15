@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import axios from "axios";
 import dynamic from "next/dynamic";
-import Cookies from "js-cookie"; // Import js-cookie
+import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-export const runtime = 'edge'; // optional
+
+export const runtime = 'edge';
 export const renderMode = "force-dynamic";
 
 const LeafletMap = dynamic(() => import("../component/LeafletMap"), {
@@ -17,12 +18,12 @@ interface Post1 {
   adminIdEdit?: string;
   title: string;
   username: string;
-  adminusername?: string; // Added admin name
+  adminusername?: string;
   tel: string;
-  teluser: string; // Added user's phone number
+  teluser: string;
   category: string;
   image: string;
-  imageAdmin?: string; // Image for evidence shown only to admin
+  imageAdmin?: string;
   status: string;
   description: string;
   date: Date;
@@ -44,12 +45,14 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
   const [showContact, setShowContact] = useState<boolean>(false);
   const [isClient, setIsClient] = useState<boolean>(false);
   const [userid, setUserid] = useState<string | null>(null);
+  const [showEvidence, setShowEvidence] = useState<boolean>(false);
   const userIdCookie = Cookies.get("user_id");
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       setIsClient(true);
       setUsername(localStorage.getItem("username"));
-      setUserid(userIdCookie || null); // Get 'userid' from cookies
+      setUserid(userIdCookie || null);
     }
   }, []);
 
@@ -57,9 +60,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
 
   async function fetchpostId(post: Post1, status: string) {
     try {
-      await axios.put(`/api/statusPosts/${post.post_id}`, {
-        status,
-      });
+      await axios.put(`/api/statusPosts/${post.post_id}`, { status });
       window.location.href = "/mainAdmin";
     } catch (error) {
       console.error("Error submitting post:", error);
@@ -67,14 +68,16 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
     }
   }
 
-  const isAdmin = userid === "123"; // Check if 'userid' from cookies equals '123'
+  const isAdmin = userid === "123";
 
   async function handleUpdateClick(post: Post1, status: string): Promise<void> {
     await fetchpostId(post, status);
   }
-async function handleAddPictureClick(post_id: number) {
-  router.push(`/picture/${post_id}`);
-}
+
+  async function handleAddPictureClick(post_id: number) {
+    router.push(`/picture/${post_id}`);
+  }
+
   const renderStatusButton = (
     post: Post1,
     status: string,
@@ -128,7 +131,7 @@ async function handleAddPictureClick(post_id: number) {
 
         <div className="mb-1 h-64">
           <LeafletMap
-            posix={[post.lat, post.long]} // Ensure this is a valid lat, long array
+            posix={[post.lat, post.long]}
             zoom={13}
             onMapClick={() => {}}
             onLocationUpdate={() => {}}
@@ -188,8 +191,11 @@ async function handleAddPictureClick(post_id: number) {
               </button>
               {isAdmin && post.status === "สถานะถูกรับไปเเล้ว" && (
                 <div className="flex flex-1 justify-center">
-                  <button className="rounded bg-blue-400 px-4 py-2 text-gray-950">
-                    ดูรูปหลักฐาน
+                  <button
+                    onClick={() => setShowEvidence(!showEvidence)}
+                    className="rounded bg-blue-400 px-4 py-2 text-gray-950"
+                  >
+                    {showEvidence ? "ซ่อนรูปหลักฐาน" : "ดูรูปหลักฐาน"}
                   </button>
                 </div>
               )}
@@ -218,7 +224,10 @@ async function handleAddPictureClick(post_id: number) {
               </div>
 
               <div className="mt-4 flex items-center justify-between space-x-2">
-                <button  onClick={() => handleAddPictureClick(post.post_id)} className="flex-grow transform rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50">
+                <button
+                  onClick={() => handleAddPictureClick(post.post_id)}
+                  className="flex-grow transform rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
+                >
                   เเนบรูป
                 </button>
                 {renderStatusButton(
