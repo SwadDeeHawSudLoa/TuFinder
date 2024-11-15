@@ -170,7 +170,7 @@ const PicturePage = ({ params }: { params: { id: string } }) => {
   return (
     <>
       <Navbar />
-      <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+       <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75" style={{ zIndex: 9999 }}>
         <div className="w-3/4 max-w-lg rounded-lg bg-white p-4">
           <div className="flex justify-end">
             <button

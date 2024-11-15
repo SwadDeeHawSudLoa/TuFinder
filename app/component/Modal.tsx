@@ -256,11 +256,11 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
 
         {/* Popup modal for showing imageAdmin */}
         {showEvidencePopup && post.imageAdmin && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 ">
             <div className="relative w-80 h-80 bg-white rounded-lg shadow-lg">
               <button
                 onClick={() => setShowEvidencePopup(false)}
-                className="absolute top-2 right-2 text-xl text-black"
+                className="absolute top-2 right-2 text-xl text-black z-[60]"
                 aria-label="Close evidence popup"
               >
                 ×
@@ -270,7 +270,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
                 alt="หลักฐาน"
                 layout="fill"
                 objectFit="contain"
-                className="rounded-lg z-2000" 
+                className="rounded-lg z-500" 
               />
             </div>
           </div>

@@ -109,7 +109,7 @@ const LeafletMap: React.FC<MapProps> = ({
   };
 
   return (
-    <div style={{ position: "relative", ...style }}>
+    <div style={{ position: "relative", ...style, zIndex: 0 }}>
       <div ref={mapRef} style={{ height: "400px", ...style }} />
 
       {/* ปุ่ม Mark my position */}
@@ -117,8 +117,8 @@ const LeafletMap: React.FC<MapProps> = ({
         style={{
           position: "absolute",
           bottom: "10px",
-          right: "10px", // ปุ่มจะอยู่ตรงขวาล่าง
-          zIndex: 1000, // เพิ่ม z-index เพื่อให้ปุ่มอยู่ด้านบนสุด
+          right: "10px",
+          zIndex: 1,
         }}
       >
         <button
