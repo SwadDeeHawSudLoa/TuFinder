@@ -92,6 +92,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
       {label}
     </button>
   );
+  
 
   return (
     <div
