@@ -111,7 +111,11 @@ const Navbar: React.FC = () => {
 
         <div className="flex h-full flex-col">
           <a href="/mainAdmin" className="flex items-center p-4">
-            <span className="text-xl font-semibold">TuItemFinder</span>
+          <img
+            className="mr-2 h-8 w-8 text-gray-100"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Emblem_of_Thammasat_University.svg/1024px-Emblem_of_Thammasat_University.svg.png"
+            alt="logo"
+          /><span className="text-xl font-semibold">TuItemFinder</span>
           </a>
 
           <nav className="flex-1 space-y-2 p-2">
