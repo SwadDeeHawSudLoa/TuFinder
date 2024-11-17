@@ -70,7 +70,7 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
         <option value="">สถานะ</option>
         <option value="สถานะไม่อยู่ในคลัง">สถานะไม่อยู่ในคลัง</option>
         <option value="สถานะอยู่ในคลัง">สถานะอยู่ในคลัง</option>
-        <option value="สถานะรับไปเเล้ว">สถานะรับไปเเล้ว</option>
+        <option value="สถานะถูกรับไปเเล้ว">สถานะถูกรับไปเเล้ว</option>
       </select>
 
       <button
