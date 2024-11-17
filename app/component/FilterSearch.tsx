@@ -24,7 +24,7 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mt-10 flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-3 sm:space-y-0"
+      className="mt-20 flex flex-col items-center justify-center space-y-4 md:flex-row sm:space-x-3 sm:space-y-0"
     >
       <input
         type="text"
@@ -32,13 +32,13 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="ค้นหา..."
-        className="w-full rounded border px-4 py-2 sm:w-auto"
+        className="w-full rounded border px-4 py-2  sm:w-auto"
       />
       <select
         name="category"
         value={category}
         onChange={(e) => setCategory(e.target.value)}
-        className="w-full rounded border px-4 py-2 sm:w-auto"
+        className="w-full rounded border px-4 py-2   sm:w-auto"
       >
         <option value="">หมวดหมู่</option>
         <option value="documents">เอกสารสำคัญ</option>
@@ -50,7 +50,7 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
         name="location"
         value={location}
         onChange={(e) => setLocation(e.target.value)}
-        className="w-full rounded border px-4 py-2 sm:w-auto"
+        className="w-full rounded border px-4 py-2  sm:w-auto"
       >
         <option value="">สถานที่</option>
         <option value="มหาวิทยาลัยธรรมศาสตร์ รังสิต">

@@ -110,9 +110,9 @@ const Navbar: React.FC = () => {
         </button>
 
         <div className="flex h-full flex-col">
-          <div className="flex items-center p-4">
+          <a href="/mainAdmin" className="flex items-center p-4">
             <span className="text-xl font-semibold">TuItemFinder</span>
-          </div>
+          </a>
 
           <nav className="flex-1 space-y-2 p-2">
             <button

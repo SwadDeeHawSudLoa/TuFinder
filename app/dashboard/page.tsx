@@ -206,10 +206,10 @@ export default function DashboardAdmin() {
 
   return (
     
-    <div className="min-h-screen bg-orange-50/50 p-3">
+    <div className=" min-h-screen bg-orange-50/50 p-3">
       <Navbar />
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="mt-20 flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-orange-950">Dashboard</h1>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
