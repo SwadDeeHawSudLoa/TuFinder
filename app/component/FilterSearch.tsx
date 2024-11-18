@@ -24,7 +24,7 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mt-20 flex flex-col items-center justify-center space-y-4 md:flex-row sm:space-x-3 sm:space-y-0"
+      className="ml-5 mr-5 mt-20 flex flex-col items-center justify-center lg:space-y-0 lg:flex-row sm:space-x-3    space-y-4     md:space-x-3  md:space-y-4 sm:space-y-4   sm:w-50  md:w-50 lg:space-x-3"
     >
       <input
         type="text"
@@ -32,13 +32,13 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="ค้นหา..."
-        className="w-full rounded border px-4 py-2  sm:w-auto"
+        className=" w-full rounded border px-4 py-2   "
       />
       <select
         name="category"
         value={category}
         onChange={(e) => setCategory(e.target.value)}
-        className="w-full rounded border px-4 py-2   sm:w-auto"
+        className="w-full rounded border px-4 py-2   "
       >
         <option value="">หมวดหมู่</option>
         <option value="documents">เอกสารสำคัญ</option>
@@ -50,7 +50,7 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
         name="location"
         value={location}
         onChange={(e) => setLocation(e.target.value)}
-        className="w-full rounded border px-4 py-2  sm:w-auto"
+        className="w-full rounded border px-4 py-2  "
       >
         <option value="">สถานที่</option>
         <option value="มหาวิทยาลัยธรรมศาสตร์ รังสิต">
@@ -65,7 +65,7 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
         id="status"
         value={status}
         onChange={(e) => setStatus(e.target.value)}
-        className="w-full rounded border px-4 py-2 sm:w-auto"
+        className="w-full rounded border px-4 py-2 "
       >
         <option value="">สถานะ</option>
         <option value="สถานะไม่อยู่ในคลัง">สถานะไม่อยู่ในคลัง</option>
@@ -75,7 +75,7 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
 
       <button
         type="submit"
-        className="w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600 sm:w-auto"
+        className="w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600 "
       >
         ค้นหา
       </button>
