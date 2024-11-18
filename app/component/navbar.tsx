@@ -176,43 +176,44 @@ const Navbar: React.FC = () => {
 
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="relative w-1/3 rounded-lg bg-white p-10 shadow-2xl">
-            <h1 className="mb-6 text-center text-3xl font-bold">
-              หากคุณต้องการเเจ้งพบของหาย
-              <br />
-              โปรดเข้าสู่ระบบ
-            </h1>
-            <h2 className="mb-6 text-center text-2xl">
-              หากคุณไม่ได้เป็นบุคลากรหรือนักศึกษาใน
-              <br />
-              มหาวิทยาลัยโปรดติดต่อเจ้าหน้าที่ ที่อาคาร SC1
-            </h2>
-            <div className="flex flex-col items-center">
+        <div className="relative w-11/12 max-w-lg rounded-lg bg-white p-6 shadow-2xl ">
+          <h1 className="mb-4 text-center text-xl font-bold md:text-3xl">
+            หากคุณต้องการเเจ้งพบของหาย
+            <br />
+            โปรดเข้าสู่ระบบ
+          </h1>
+          <h2 className="mb-6 text-center text-sm md:text-2xl">
+            หากคุณไม่ได้เป็นบุคลากรหรือนักศึกษาใน
+            <br />
+            มหาวิทยาลัยโปรดติดต่อเจ้าหน้าที่ ที่อาคาร SC1
+          </h2>
+          <div className="flex flex-col items-center">
             <button
-                className="mb-4 rounded-lg bg-green-400 px-6 py-3 text-lg text-black hover:bg-green-700"
-                onClick={() => {
-                  window.location.href = "/map";
-                }}
-              >
-                ดูหมุด
-              </button>
-              <button
-                className="mb-4 rounded-lg bg-yellow-400 px-6 py-3 text-lg text-black hover:bg-yellow-600"
-                onClick={() => {
-                  window.location.href = "/login";
-                }}
-              >
-                Go to Login
-              </button>
-            </div>
-            <button
-              className="absolute right-2 top-2 rounded-full border-black px-3 py-2 text-lg text-black"
-              onClick={closeModal}
+              className="mb-4 w-full max-w-xs rounded-lg bg-green-400 px-6 py-3 text-sm text-black hover:bg-green-700 md:text-lg"
+              onClick={() => {
+                window.location.href = "/map";
+              }}
             >
-              &#x2715;
+              ดูหมุด
+            </button>
+            <button
+              className="mb-4 w-full max-w-xs rounded-lg bg-yellow-400 px-6 py-3 text-sm text-black hover:bg-yellow-600 md:text-lg"
+              onClick={() => {
+                window.location.href = "/login";
+              }}
+            >
+              Go to Login
             </button>
           </div>
+          <button
+            className="absolute right-2 top-2 rounded-full border-black px-3 py-2 text-lg text-black"
+            onClick={closeModal}
+          >
+            &#x2715;
+          </button>
         </div>
+      </div>
+      
       )}
     </>
   );
