@@ -24,7 +24,7 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="ml-5 mr-5 mt-20 flex flex-col items-center justify-center lg:space-y-0 lg:flex-row sm:space-x-3    space-y-4     md:space-x-3  md:space-y-4 sm:space-y-4   sm:w-50  md:w-50 lg:space-x-3"
+      className="ml-5 mr-5 mt-5 flex flex-col items-center justify-center lg:space-y-0 lg:flex-row sm:space-x-3    space-y-4     md:space-x-3  md:space-y-4 sm:space-y-4   sm:w-50  md:w-50 lg:space-x-3"
     >
       <input
         type="text"
