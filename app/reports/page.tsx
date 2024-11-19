@@ -178,134 +178,134 @@ const ReportPage = () => {
     <>
       <Navbar />
       <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-        <div className="w-3/4 max-w-lg rounded-lg bg-white p-6">
-          <div className="flex justify-end">
-            <button
-              onClick={() => window.history.back()}
-              className="rounded text-xl text-black"
-            >
-              ×
-            </button>
-          </div>
-
-          <h2 className="mb-4 text-center text-xl font-bold">
-            แจ้งพบของสูญหาย
-          </h2>
-          <form onSubmit={handleSubmit}>
-  <div className="mb-4">
-    <div className="flex flex-col space-y-4">
-      <div className="flex items-center space-x-4">
-        <label className="w-32 text-sm font-bold text-gray-700">
-          ชื่อสิ่งของ
-        </label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="กรุณาระบุชื่อสิ่งของ"
-          className="flex-grow rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
-        />
-      </div>
-      <div className="flex items-center space-x-4">
-        <label className="w-32 text-sm font-bold text-gray-700">
-          เบอร์มือถือของคุณ
-        </label>
-        <input
-          type="text"
-          value={teluser}
-          onChange={(e) => setTeluser(e.target.value)}
-          placeholder="กรุณาระบุเบอร์มือถือ"
-          className="flex-grow rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
-        />
-      </div>
+  <div className="overflow-y-auto overflow-auto max-h-screen w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">
+    <div className="flex justify-end">
+      <button
+        onClick={() => window.history.back()}
+        className="rounded text-2xl text-black"
+      >
+        ×
+      </button>
     </div>
-  </div>
 
-  <div className="mb-4">
-    <label className="mb-2 block text-sm font-bold text-gray-700">
-      หมวดหมู่
-    </label>
-    <select
-      value={category}
-      onChange={(e) => setCategory(e.target.value)}
-      className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
-    >
-      <option value="">กรุณาเลือกหมวดหมู่</option>
-      <option value="documents">เอกสารสำคัญ</option>
-      <option value="personal_items">สิ่งของส่วนบุคคล</option>
-      <option value="electronics">อุปกรณ์อิเล็กทรอนิกส์</option>
-    </select>
-  </div>
-
-  <div className="mb-4">
-    <label className="mb-2 block text-sm font-bold text-gray-700">
-      รายละเอียดของสภาพสิ่งของ
-    </label>
-    <textarea
-      value={description}
-      onChange={(e) => setDescription(e.target.value)}
-      placeholder="กรุณาระบุรายละเอียด"
-      className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
-    />
-  </div>
-
-  <div className="mb-4">
-    <label className="mb-2 block text-sm font-bold text-gray-700">
-      สถานที่พบของหาย
-    </label>
-    <select
-      value={selectedLocation ? selectedLocation.name : ""}
-      onChange={(e) => {
-        const selected = predefinedLocations.find(
-          (loc) => loc.name === e.target.value
-        );
-        setSelectedLocation(selected || null);
-      }}
-      className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
-    >
-      <option value="">กรุณาเลือกสถานที่</option>
-      {predefinedLocations.map((loc) => (
-        <option key={loc.name} value={loc.name}>
-          {loc.name}
-        </option>
-      ))}
-    </select>
-  </div>
-
-  <div className="mb-4">
-    <label className="mb-2 block text-sm font-bold text-gray-700">
-      ตำแหน่งบนแผนที่
-    </label>
-    <Map
-      posix={[lat, long]}
-      zoom={13}
-      key={mapKey}
-      onMapClick={handleMapClick}
-      onLocationUpdate={handleMapClick}
-      style={{ height: "200px", width: "100%" }}
-    />
-  </div>
-
-  <div className="mb-4 flex justify-between">
-    <input
-      ref={inputRef}
-      type="file"
-      className="file-input file-input-bordered file-input-info w-full max-w-xs"
-    />
-  </div>
-
-  <div className="flex justify-center">
-    <button
-      type="submit"
-      className="focus:shadow-outline rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700 focus:outline-none"
-    >
-      ส่ง
-    </button>
-  </div>
-</form>
-
+    <h2 className="mb-4 text-center text-lg sm:text-xl font-bold">
+      แจ้งพบของสูญหาย
+    </h2>
+    <form onSubmit={handleSubmit}>
+      <div className="mb-4">
+        <div className="flex flex-col space-y-4">
+          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
+            <label className="w-full sm:w-32 text-sm font-bold text-gray-700">
+              ชื่อสิ่งของ
+            </label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="กรุณาระบุชื่อสิ่งของ"
+              className="w-full sm:flex-grow rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+            />
+          </div>
+          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
+            <label className="w-full sm:w-32 text-sm font-bold text-gray-700">
+              เบอร์มือถือของคุณ
+            </label>
+            <input
+              type="text"
+              value={teluser}
+              onChange={(e) => setTeluser(e.target.value)}
+              placeholder="กรุณาระบุเบอร์มือถือ"
+              className="w-full sm:flex-grow rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+            />
+          </div>
         </div>
       </div>
+
+      <div className="mb-4">
+        <label className="mb-2 block text-sm font-bold text-gray-700">
+          หมวดหมู่
+        </label>
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+        >
+          <option value="">กรุณาเลือกหมวดหมู่</option>
+          <option value="documents">เอกสารสำคัญ</option>
+          <option value="personal_items">สิ่งของส่วนบุคคล</option>
+          <option value="electronics">อุปกรณ์อิเล็กทรอนิกส์</option>
+        </select>
+      </div>
+
+      <div className="mb-4">
+        <label className="mb-2 block text-sm font-bold text-gray-700">
+          รายละเอียดของสภาพสิ่งของ
+        </label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="กรุณาระบุรายละเอียด"
+          className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="mb-2 block text-sm font-bold text-gray-700">
+          สถานที่พบของหาย
+        </label>
+        <select
+          value={selectedLocation ? selectedLocation.name : ""}
+          onChange={(e) => {
+            const selected = predefinedLocations.find(
+              (loc) => loc.name === e.target.value
+            );
+            setSelectedLocation(selected || null);
+          }}
+          className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+        >
+          <option value="">กรุณาเลือกสถานที่</option>
+          {predefinedLocations.map((loc) => (
+            <option key={loc.name} value={loc.name}>
+              {loc.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="mb-4">
+        <label className="mb-2 block text-sm font-bold text-gray-700">
+          ตำแหน่งบนแผนที่
+        </label>
+        <Map
+          posix={[lat, long]}
+          zoom={13}
+          key={mapKey}
+          onMapClick={handleMapClick}
+          onLocationUpdate={handleMapClick}
+          style={{ height: "200px", width: "100%" }}
+        />
+      </div>
+
+      <div className="mb-4 flex justify-between">
+        <input
+          ref={inputRef}
+          type="file"
+          className="file-input file-input-bordered file-input-info w-full max-w-xs"
+        />
+      </div>
+
+      <div className="flex justify-center">
+        <button
+          type="submit"
+          className="focus:shadow-outline rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700 focus:outline-none"
+        >
+          ส่ง
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
     </>
   );
 };
