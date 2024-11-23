@@ -221,7 +221,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="กรุณาระบุชื่อสิ่งของ"
-                className="mt-1 text-white w-full px-2 py-1 text-sm rounded-lg border focus:border-blue-500"
+                className="mt-1 text-black w-full px-2 py-1 text-sm rounded-lg border focus:border-blue-500"
               />
             </div>
 
@@ -232,7 +232,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
                 value={teluser}
                 onChange={(e) => setTeluser(e.target.value)}
                 placeholder="กรุณาระบุเบอร์มือถือ"
-                className="mt-1 text-white w-full px-2 py-1 text-sm rounded-lg border focus:border-blue-500"
+                className="mt-1 text-black w-full px-2 py-1 text-sm rounded-lg border focus:border-blue-500"
               />
             </div>
 
@@ -243,7 +243,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
     <select
       value={category}
       onChange={(e) => setCategory(e.target.value)}
-      className="w-full rounded-lg border px-3 py-2 text-white text-sm focus:border-blue-500 focus:outline-none"
+      className="w-full rounded-lg border px-3 py-2 text-black text-sm focus:border-blue-500 focus:outline-none"
     >
       <option value="">กรุณาเลือกหมวดหมู่</option>
       <option value="documents">เอกสารสำคัญ</option>
@@ -257,7 +257,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="รายละเอียดเพิ่มเติม"
-                className="mt-1 w-full text-sm  text-white px-2 py-1 rounded-lg border focus:border-blue-500"
+                className="mt-1 w-full text-sm  text-black px-2 py-1 rounded-lg border focus:border-blue-500"
               />
             </div>
 
@@ -277,7 +277,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
         );
         setSelectedLocation(selected || null);
       }}
-      className="w-full  text-sm rounded-lg border px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
+      className="w-full  text-sm rounded-lg border px-3 py-2 text-black focus:border-blue-500 focus:outline-none"
     >
       <option value="">กรุณาเลือกสถานที่</option>
       {predefinedLocations.map((loc) => (
@@ -322,7 +322,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
         src={existingImage}
         alt="Old Post Image"
         className="w-full h-auto items-center"
-        style={{ height: "180px", width: "50%" }}
+        style={{ height: "100%", width: "100%" }}
       />
     </div>
   </div>

@@ -203,7 +203,7 @@ const Navbar: React.FC = () => {
                 window.location.href = "/login";
               }}
             >
-              Go to Login
+              เข้าสู่ระบบ
             </button>
           </div>
           <button

@@ -141,13 +141,13 @@ const PostList: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="justify-center items-center text-center flex-grow text-4xl">โพสต์ของฉัน</div>
+      <div className="justify-center items-center text-center flex-grow text-4xl font-bold">โพสต์ของฉัน</div>
       <div className="container mx-auto p-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {currentPosts.map((post) => (
             <div
               key={post.post_id}
-              className="grid rounded-lg bg-white p-4 shadow-md"
+              className="grid rounded-lg bg-white p-4 shadow-xl"
             >
               <div className="relative mb-4 h-48 w-full">
                 <Image
@@ -181,13 +181,13 @@ const PostList: React.FC = () => {
                 onClick={() => handleEditClick(post.post_id)}
                 className="mt-2 flex-grow transform rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
               >
-                Edit
+                เเก้ไขโพสต์
               </button>
               <button
                 onClick={() => handleDeleteClick(post.post_id)}
                 className="mt-2 flex-grow transform rounded-lg bg-red-900 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
               >
-                Delete
+                ลบโพสต์
               </button>
             </div>
           ))}

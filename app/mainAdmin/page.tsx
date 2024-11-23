@@ -130,7 +130,7 @@ const PostList: React.FC = () => {
           {currentPosts.map((post) => (
             <div
               key={post.post_id}
-              className="grid rounded-lg bg-white p-4 shadow-md"
+              className="grid rounded-lg bg-white p-4 shadow-xl"
             >
               <div className="relative mb-4 h-48 w-full">
                 <Image

@@ -188,11 +188,8 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
               </div>
             )}
             <div className="mt-4 flex items-center justify-between">
-              <button className="rounded bg-blue-300 px-4 py-2 text-blue-500">
-                ดูหมุด
-              </button>
               {isAdmin && post.status === "ถูกรับไปเเล้ว" && (
-                <div className="flex flex-1 justify-center">
+                <div className="flex justify-center">
                   <button
                     onClick={() => setShowEvidencePopup(!showEvidencePopup)} // Toggle evidence popup
                     className="rounded bg-blue-400 px-4 py-2 text-gray-950"

@@ -146,7 +146,7 @@ const PicturePage = ({ params }: { params: { id: string } }) => {
 
   if (isSubmitted) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 shadow-xl">
         <div className="w-3/4 max-w-lg rounded-lg bg-white p-4 text-center">
           <div className="flex justify-end">
             <button

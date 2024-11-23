@@ -143,12 +143,13 @@ const PostList: React.FC = () => {
     <>
       <Navbar />
 
-      <div className="justify-center items-center text-center flex-grow text-4xl">โพสต์ของฉัน</div>
-      <div className="sm:ml-90 md:ml-70 grid flex-grow grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="mt-20 flex justify-center items-center text-center flex-grow text-4xl font-bold">โพสต์ของฉัน</div>
+      <div className="container mx-auto p-4">
+      <div className="sm:ml-90 md:ml-70 justify-center grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {currentPosts.map((post) => (
           <div
             key={post.post_id}
-            className="grid rounded-lg bg-white p-4 shadow-md"
+            className="grid rounded-lg bg-white p-4 shadow-xl"
           >
             <div className="relative mb-4 h-48 w-full">
               <Image
@@ -159,7 +160,7 @@ const PostList: React.FC = () => {
                 className="rounded-t-lg"
               />
             </div>
-            <div className="mb-2 flex flex-row items-start justify-between">
+            <div className="mb-2 flex flex-col items-start justify-between">
               <h2 className="text-xl font-bold">{post.title}</h2>
               <p className="text-gray-600">{post.location}</p>
               <p className="text-gray-600">{post.category}</p>
@@ -182,13 +183,13 @@ const PostList: React.FC = () => {
               onClick={() => handleEditClick(post.post_id)}
               className="mt-2 flex-grow transform rounded-md bg-orange-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
             >
-              Edit
+              เเก้ไขโพสต์
             </button>
             <button
               onClick={() => handleDeleteClick(post.post_id)}
               className="mt-2 flex-grow transform rounded-lg bg-red-900 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
             >
-              Delete
+              ลบโพสต์
             </button>
           </div>
         ))}
@@ -207,6 +208,7 @@ const PostList: React.FC = () => {
             {index + 1}
           </button>
         ))}
+      </div>
       </div>
       {selectedPost && (
         <Modal
