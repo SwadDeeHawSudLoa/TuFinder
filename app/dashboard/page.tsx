@@ -313,7 +313,7 @@ export default function DashboardAdmin() {
           
           <div className="space-y-4">
             {allPostsToShow.map((post) => (
-              <div key={post.post_id} className="flex items-center justify-between">
+              <div key={post.post_id} className="flex-col flex items-center justify-between md:flex-row md:text-md sm:text-sm">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-orange-200 rounded-full overflow-hidden">
                     {post.image && <img src={post.image} alt="" className="w-full h-full object-cover" />}
