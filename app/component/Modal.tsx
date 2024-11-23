@@ -168,7 +168,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
                     <strong>เบอร์โทร:</strong> {post.teluser}
                   </p>
                 </div>
-                {post.status !== "สถานะไม่อยู่ในคลัง" && (
+                {post.status !== "ไม่อยู่ในคลัง" && (
                   <>
                     <div className="flex justify-center">
                       <p>ผู้ดูเเล ที่รับเก็บเข้าคลัง</p>
@@ -191,7 +191,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
               <button className="rounded bg-blue-300 px-4 py-2 text-blue-500">
                 ดูหมุด
               </button>
-              {isAdmin && post.status === "สถานะถูกรับไปเเล้ว" && (
+              {isAdmin && post.status === "ถูกรับไปเเล้ว" && (
                 <div className="flex flex-1 justify-center">
                   <button
                     onClick={() => setShowEvidencePopup(!showEvidencePopup)} // Toggle evidence popup
@@ -203,11 +203,11 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
               )}
               <p
                 className={`ml-auto ${
-                  post.status === "สถานะถูกรับไปเเล้ว"
+                  post.status === "ถูกรับไปเเล้ว"
                     ? "text-orange-500"
-                    : post.status === "สถานะไม่อยู่ในคลัง"
+                    : post.status === "ไม่อยู่ในคลัง"
                     ? "text-red-500"
-                    : post.status === "สถานะอยู่ในคลัง"
+                    : post.status === "อยู่ในคลัง"
                     ? "text-green-500"
                     : ""
                 } rounded-md px-2 py-1`}
@@ -234,20 +234,20 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
                 </button>
                 {renderStatusButton(
                   post,
-                  "สถานะถูกรับไปเเล้ว",
-                  "สถานะถูกรับไปเเล้ว",
+                  "ถูกรับไปเเล้ว",
+                  "ถูกรับไปเเล้ว",
                   "bg-orange-500",
                 )}
                 {renderStatusButton(
                   post,
-                  "สถานะไม่อยู่ในคลัง",
-                  "สถานะไม่อยู่ในคลัง",
+                  "ไม่อยู่ในคลัง",
+                  "ไม่อยู่ในคลัง",
                   "bg-red-500",
                 )}
                 {renderStatusButton(
                   post,
-                  "สถานะอยู่ในคลัง",
-                  "สถานะอยู่ในคลัง",
+                  "อยู่ในคลัง",
+                  "อยู่ในคลัง",
                   "bg-green-500",
                 )}
               </div>

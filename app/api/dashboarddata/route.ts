@@ -14,15 +14,15 @@ export async function GET() {
 
     // นับจำนวน status แยกตามประเภท
     const statusCountInStock = await prisma.post.count({
-      where: { status: "สถานะอยู่ในคลัง" },
+      where: { status: "อยู่ในคลัง" },
     });
 
     const statusCountNotInStock = await prisma.post.count({
-      where: { status: "สถานะไม่อยู่ในคลัง" },
+      where: { status: "ไม่อยู่ในคลัง" },
     });
 
     const statusCountReceived = await prisma.post.count({
-      where: { status: "สถานะถูกรับไปเเล้ว" },
+      where: { status: "ถูกรับไปเเล้ว" },
     });
 
     // Fetch recent 4 posts (รายการล่าสุด 4 โพสต์)

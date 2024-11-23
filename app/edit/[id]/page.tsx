@@ -70,7 +70,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
   }, [id]);
 
   useEffect(() => {
-    const statusO = "สถานะไม่อยู่ในคลัง";
+    const statusO = "ไม่อยู่ในคลัง";
     setStatus(statusO);
 
     const number = "043311286";

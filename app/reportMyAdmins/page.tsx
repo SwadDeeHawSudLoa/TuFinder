@@ -49,7 +49,7 @@ const ReportMyAdmins = () => {
   const [mapKey, setMapKey] = useState<number>(0);
 
   useEffect(() => {
-    const statusO = "สถานะไม่อยู่ในคลัง";
+    const statusO = "ไม่อยู่ในคลัง";
     setStatus(statusO);
     async function fetchAdminUserName() {
       try {

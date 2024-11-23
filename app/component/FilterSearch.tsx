@@ -68,9 +68,9 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
         className="w-full rounded border px-4 py-2 "
       >
         <option value="">สถานะ</option>
-        <option value="สถานะไม่อยู่ในคลัง">สถานะไม่อยู่ในคลัง</option>
-        <option value="สถานะอยู่ในคลัง">สถานะอยู่ในคลัง</option>
-        <option value="สถานะถูกรับไปเเล้ว">สถานะถูกรับไปเเล้ว</option>
+        <option value="ไม่อยู่ในคลัง">สถานะไม่อยู่ในคลัง</option>
+        <option value="อยู่ในคลัง">สถานะอยู่ในคลัง</option>
+        <option value="ถูกรับไปเเล้ว">สถานะถูกรับไปเเล้ว</option>
       </select>
 
       <button

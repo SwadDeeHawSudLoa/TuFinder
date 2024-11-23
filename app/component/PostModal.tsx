@@ -90,11 +90,11 @@ export default function PostModal({ isOpen, onClose, posts, onCheckClick }: Post
                       <p className="text-orange-600 text-sm mt-1">หมวดหมู่ : {post.category}</p>
                     </div>
                     <span className={`px-4 py-1.5 rounded-full text-sm font-medium ${
-                      post.status === 'สถานะไม่อยู่ในคลัง' 
+                      post.status === 'ไม่อยู่ในคลัง' 
                         ? 'bg-red-100 text-red-700' 
-                        : post.status === 'สถานะอยู่ในคลัง'
+                        : post.status === 'อยู่ในคลัง'
                         ? 'bg-green-100 text-green-700'
-                        : post.status === 'สถานะถูกรับไปแล้ว'
+                        : post.status === 'ถูกรับไปแล้ว'
                         ? 'bg-orange-100 text-orange-700'
                         : 'bg-orange-100 text-orange-700' // fallback สำหรับกรณีอื่นๆ
                     }`}>
