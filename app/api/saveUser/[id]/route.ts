@@ -7,15 +7,10 @@ export async function GET(
   request: Request,
   { params }: { params: { id: string } },
 ) {
-  // Extract cookies from the request
-  const cookies = request.headers.get("cookie");
-  const userIdCookie = cookies
-    ?.split("; ")
-    .find((row) => row.startsWith("user_id="));
-  const userId = userIdCookie ? userIdCookie.split("=")[1] : params.id;
+  const userId = params.id;
 
   if (!userId) {
-    return NextResponse.json({ error: "User ID not found" }, { status: 400 });
+    return NextResponse.json({ error: "User ID not provided" }, { status: 400 });
   }
 
   const user = await prisma.user.findUnique({
