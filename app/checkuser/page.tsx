@@ -48,8 +48,8 @@ export default function UserTable() {
   return (
     <>
       <Navbar />
-      <div className="p-6 max-w-7xl mx-auto bg-orange-50 min-h-screen">
-        <h1 className="text-3xl font-bold text-orange-800 mb-6 animate-fade-in">
+      <div className="p-6 max-w-7xl mx-auto min-h-screen">
+        <h1 className="mt-20 text-3xl font-bold text-orange-800 mb-6 animate-fade-in">
           รายชื่อนักศึกษา
         </h1>
         

@@ -206,11 +206,11 @@ export default function DashboardAdmin() {
 
   return (
     
-    <div className=" min-h-screen bg-orange-50/50 p-3">
+    <div className=" bg-orange-50/50 p-3">
       <Navbar />
       {/* Header */}
       <div className="mt-20 flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-orange-950">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-orange-950">แดชบอร์ด</h1>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <span className="text-orange-700">{formatDateTime(currentDateTime)}</span>
@@ -220,17 +220,15 @@ export default function DashboardAdmin() {
 
       {/* Tabs */}
       <div className="flex gap-4 p-1 bg-white/50 rounded-lg w-fit mb-6">
-        <button className="px-4 py-2 bg-white rounded-md shadow-sm text-orange-700">Overview</button>
-        <button className="px-4 py-2 text-orange-500">Analytics</button>
-        <button className="px-4 py-2 text-orange-500">Reports</button>
-        <button className="px-4 py-2 text-orange-500">Notifications</button>
+        <button className="px-4 py-2 bg-white rounded-md shadow-sm text-orange-700">ภาพรวม</button>
+      
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-orange-50 p-4 rounded-lg shadow-sm">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-orange-800">Total Posts</span>
+            <span className="text-orange-800">โพสต์ทั้งหมด</span>
             <span className="text-orange-600">📝</span>
           </div>
           <div className="text-2xl font-bold mb-1 text-orange-900">{dashboardData.totalPosts}</div>
@@ -238,7 +236,7 @@ export default function DashboardAdmin() {
 
         <div className="bg-orange-50 p-4 rounded-lg shadow-sm">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-orange-800">Total Users</span>
+            <span className="text-orange-800">ผู้ใช้ทั้งหมด</span>
             <span className="text-orange-600">👤</span>
           </div>
           <div className="text-2xl font-bold mb-1 text-orange-900">{dashboardData.totalUsers}</div>
@@ -246,7 +244,7 @@ export default function DashboardAdmin() {
 
         <div className="bg-orange-50 p-4 rounded-lg shadow-sm">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-orange-800">Total Admins</span>
+            <span className="text-orange-800">เเอดมินทั้งหมด</span>
             <span className="text-orange-600">🛡️</span>
           </div>
           <div className="text-2xl font-bold mb-1 text-orange-900">{dashboardData.totalAdmins}</div>
@@ -302,7 +300,7 @@ export default function DashboardAdmin() {
 
         {/* All Items Section */}
         <div className="bg-orange-50 p-6 rounded-lg shadow-sm">
-          <h2 className="text-lg font-semibold mb-2 text-orange-900">All Items</h2>
+          <h2 className="text-lg font-semibold mb-2 text-orange-900">โพสต์ทั้งหมด</h2>
           <p className="text-orange-700 text-sm mb-6">
             วันนี้มีจำนวนโพสต์ใหม่: {
               getPostCounts("daily").data[getPostCounts("daily").labels.indexOf(
