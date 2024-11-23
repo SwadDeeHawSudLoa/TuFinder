@@ -247,9 +247,9 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
       className="w-full rounded-lg border px-3 py-2 text-black text-sm focus:border-blue-500 focus:outline-none"
     >
       <option value="">กรุณาเลือกหมวดหมู่</option>
-      <option value="documents">เอกสารสำคัญ</option>
-      <option value="personal_items">สิ่งของส่วนบุคคล</option>
-      <option value="electronics">อุปกรณ์อิเล็กทรอนิกส์</option>
+      <option value="เอกสารสำคัญ">เอกสารสำคัญ</option>
+      <option value="สิ่งของส่วนบุคคล">สิ่งของส่วนบุคคล</option>
+      <option value="อุปกรณ์อิเล็กทรอนิกส์">อุปกรณ์อิเล็กทรอนิกส์</option>
     </select>
   </div>
             <div className="mb-1">

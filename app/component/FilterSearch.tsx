@@ -41,9 +41,9 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
         className="w-full rounded border px-4 py-2   "
       >
         <option value="">หมวดหมู่</option>
-        <option value="documents">เอกสารสำคัญ</option>
-        <option value="personal_items">สิ่งของส่วนบุคคล</option>
-        <option value="electronics">อุปกรณ์อิเล็กทรอนิกส์</option>
+        <option value="เอกสารสำคัญ">เอกสารสำคัญ</option>
+        <option value="สิ่งของส่วนบุคคล">สิ่งของส่วนบุคคล</option>
+        <option value="อุปกรณ์อิเล็กทรอนิกส์">อุปกรณ์อิเล็กทรอนิกส์</option>
       </select>
 
       <select
