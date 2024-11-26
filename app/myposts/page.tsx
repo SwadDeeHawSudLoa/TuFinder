@@ -9,18 +9,21 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import crypto from "crypto";
+import CryptoJS from "crypto-js";
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
 interface Post {
   post_id: number;
- userIdEdit?: string;
+  userIdEdit?: string;
   adminIdEdit?: string;
- title: string;
+  title: string;
   username: string;
-  adminusername?:string;//เพิ่มชื่อ admin 
+  adminusername?: string; // เพิ่มชื่อ admin
   tel: string;
-  teluser: string;// เพิ่มเบอร์มือถือของผู้ใช้ 
+  teluser: string; // เพิ่มเบอร์มือถือของผู้ใช้
   category: string;
   image: string;
- imageAdmin?: string; //เพิ่มรูปภาพเเนบรูปหลังฐานที่จะเเสดงเฉพาะadmin เท่านั้น
+  imageAdmin?: string; // เพิ่มรูปภาพเเนบรูปหลังฐานที่จะเเสดงเฉพาะadminเท่านั้น
   status: string;
   description: string;
   date: Date;
@@ -28,6 +31,19 @@ interface Post {
   long: number;
   location: string;
 }
+const decryptWithCryptoJS = (encryptedCookie: string, secretKey: string): string => {
+  try {
+    console.log("Encrypted Cookie:", encryptedCookie);
+    const bytes = CryptoJS.AES.decrypt(encryptedCookie, secretKey);
+    const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+    console.log("Decrypted Text:", decryptedText);
+    return decryptedText;
+  } catch (error) {
+    console.error("Decryption failed:", error);
+    return "";
+  }
+};
+
 const PostList: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [userIdEdit, setUserIdEdit] = useState<string | null>(null);
@@ -42,7 +58,6 @@ const PostList: React.FC = () => {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const postsPerPage = 8;
 
-  // Ensure that useRouter is only used client-side
   const router = useRouter();
 
   const indexOfLastPost = currentPage * postsPerPage;
@@ -53,8 +68,10 @@ const PostList: React.FC = () => {
 
   useEffect(() => {
     const userIdFromCookie = Cookies.get("user_id");
+    console.log("User ID from cookie:", userIdFromCookie);
     if (userIdFromCookie) {
-      setUserIdEdit(userIdFromCookie);
+      const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
+      setUserIdEdit(decryptedUserId);
     } else {
       console.error("User ID cookie not found.");
     }
@@ -62,7 +79,6 @@ const PostList: React.FC = () => {
 
   useEffect(() => {
     if (userIdEdit) {
-      // Check if filters are empty, if so fetch default posts
       const isFiltersEmpty =
         !filters.title &&
         !filters.category &&
@@ -82,11 +98,11 @@ const PostList: React.FC = () => {
         const post = response.data;
         setPosts(post);
       } catch (error) {
-        console.error("Error fetching user name", error);
+        console.error("Error fetching user posts", error);
       }
     }
   }, [userIdEdit, filters]);
-  // Function to fetch search results
+
   const fetchSearchResults = async (searchFilters: {
     title: string;
     category: string;
@@ -101,6 +117,7 @@ const PostList: React.FC = () => {
       console.error("Error fetching search results:", error);
     }
   };
+
   const handleSearch = (searchFilters: {
     title?: string;
     category?: string;
@@ -115,6 +132,7 @@ const PostList: React.FC = () => {
     });
     setCurrentPage(1); // Reset to page 1 after search
   };
+
   const handleButtonClick = (post: Post) => {
     setSelectedPost(post);
     setShowModal(true);
@@ -134,7 +152,7 @@ const PostList: React.FC = () => {
       await axios.delete(`/api/posts/${post_id}`);
       window.location.href = "/myposts";
     } catch (error) {
-      console.error("Error fetching user name", error);
+      console.error("Error deleting post", error);
     }
   }
 
@@ -145,10 +163,7 @@ const PostList: React.FC = () => {
       <div className="container mx-auto p-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {currentPosts.map((post) => (
-            <div
-              key={post.post_id}
-              className="grid rounded-lg bg-white p-4 shadow-xl"
-            >
+            <div key={post.post_id} className="grid rounded-lg bg-white p-4 shadow-xl">
               <div className="relative mb-4 h-48 w-full">
                 <Image
                   src={post.image}
@@ -169,10 +184,10 @@ const PostList: React.FC = () => {
                   post.status === "ถูกรับไปเเล้ว"
                     ? "bg-orange-500"
                     : post.status === "ไม่อยู่ในคลัง"
-                      ? "bg-red-500"
-                      : post.status === "อยู่ในคลัง"
-                        ? "bg-green-500"
-                        : ""
+                    ? "bg-red-500"
+                    : post.status === "อยู่ในคลัง"
+                    ? "bg-green-500"
+                    : ""
                 } w-full rounded-md px-4 py-2 text-center`}
               >
                 {post.status}

@@ -1,7 +1,30 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import CryptoJS from "crypto-js";
 
 const prisma = new PrismaClient();
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
+
+// Encrypt a value using AES encryption
+const encryptWithCryptoJS = (value: string, secretKey: string): string => {
+  return CryptoJS.AES.encrypt(value, secretKey).toString();
+};
+
+// Decrypt a value using AES decryption
+const decryptWithCryptoJS = (encryptedValue: string, secretKey: string): string => {
+  try {
+    const bytes = CryptoJS.AES.decrypt(encryptedValue, secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  } catch (error) {
+    console.error("Decryption failed:", error);
+    return "";
+  }
+};
+
+// Hash the user ID (optional for additional security)
+function hashUserId(userId: string): string {
+  return CryptoJS.HmacSHA256(userId, SECRET_KEY).toString(CryptoJS.enc.Hex);
+}
 
 export async function GET(request: Request) {
   try {
@@ -12,7 +35,7 @@ export async function GET(request: Request) {
     console.error("Error retrieving users:", error);
     return NextResponse.json(
       { error: "Error retrieving users" },
-      { status: 500 },
+      { status: 500 }
     );
   } finally {
     await prisma.$disconnect();
@@ -48,8 +71,9 @@ export async function POST(request: Request) {
       response = NextResponse.json(newUser);
     }
 
-    // Set a cookie for the user
-    response.cookies.set("user_id", user_id);
+    // Encrypt the user_id and set it in a cookie
+    const encryptedUserId = encryptWithCryptoJS(user_id, SECRET_KEY);
+    response.cookies.set("user_id", encryptedUserId);
 
     return response;
   } catch (error) {
