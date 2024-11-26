@@ -9,13 +9,15 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import CryptoJS from "crypto-js";
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
 interface Post {
   post_id: number;
  userIdEdit?: string;
   adminIdEdit?: string;
  title: string;
   username: string;
-  adminusername?:string;//เพิ่มชื่อ admin 
+  adminusername?:string;//เพิ่มชื่อ admin 8
   tel: string;
  teluser: string;// เพิ่มเบอร์มือถือของผู้ใช้ 
   category: string;
@@ -28,7 +30,18 @@ interface Post {
   long: number;
   location: string;
 }
-
+const decryptWithCryptoJS = (encryptedCookie: string, secretKey: string): string => {
+  try {
+    console.log("Encrypted Cookie:", encryptedCookie);
+    const bytes = CryptoJS.AES.decrypt(encryptedCookie, secretKey);
+    const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+    console.log("Decrypted Text:", decryptedText);
+    return decryptedText;
+  } catch (error) {
+    console.error("Decryption failed:", error);
+    return "";
+  }
+};
 const PostList: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [adminIdEdit, setadminIdEdit] = useState<string | null>(null);
@@ -55,7 +68,8 @@ const PostList: React.FC = () => {
   useEffect(() => {
     const userIdFromCookie = Cookies.get("user_id");
     if (userIdFromCookie) {
-      setadminIdEdit(userIdFromCookie);
+      const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
+      setadminIdEdit(decryptedUserId);
     } else {
       console.error("User ID cookie not found.");
     }

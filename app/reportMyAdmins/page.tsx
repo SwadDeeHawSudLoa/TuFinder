@@ -9,7 +9,8 @@ import { storage } from "../config";
 import dynamic from "next/dynamic";
 import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
-
+import CryptoJS from "crypto-js";
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
 const Map = dynamic(() => import("../component/LeafletMap"), {
   ssr: false,
   loading: () => <p>Loading map...</p>,
@@ -21,7 +22,18 @@ const predefinedLocations = [
   { name: "อาคารบรรยายเรียนรวม 3 (บร.3)", lat: 14.07252874469262, long: 100.6062930821281 },
   { name: "อาคารบรรยายเรียนรวม 5 (บร.5)", lat: 14.07378276665719, long: 100.6078541277748 },
 ];
-
+const decryptWithCryptoJS = (encryptedCookie: string, secretKey: string): string => {
+  try {
+    console.log("Encrypted Cookie:", encryptedCookie);
+    const bytes = CryptoJS.AES.decrypt(encryptedCookie, secretKey);
+    const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+    console.log("Decrypted Text:", decryptedText);
+    return decryptedText;
+  } catch (error) {
+    console.error("Decryption failed:", error);
+    return "";
+  }
+};
 
 const ReportMyAdmins = () => {
   const [userIdEdit, setUserIdEdit] = useState<string | null>(null);
@@ -69,7 +81,8 @@ const ReportMyAdmins = () => {
 
     const userIdFromCookie = Cookies.get("user_id");
     if (userIdFromCookie) {
-      setUserIdEdit(userIdFromCookie);
+      const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
+      setUserIdEdit(decryptedUserId);
     } else {
       console.error("User ID cookie not found.");
     }

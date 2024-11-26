@@ -7,7 +7,8 @@ import { useRouter } from "next/navigation";
 
 export const runtime = 'edge';
 export const renderMode = "force-dynamic";
-
+import CryptoJS from "crypto-js";
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
 const LeafletMap = dynamic(() => import("../component/LeafletMap"), {
   ssr: false,
 });
@@ -38,7 +39,18 @@ interface ModalProps {
   post: Post1;
   view: "status" | "ตรวจสอบ";
 }
-
+const decryptWithCryptoJS = (encryptedCookie: string, secretKey: string): string => {
+  try {
+    console.log("Encrypted Cookie:", encryptedCookie);
+    const bytes = CryptoJS.AES.decrypt(encryptedCookie, secretKey);
+    const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+    console.log("Decrypted Text:", decryptedText);
+    return decryptedText;
+  } catch (error) {
+    console.error("Decryption failed:", error);
+    return "";
+  }
+};
 const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
   const router = useRouter();
   const [username, setUsername] = useState<string | null>(null);
@@ -47,13 +59,21 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
   const [userid, setUserid] = useState<string | null>(null);
   const [showEvidence, setShowEvidence] = useState<boolean>(false);
   const [showEvidencePopup, setShowEvidencePopup] = useState<boolean>(false); // New state for evidence popup
-  const userIdCookie = Cookies.get("user_id");
+  
+  
+  
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setIsClient(true);
       setUsername(localStorage.getItem("username"));
-      setUserid(userIdCookie || null);
+      const userIdFromCookie = Cookies.get("user_id");
+      if (userIdFromCookie) {
+        const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
+        setUserid(decryptedUserId);
+      } else {
+        console.error("User ID cookie not found.");
+      }
     }
   }, []);
 

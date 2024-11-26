@@ -9,12 +9,24 @@ import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
-
+import CryptoJS from "crypto-js";
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
 const Map = dynamic(() => import("@/app/component/LeafletMap"), {
   ssr: false,
   loading: () => <p>Loading map...</p>,
 });
-
+const decryptWithCryptoJS = (encryptedCookie: string, secretKey: string): string => {
+  try {
+    console.log("Encrypted Cookie:", encryptedCookie);
+    const bytes = CryptoJS.AES.decrypt(encryptedCookie, secretKey);
+    const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+    console.log("Decrypted Text:", decryptedText);
+    return decryptedText;
+  } catch (error) {
+    console.error("Decryption failed:", error);
+    return "";
+  }
+};
 const predefinedLocations = [
   { name: "มหาวิทยาลัยธรรมศาสตร์ รังสิต", lat: 14.0254, long: 100.6164 },
   { name: "จุฬาลงกรณ์มหาวิทยาลัย", lat: 13.7464, long: 100.533 },
@@ -84,7 +96,8 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
 
     const userIdFromCookie = Cookies.get("user_id");
     if (userIdFromCookie) {
-      setAdminIdEdit(userIdFromCookie);
+      const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
+      setAdminIdEdit(decryptedUserId);
     } else {
       console.error("User ID cookie not found.");
     }

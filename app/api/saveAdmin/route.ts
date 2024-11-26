@@ -1,6 +1,12 @@
 import prisma from "@/app/lib/prisma";
 import { NextResponse } from "next/server";
+import CryptoJS from "crypto-js";
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
 
+// Encrypt a value using AES encryption
+const encryptWithCryptoJS = (value: string, secretKey: string): string => {
+  return CryptoJS.AES.encrypt(value, secretKey).toString();
+};
 export async function POST(request: Request) {
   try {
     // Parse the request body
@@ -30,8 +36,9 @@ export async function POST(request: Request) {
       response = NextResponse.json(newAdmin);
     }
 
-    // Set a cookie for the admin
-    response.cookies.set("user_id", admin_id);
+    // Encrypt the user_id and set it in a cookie
+    const encryptedUserId = encryptWithCryptoJS(admin_id, SECRET_KEY);
+    response.cookies.set("user_id", encryptedUserId);
 
     return response;
   } catch (error) {
