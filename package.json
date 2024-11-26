@@ -16,6 +16,7 @@
     "axios": "^1.7.4",
     "chart.js": "^4.4.6",
     "cookie": "^0.6.0",
+    "crypto-js": "^4.2.0",
     "firebase": "^10.13.0",
     "install": "^0.13.0",
     "js-cookie": "^3.0.5",
@@ -30,6 +31,7 @@
     "react-select": "^5.8.0"
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
     "@types/js-cookie": "^3.0.6",
     "@types/leaflet": "^1.9.12",
     "@types/node": "^20",
