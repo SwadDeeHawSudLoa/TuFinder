@@ -53,11 +53,10 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
         className="w-full rounded border px-4 py-2  "
       >
         <option value="">สถานที่</option>
-        <option value="มหาวิทยาลัยธรรมศาสตร์ รังสิต">
-          มหาวิทยาลัยธรรมศาสตร์ รังสิต
-        </option>
-        <option value="จุฬาลงกรณ์มหาวิทยาลัย">จุฬาลงกรณ์มหาวิทยาลัย</option>
-        <option value="มหาวิทยาลัยมหิดล">มหาวิทยาลัยมหิดล</option>
+        <option value="มหาวิทยาลัยธรรมศาสตร์ รังสิต">มหาวิทยาลัยธรรมศาสตร์ รังสิต</option>
+        <option value="อาคารเรียนรวมสังคมศาสตร์ 3 (SC3)">อาคารเรียนรวมสังคมศาสตร์ 3 (SC3)</option>
+        <option value="อาคารบรรยายเรียนรวม 3 (บร.3)">อาคารบรรยายเรียนรวม 3 (บร.3)</option>
+        <option value="อาคารบรรยายเรียนรวม 5 (บร.5)">อาคารบรรยายเรียนรวม 5 (บร.5)</option>
       </select>
 
       <select
