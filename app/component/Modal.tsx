@@ -122,7 +122,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
       aria-labelledby="modal-title"
       aria-describedby="modal-description"
     >
-      <div className="overflow-y-auto overflow-auto max-h-screen w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">
+      <div className="overflow-y-auto max-h-screen  max-w-lg rounded-lg bg-white p-6 shadow-lg">
         <div className="flex justify-end">
           <button
             onClick={onClose}
@@ -163,11 +163,9 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
 
         {view !== "ตรวจสอบ" ? (
           <>
-            <div className="mx-auto h-auto w-3/4 rounded bg-slate-200 p-4 text-center">
-              <p className="text-left text-black" id="modal-description">
-                <strong>รายละเอียด:</strong> {post.description}
-              </p>
-            </div>
+           <div className="text-left max-h-32 max-w overflow-y-auto whitespace-normal rounded bg-slate-200 p-4 ">
+  <strong>รายละเอียด:</strong> {post.description}
+</div>
             <div className="mt-4 flex justify-center">
               <button
                 className="rounded bg-green-400 px-4 py-2 text-gray-950"
