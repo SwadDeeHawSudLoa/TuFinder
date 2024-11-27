@@ -62,74 +62,31 @@ const Navbar: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  const handleLogout = () => {
+
+ const handleLogout = () => {
     document.cookie = "user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("userEmail");
     setIsLoggedIn(false);
     router.push("/");
   };
-
-  return (
+  
+  
+  
+  
+  const NavigationLinks = () => (
     <>
-      {!isMenuOpen && (
-        <button 
-          id="menu-button"
-          onClick={() => setIsMenuOpen(!isMenuOpen)} 
-          className="fixed left-4 top-4 z-50 rounded-lg bg-orange-400 p-3 shadow-lg"
-        >
-          <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      )}
-
-      <div 
-        id="sidebar"
-        className={`fixed left-0 top-0 z-40 h-screen w-64 transform bg-orange-400 shadow-lg transition-transform duration-300 ${
-          isMenuOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+      <button
+        onClick={handleReportClick}
+        className="flex w-full items-center rounded-lg p-3 hover:bg-gray-100"
       >
-        <button
-          onClick={() => setIsMenuOpen(false)}
-          className="absolute right-4 top-4 p-2 hover:bg-orange-500 rounded-lg"
-        >
-          <svg 
-            className="h-6 w-6" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
-          >
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              strokeWidth="2" 
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
+        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+        </svg>
+        <span className="ml-3 text-md">แจ้งพบของหาย</span>
+      </button>
 
-        <div className="flex h-full flex-col">
-          <a href="/mainAdmin" className="flex items-center p-4">
-          <img
-            className="mr-2 h-8 w-8 text-gray-100"
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Emblem_of_Thammasat_University.svg/1024px-Emblem_of_Thammasat_University.svg.png"
-            alt="logo"
-          /><span className="text-xl font-semibold">TuItemFinder</span>
-          </a>
-
-          <nav className="flex-1 space-y-2 p-2">
-            <button
-              onClick={handleReportClick}
-              className="flex w-full items-center rounded-lg p-3 hover:bg-gray-100"
-            >
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
-              </svg>
-              <span className="ml-3">แจ้งพบของหาย</span>
-            </button>
-
-            {isLoggedIn && !isAdmin && (
+      {isLoggedIn && !isAdmin && (
               <>
                 <a
                   href="/mypostMyadmin"
@@ -162,10 +119,102 @@ const Navbar: React.FC = () => {
                 </a>
               </>
             )}
-          </nav>
+    </>
+  );
 
-          <div className="border-t p-2">
+ 
+
+  return (
+    <>
+   <button
+  id="menu-button"
+  onClick={() => setIsMenuOpen(!isMenuOpen)}
+  className={`fixed left-4 top-4 z-50 rounded-lg bg-orange-400 p-3 shadow-lg md:hidden ${
+    isMenuOpen ? "hidden" : "block"
+  }`}
+>
+  <svg
+    className="h-6 w-6"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      d="M4 6h16M4 12h16M4 18h16"
+    />
+  </svg>
+</button>
+
+      {/* Sidebar for Mobile */}
+      <div
+        id="sidebar"
+        className={`fixed left-0 top-0 z-40 h-screen w-64 transform bg-orange-400 shadow-lg transition-transform duration-300 lg:hidden ${
+          isMenuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <button
+          onClick={() => setIsMenuOpen(false)}
+          className="absolute right-4 top-4 p-2 hover:bg-orange-500 rounded-lg"
+        >
+          <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div className="flex h-full flex-col">
+          <a href="/mainAdmin">
+            <div className="flex items-center p-4">
+              <img
+                className="mr-2 h-8 w-8 text-gray-100"
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Emblem_of_Thammasat_University.svg/1024px-Emblem_of_Thammasat_University.svg.png"
+                alt="logo"
+              />
+              <span className="text-xl font-semibold">TuItemFinder</span>
+            </div>
+          </a>
+          <nav className="flex-1 space-y-2 p-2">
+            <NavigationLinks />
             {isLoggedIn ? (
+              <button
+                onClick={handleLogout}
+                className=" text-sm flex w-full items-center rounded-lg p-3 hover:bg-gray-100"
+              >
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                <span className="ml-3">Logout</span>
+              </button>
+            ) : (
+              <a
+                href="/login"
+                className=" text-sm flex w-full items-center rounded-lg p-3 hover:bg-gray-100"
+              >
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                </svg>
+                <span className="ml-3">Login</span>
+              </a>
+            )}
+          </nav>
+        </div>
+      </div>
+
+      {/* Horizontal Navbar for Desktop */}
+      <div className="hidden lg:flex lg:justify-between lg:items-center lg:py-4 lg:px-8 lg:bg-orange-400 lg:shadow-md">
+        <a href="/mainAdmin" className="flex items-center">
+          <img
+            className="mr-2 h-8 w-8 text-gray-100"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Emblem_of_Thammasat_University.svg/1024px-Emblem_of_Thammasat_University.svg.png"
+            alt="logo"
+          />
+          <span className="text-xl font-semibold">TuItemFinder</span>
+        </a>
+        <nav className="flex space-x-4">
+          <NavigationLinks />
+          {isLoggedIn ? (
               <button
                 onClick={handleLogout}
                 className="flex w-full items-center rounded-lg p-3 hover:bg-gray-100"
@@ -186,9 +235,9 @@ const Navbar: React.FC = () => {
                 <span className="ml-3">Login</span>
               </a>
             )}
-          </div>
-        </div>
+        </nav>
       </div>
+
 
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
