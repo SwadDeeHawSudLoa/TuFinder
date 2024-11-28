@@ -194,14 +194,24 @@ const Navbar: React.FC = () => {
               <br />
               โปรดเข้าสู่ระบบ
             </h1>
+            <h2 className="mb-4 text-center text-xl  md:text-xl">
+              หากคุณไม่ได้เป็นบุคลากรหรือนักศึกษาใน
+              <br />
+              มหาวิทยาลัยโปรติดต่อเจ้าหน้าที่ ที่อาคาร SC1            
+              </h2>
             <div className="flex flex-col items-center">
               <button
-                className="mb-4 w-full max-w-xs rounded-lg bg-green-400 px-6 py-3 text-sm text-black hover:bg-green-700 md:text-lg"
+                className="flex justify-center mb-4 w-full max-w-xs rounded-lg bg-green-400 px-6 py-3 text-sm text-black hover:bg-green-700 md:text-lg"
                 onClick={() => {
                   window.location.href = "/map";
                 }}
               >
                 ดูหมุด
+                <img
+            className="ml-2 h-7 w-10 text-gray-100"
+            src="https://png.pngtree.com/png-vector/20221116/ourmid/pngtree-red-location-map-icon-pin-navigation-pointer-target-png-image_6460378.png"
+            alt="logo"
+          />
               </button>
               <button
                 className="mb-4 w-full max-w-xs rounded-lg bg-yellow-400 px-6 py-3 text-sm text-black hover:bg-yellow-600 md:text-lg"
