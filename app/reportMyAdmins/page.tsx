@@ -1,7 +1,7 @@
 "use client";
 
 import React, { FormEvent, useEffect, useState } from "react";
-import Navbar from "../component/navbar";
+import Navbar from "../component/AdminNavbar";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";

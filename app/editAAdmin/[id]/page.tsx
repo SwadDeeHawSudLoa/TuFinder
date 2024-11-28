@@ -202,7 +202,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
     <>
       <Navbar />
       <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-        <div className="w-3/4 max-w-lg rounded-lg bg-white p-4">
+        <div className="w-3/4 max-w-lg rounded-lg bg-white p-2">
           <div className="flex justify-end">
             <button
               onClick={() => window.history.back()}
@@ -335,8 +335,8 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
       <img
         src={existingImage}
         alt="Old Post Image"
-        className="w-full h-auto items-center"
-        style={{ height: "100%", width: "100%" }}
+        className="mx-auto w-full h-auto items-center"
+        style={{ height: "40%", width: "50%" }}
       />
     </div>
   </div>

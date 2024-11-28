@@ -234,7 +234,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
         ) : (
           isAdmin && (
             <>
-              <div className="mx-auto h-auto w-3/4 rounded bg-slate-200 p-4 text-center">
+              <div className="text-left max-h-32 max-w overflow-y-auto whitespace-normal rounded bg-slate-200 p-4">
                 <p className="text-left">
                   <strong>รายละเอียด:</strong> {post.description}
                 </p>
