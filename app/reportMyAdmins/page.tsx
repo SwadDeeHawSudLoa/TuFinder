@@ -1,7 +1,7 @@
 "use client";
 
 import React, { FormEvent, useEffect, useState } from "react";
-import Navbar from "../component/AdminNavbar";
+import Navbar from "@/app/component/AdminNavbar"
 import Cookies from "js-cookie";
 import axios from "axios";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -70,25 +70,26 @@ const ReportPage = () => {
     const statusO = "ไม่อยู่ในคลัง";
     setStatus(statusO);
 
-    async function fetchAdmininUserName() {
+    async function fetchAdminUserName() {
       try {
         const response = await axios.get(`/api/saveAdmin`);
         const name = response.data;
-        setAdminusername(name);
+        setUsername(name);
       } catch (error) {
         console.error("Error fetching user name", error);
       }
     }
-    
-    fetchAdmininUserName() 
-    const name  = "รณพี ศรีนอก" ;
-    setUsername(name);
+    fetchAdminUserName();
+    const namer = "รณพี ศรีนอก";
+    setAdminusername(namer);
+    const admin = "123";
+    setAdminIdEdit(admin);
     const phoneAdmin = "043311286";
     setTel(phoneAdmin);
     const userIdFromCookie = Cookies.get("user_id");
     if (userIdFromCookie) {
       const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
-      setAdminIdEdit(decryptedUserId);
+      setUserIdEdit(decryptedUserId);
     } else {
       console.error("User ID cookie not found.");
     }
@@ -96,7 +97,6 @@ const ReportPage = () => {
 
   useEffect(() => {
     if (adminIdEdit) {
-      console.log("adminIdEdit", adminIdEdit);
       fetchUserName(adminIdEdit);
     }
 
@@ -104,8 +104,7 @@ const ReportPage = () => {
       try {
         const response = await axios.get(`/api/saveAdmin/${adminId}`);
         const name = response.data;
-        setAdminusername(name);
-         
+        setUsername(name);
       } catch (error) {
         console.error("Error fetching user name", error);
       }
@@ -145,7 +144,7 @@ const ReportPage = () => {
 
     try {
       await axios.post("/api/posts", {
-      
+       
       adminIdEdit,
       title,
       username,

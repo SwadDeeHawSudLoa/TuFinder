@@ -129,7 +129,7 @@ const Navbar: React.FC = () => {
    <button
   id="menu-button"
   onClick={() => setIsMenuOpen(!isMenuOpen)}
-  className={`fixed left-4 top-4 z-50 rounded-lg bg-orange-400 p-3 shadow-lg md:hidden ${
+  className={`fixed left-4 top-4 z-50 rounded-lg bg-orange-400 p-3 shadow-lg lg:hidden ${
     isMenuOpen ? "hidden" : "block"
   }`}
 >
