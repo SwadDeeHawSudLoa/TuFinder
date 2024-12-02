@@ -195,7 +195,7 @@ const PostList: React.FC = () => {
             </button>
             <button
               onClick={() => handleEditClick(post.post_id)}
-              className="mt-2 flex-grow transform rounded-md bg-orange-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
+              className="mt-2 flex-grow transform rounded-md bg-blue-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
             >
               เเก้ไขโพสต์
             </button>

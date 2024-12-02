@@ -55,8 +55,13 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
         <option value="">สถานที่</option>
         <option value="มหาวิทยาลัยธรรมศาสตร์ รังสิต">มหาวิทยาลัยธรรมศาสตร์ รังสิต</option>
         <option value="อาคารเรียนรวมสังคมศาสตร์ 3 (SC3)">อาคารเรียนรวมสังคมศาสตร์ 3 (SC3)</option>
+        <option value="อาคารบรรยายเรียนรวม 1 (บร.1)">อาคารบรรยายเรียนรวม 1 (บร.1)</option>
+        <option value="อาคารบรรยายเรียนรวม 2 (บร.2)">อาคารบรรยายเรียนรวม 2 (บร.2)</option>
         <option value="อาคารบรรยายเรียนรวม 3 (บร.3)">อาคารบรรยายเรียนรวม 3 (บร.3)</option>
+        <option value="อาคารบรรยายเรียนรวม 4 (บร.4)">อาคารบรรยายเรียนรวม 4 (บร.4)</option>
         <option value="อาคารบรรยายเรียนรวม 5 (บร.5)">อาคารบรรยายเรียนรวม 5 (บร.5)</option>
+        <option value="หอสมุดป๋วย อึ๊งภากรณ์">หอสมุดป๋วย อึ๊งภากรณ์</option>
+        <option value="ศูนย์อาหารกรีนแคนทีน(Green canteen)">ศูนย์อาหารกรีนแคนทีน(Green canteen)</option>
       </select>
 
       <select

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { FormEvent, useEffect, useState } from "react";
-import Navbar from "@/app/component/AdminNavbar"
+import Navbar from "../component/AdminNavbar";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -74,22 +74,18 @@ const ReportPage = () => {
       try {
         const response = await axios.get(`/api/saveAdmin`);
         const name = response.data;
-        setUsername(name);
+        setAdminusername(name);
       } catch (error) {
         console.error("Error fetching user name", error);
       }
     }
     fetchAdminUserName();
-    const namer = "รณพี ศรีนอก";
-    setAdminusername(namer);
-    const admin = "123";
-    setAdminIdEdit(admin);
     const phoneAdmin = "043311286";
     setTel(phoneAdmin);
     const userIdFromCookie = Cookies.get("user_id");
     if (userIdFromCookie) {
       const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
-      setUserIdEdit(decryptedUserId);
+      setAdminIdEdit(decryptedUserId);
     } else {
       console.error("User ID cookie not found.");
     }
@@ -103,8 +99,9 @@ const ReportPage = () => {
     async function fetchUserName(adminId: string) {
       try {
         const response = await axios.get(`/api/saveAdmin/${adminId}`);
-        const name = response.data;
+        const name = response.data.name;
         setUsername(name);
+        setAdminusername(name);
       } catch (error) {
         console.error("Error fetching user name", error);
       }
@@ -144,7 +141,7 @@ const ReportPage = () => {
 
     try {
       await axios.post("/api/posts", {
-       
+        
       adminIdEdit,
       title,
       username,
