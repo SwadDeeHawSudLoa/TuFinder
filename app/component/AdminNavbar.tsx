@@ -172,7 +172,7 @@ const Navbar: React.FC = () => {
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Emblem_of_Thammasat_University.svg/1024px-Emblem_of_Thammasat_University.svg.png"
                 alt="logo"
               />
-              <span className="text-xl font-semibold">TuItemFinder</span>
+              <span className="text-xl font-semibold">TuItemFinder<br />ByAdmin</span>
             </div>
           </a>
           <nav className="flex-1 space-y-2 p-2">
@@ -210,7 +210,7 @@ const Navbar: React.FC = () => {
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Emblem_of_Thammasat_University.svg/1024px-Emblem_of_Thammasat_University.svg.png"
             alt="logo"
           />
-          <span className="text-xl font-semibold">TuItemFinder</span>
+          <span className="text-xl font-semibold">TuItemFinderByAdmin</span>
         </a>
         <nav className="flex space-x-4">
           <NavigationLinks />
