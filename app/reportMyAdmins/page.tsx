@@ -110,24 +110,10 @@ const ReportPage = () => {
 
   useEffect(() => {
     if (selectedLocation) {
-      if (selectedLocation.name === "ตำแหน่งของคุณ") {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            setLat(position.coords.latitude);
-            setLong(position.coords.longitude);
-            setLocation("ตำแหน่งของคุณ");
-            setMapKey((prevKey) => prevKey + 1); // Refresh map with new position
-          },
-          (error) => {
-            console.error("Error getting user location:", error);
-          }
-        );
-      } else {
-        setLat(selectedLocation.lat);
-        setLong(selectedLocation.long);
-        setLocation(selectedLocation.name);
-        setMapKey((prevKey) => prevKey + 1); // Refresh map with new position
-      }
+      setLat(selectedLocation.lat);
+      setLong(selectedLocation.long);
+      setLocation(selectedLocation.name);
+      setMapKey((prevKey) => prevKey + 1); // Refresh map with new position
     }
   }, [selectedLocation]);
 
@@ -290,8 +276,8 @@ const ReportPage = () => {
           onChange={(e) => {
             const selected = predefinedLocations.find(
               (loc) => loc.name === e.target.value
-            ) || { name: "ตำแหน่งของคุณ", lat: 0, long: 0 };
-            setSelectedLocation(selected);
+            );
+            setSelectedLocation(selected || null);
           }}
           className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
         >
@@ -301,7 +287,6 @@ const ReportPage = () => {
               {loc.name}
             </option>
           ))}
-          <option value="ตำแหน่งของคุณ">ตำแหน่งของคุณ</option>
         </select>
       </div>
 
