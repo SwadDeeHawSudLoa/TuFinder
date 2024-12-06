@@ -142,6 +142,13 @@ const PostList: React.FC = () => {
                 <h2 className="text-xl font-bold">{post.title}</h2>
                 <p className="text-gray-600">{post.location}</p>
                 <p className="mb-2 text-gray-600">{post.category}</p>
+                <p className="text-sm text-gray-500">
+                  {new Date(post.date).toLocaleDateString('th-TH', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </p>
               </div>
               <button
                 onClick={() => handleButtonClick(post)}

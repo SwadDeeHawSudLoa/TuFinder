@@ -142,7 +142,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
           />
         </div>
         <div className="mb-4 flex flex-row items-center justify-center space-x-4 text-xl text-black">
-          <p>{post.title}</p>
+          <p><strong>ชื่อสิ่งของ:</strong>{post.title}</p>
           <p>
             <strong>สถานที่พบ:</strong> {post.location}
           </p>
@@ -165,7 +165,16 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
           <>
            <div className="text-left max-h-32 max-w overflow-y-auto whitespace-normal rounded bg-slate-200 p-4 ">
   <strong>รายละเอียด:</strong> {post.description}
+  
 </div>
+<p className="text-medium text-gray-1000">
+  วันที่โพสต์: 
+                  {new Date(post.date).toLocaleDateString('th-TH', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </p>
             <div className="mt-4 flex justify-center">
               <button
                 className="rounded bg-green-400 px-4 py-2 text-gray-950"
