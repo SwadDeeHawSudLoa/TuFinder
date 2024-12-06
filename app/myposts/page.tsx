@@ -156,6 +156,10 @@ const PostList: React.FC = () => {
     }
   }
 
+  async function handleChamgeStatusClick(posts: Post){
+    router.push(`/statusChangePage/${posts.post_id}`);
+  }
+
   return (
     <>
       <Navbar />
@@ -198,12 +202,21 @@ const PostList: React.FC = () => {
               >
                 เเก้ไขโพสต์
               </button>
+              <div className="flex flex-row">
               <button
+                onClick={() => handleChamgeStatusClick(post)}
+                className="mt-2 flex-grow transform rounded-lg bg-yellow-400 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
+              >
+                เปลี่ยนเเปลงสถานะ
+              </button>
+                 <button
                 onClick={() => handleDeleteClick(post.post_id)}
                 className="mt-2 flex-grow transform rounded-lg bg-red-900 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
               >
                 ลบโพสต์
               </button>
+              </div>
+             
             </div>
           ))}
         </div>
