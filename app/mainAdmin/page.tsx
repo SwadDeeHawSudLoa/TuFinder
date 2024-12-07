@@ -130,7 +130,9 @@ const PostList: React.FC = () => {
           {currentPosts.map((post) => (
             <div
               key={post.post_id}
-              className="grid rounded-lg bg-white p-4 shadow-xl"
+              className="grid rounded-lg bg-white p-4 shadow-xl hover:bg-blue-100 transition-colors duration-200"
+              onClick={() => handleButtonClick(post, "ตรวจสอบ")}
+              style={{ cursor: 'pointer' }}
             >
               <div className="relative mb-4 h-48 w-full">
                 <Image
