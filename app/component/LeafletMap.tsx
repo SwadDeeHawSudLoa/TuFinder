@@ -118,7 +118,7 @@ const LeafletMap: React.FC<MapProps> = ({
           position: "absolute",
           bottom: "10px",
           right: "10px",
-          zIndex: 1,
+          zIndex: 1000,
         }}
       >
         <button

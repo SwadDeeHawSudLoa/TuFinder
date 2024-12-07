@@ -9,7 +9,7 @@ export const runtime = 'edge';
 export const renderMode = "force-dynamic";
 import CryptoJS from "crypto-js";
 const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
-const LeafletMap = dynamic(() => import("../component/LeafletMap"), {
+const LeafletMap = dynamic(() => import("../component/LeafletMapModal"), {
   ssr: false,
 });
 
@@ -155,8 +155,6 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
           <LeafletMap
             posix={[post.lat, post.long]}
             zoom={13}
-            onMapClick={() => {}}
-            onLocationUpdate={() => {}}
             style={{ height: "100%" }}
           />
         </div>
