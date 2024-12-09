@@ -15,7 +15,8 @@ interface MapProps {
   posix: [number, number];
   zoom: number;
   onMapClick: (coords: [number, number]) => void;
-  onLocationUpdate: (coords: [number, number]) => void; // New prop to update location
+  onLocationUpdate: (coords: [number, number]) => void;
+  markerText?: string;
   style?: React.CSSProperties;
 }
 
@@ -23,7 +24,8 @@ const LeafletMap: React.FC<MapProps> = ({
   posix,
   zoom,
   onMapClick,
-  onLocationUpdate, // Destructure the new prop
+  onLocationUpdate,
+  markerText,
   style,
 }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
@@ -57,6 +59,9 @@ const LeafletMap: React.FC<MapProps> = ({
               icon: customIcon,
             }).addTo(mapInstanceRef.current);
           }
+          if (markerText) {
+            markerRef.current.bindPopup(markerText).openPopup();
+          }
         }
       });
     } else {
@@ -71,8 +76,11 @@ const LeafletMap: React.FC<MapProps> = ({
           mapInstanceRef.current,
         );
       }
+      if (markerText && markerRef.current) {
+        markerRef.current.bindPopup(markerText).openPopup();
+      }
     }
-  }, [posix, zoom, onMapClick]);
+  }, [posix, zoom, onMapClick, markerText]);
 
   // Function to move map to user's current location
   const handleMarkMyPosition = () => {

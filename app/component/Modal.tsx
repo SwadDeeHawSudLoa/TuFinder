@@ -31,6 +31,7 @@ interface Post1 {
   lat: number;
   long: number;
   location: string;
+  markerText?: string;
 }
 
 interface ModalProps {
@@ -156,6 +157,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
             posix={[post.lat, post.long]}
             zoom={13}
             style={{ height: "100%" }}
+            markerText={post.markerText}
           />
         </div>
 

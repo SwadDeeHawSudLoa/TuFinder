@@ -40,6 +40,7 @@ model Post {
   						lat          Float
   						long         Float
   						location     String
+						markerText   String?
   						author       User?    @relation(fields: [userIdEdit], references: [user_id])
   						author2      Admin?   @relation(fields: [adminIdEdit], references: [admin_id])
 

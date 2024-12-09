@@ -15,12 +15,14 @@ interface MapProps {
   posix: [number, number];
   zoom: number;
   style?: React.CSSProperties;
+ markerText?: string;
 }
 
 const LeafletMapModal: React.FC<MapProps> = ({
   posix,
   zoom,
   style,
+  markerText,
 }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
@@ -29,28 +31,30 @@ const LeafletMapModal: React.FC<MapProps> = ({
   useEffect(() => {
     if (!mapRef.current) return;
 
-    // Initialize map if it doesn't exist yet
-    if (!mapInstanceRef.current) {
+    if(!mapInstanceRef.current) {
       mapInstanceRef.current = L.map(mapRef.current).setView(posix, zoom);
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors",
       }).addTo(mapInstanceRef.current);
 
-      // Add initial marker
-      markerRef.current = L.marker(posix, { icon: customIcon }).addTo(
-        mapInstanceRef.current
-      );
+      // Add marker with popup
+      markerRef.current = L.marker(posix, { icon: customIcon })
+        .addTo(mapInstanceRef.current);
+      
+      if (markerText) {
+        markerRef.current.bindPopup(markerText).openPopup();
+      }
     } else {
-      // Update map view if position changes
       mapInstanceRef.current.setView(posix, zoom);
-
-      // Update marker position
       if (markerRef.current) {
         markerRef.current.setLatLng(posix);
+        if (markerText) {
+          markerRef.current.bindPopup(markerText).openPopup();
+        }
       }
     }
-  }, [posix, zoom]);
+  }, [posix, zoom, markerText]);
 
   return (
     <div style={{ position: "relative", ...style, zIndex: 0 }}>
@@ -60,3 +64,4 @@ const LeafletMapModal: React.FC<MapProps> = ({
 };
 
 export default LeafletMapModal;
+

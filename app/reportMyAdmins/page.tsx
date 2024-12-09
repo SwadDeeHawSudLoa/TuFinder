@@ -65,6 +65,7 @@ const ReportPage = () => {
   } | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [mapKey, setMapKey] = useState<number>(0);
+  const [markerText, setMarkerText] = useState("");
 
   useEffect(() => {
     const statusO = "ไม่อยู่ในคลัง";
@@ -155,6 +156,7 @@ const ReportPage = () => {
         lat,
         long,
         location,
+        markerText,
       });
       setIsSubmitted(true);
     } catch (error) {
@@ -294,12 +296,22 @@ const ReportPage = () => {
         <label className="mb-2 block text-sm font-bold text-gray-700">
           ตำแหน่งบนแผนที่
         </label>
+        <div className="mb-2">
+          <input
+            type="text"
+            value={markerText}
+            onChange={(e) => setMarkerText(e.target.value)}
+            placeholder="ข้อความที่จะแสดงบนหมุด"
+            className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+          />
+        </div>
         <Map
           posix={[lat, long]}
           zoom={13}
           key={mapKey}
           onMapClick={handleMapClick}
           onLocationUpdate={handleMapClick}
+          markerText={markerText}
           style={{ height: "200px", width: "100%" }}
         />
       </div>
