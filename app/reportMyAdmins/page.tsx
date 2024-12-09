@@ -294,7 +294,7 @@ const ReportPage = () => {
 
       <div className="mb-4">
         <label className="mb-2 block text-sm font-bold text-gray-700">
-          ตำแหน่งบนแผนที่
+         รายละเอียดตำแหน่งเพิ่มเติม (เช่น ชั้นที่ ...)
         </label>
         <div className="mb-2">
           <input

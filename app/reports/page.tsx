@@ -65,6 +65,7 @@ const ReportPage = () => {
   } | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [mapKey, setMapKey] = useState<number>(0);
+  const [markerText, setMarkerText] = useState("");
 
   useEffect(() => {
     const statusO = "ไม่อยู่ในคลัง";
@@ -111,24 +112,10 @@ const ReportPage = () => {
 
   useEffect(() => {
     if (selectedLocation) {
-      if (selectedLocation.name === "ตำแหน่งของคุณ") {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            setLat(position.coords.latitude);
-            setLong(position.coords.longitude);
-            setLocation("ตำแหน่งของคุณ");
-            setMapKey((prevKey) => prevKey + 1); // Refresh map with new position
-          },
-          (error) => {
-            console.error("Error getting user location:", error);
-          }
-        );
-      } else {
-        setLat(selectedLocation.lat);
-        setLong(selectedLocation.long);
-        setLocation(selectedLocation.name);
-        setMapKey((prevKey) => prevKey + 1); // Refresh map with new position
-      }
+      setLat(selectedLocation.lat);
+      setLong(selectedLocation.long);
+      setLocation(selectedLocation.name);
+      setMapKey((prevKey) => prevKey + 1);
     }
   }, [selectedLocation]);
 
@@ -170,6 +157,7 @@ const ReportPage = () => {
         lat,
         long,
         location,
+        markerText,
       });
       setIsSubmitted(true);
     } catch (error) {
@@ -291,8 +279,8 @@ const ReportPage = () => {
           onChange={(e) => {
             const selected = predefinedLocations.find(
               (loc) => loc.name === e.target.value
-            ) || { name: "ตำแหน่งของคุณ", lat: 0, long: 0 };
-            setSelectedLocation(selected);
+            );
+            setSelectedLocation(selected || null);
           }}
           className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
         >
@@ -302,20 +290,29 @@ const ReportPage = () => {
               {loc.name}
             </option>
           ))}
-          <option value="ตำแหน่งของคุณ">ตำแหน่งของคุณ</option>
         </select>
       </div>
 
       <div className="mb-4">
         <label className="mb-2 block text-sm font-bold text-gray-700">
-          ตำแหน่งบนแผนที่
+          รายละเอียดตำแหน่งเพิ่มเติม (เช่น ชั้นที่ ...)
         </label>
+        <div className="mb-2">
+          <input
+            type="text"
+            value={markerText}
+            onChange={(e) => setMarkerText(e.target.value)}
+            placeholder="ข้อความที่จะแสดงบนหมุด"
+            className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+          />
+        </div>
         <Map
           posix={[lat, long]}
           zoom={13}
           key={mapKey}
           onMapClick={handleMapClick}
           onLocationUpdate={handleMapClick}
+          markerText={markerText}
           style={{ height: "200px", width: "100%" }}
         />
       </div>
