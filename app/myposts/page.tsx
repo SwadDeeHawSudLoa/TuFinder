@@ -10,6 +10,7 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import crypto from "crypto";
+import Pagination from "../component/Pagination";
 import CryptoJS from "crypto-js";
 const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
 interface Post {
@@ -220,21 +221,11 @@ const PostList: React.FC = () => {
             </div>
           ))}
         </div>
-        <div className="mt-4 flex justify-center">
-          {Array.from({ length: totalPages }, (_, index) => (
-            <button
-              key={index + 1}
-              onClick={() => setCurrentPage(index + 1)}
-              className={`mx-1 rounded px-3 py-2 ${
-                currentPage === index + 1
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200"
-              }`}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div>
+        <Pagination
+          totalPages={totalPages}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+        />
       </div>
       {selectedPost && (
         <Modal

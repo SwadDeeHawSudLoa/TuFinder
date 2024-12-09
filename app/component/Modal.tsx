@@ -73,7 +73,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
         const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
         setUserid(decryptedUserId);
       } else {
-        console.error("User ID cookie not found.");
+       
       }
     }
   }, []);

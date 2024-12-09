@@ -5,6 +5,7 @@ import Image from "next/image";
 import Navbar from "../component/navbar";
 import FilterSearch from "../component/FilterSearch";
 import Modal from "../component/Modal";
+import Pagination from "../component/Pagination";
 import axios from "axios";
 
 interface Post{
@@ -169,21 +170,11 @@ const PostList: React.FC = () => {
             </div>
           ))}
         </div>
-        <div className="mt-4 flex justify-center">
-          {Array.from({ length: totalPages }, (_, index) => (
-            <button
-              key={index + 1}
-              onClick={() => setCurrentPage(index + 1)}
-              className={`mx-1 rounded px-3 py-2 ${
-                currentPage === index + 1
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200"
-              }`}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div>
+        <Pagination
+          totalPages={totalPages}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+        />
       </div>
       {selectedPost && (
         <Modal
