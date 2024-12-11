@@ -35,7 +35,31 @@
 }
 
 body {
-  @apply bg-white;
+  min-height: 100vh;
+  background-color: white;
+  color: black;
+  forced-color-adjust: none;
+}
 
+.container {
+  background-color: white;
+}
 
+:root {
+  color-scheme: light only;
+}
+
+html {
+  color-scheme: light only;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: light only;
+  }
+  
+  body {
+    background-color: white;
+    color: black;
+  }
 }

@@ -56,6 +56,7 @@ interface Post {
   tel: string;
   teluser: string;// เพิ่มเบอร์มือถือของผู้ใช้ 
   category: string;
+  otherCategory: string;
   image: string;
   imageAdmin?: string; //เพิ่มรูปภาพเเนบรูปหลังฐานที่จะเเสดงเฉพาะadmin เท่านั้น
   status: string;
@@ -206,7 +207,7 @@ export default function DashboardAdmin() {
 
   return (
     
-    <div className=" bg-orange-50/50 p-3">
+    <div className=" bg-orange-50/50">
       <Navbar />
       {/* Header */}
       <div className="mt-20 flex justify-between items-center mb-6">

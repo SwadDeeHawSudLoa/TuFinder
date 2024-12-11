@@ -17,6 +17,7 @@ interface Post {
   tel: string;
   teluser: string;
   category: string;
+  otherCategory: string;
   image: string;
   imageAdmin?: string;
   status: string;

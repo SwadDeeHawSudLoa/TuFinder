@@ -31,6 +31,7 @@ interface Post {
   lat: number;
   long: number;
   location: string;
+  otherCategory: string;
 }
 const decryptWithCryptoJS = (encryptedCookie: string, secretKey: string): string => {
   try {

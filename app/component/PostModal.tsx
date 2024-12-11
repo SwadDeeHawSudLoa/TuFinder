@@ -20,6 +20,8 @@ interface Post {
     tel: string;
     teluser: string;// เพิ่มเบอร์มือถือของผู้ใช้ 
     category: string;
+    otherCategory: string;
+    markerText?: string;
     image: string;
    imageAdmin?: string; //เพิ่มรูปภาพเเนบรูปหลังฐานที่จะเเสดงเฉพาะadmin เท่านั้น
     status: string;

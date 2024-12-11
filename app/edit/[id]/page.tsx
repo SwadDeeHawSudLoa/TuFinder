@@ -15,18 +15,6 @@ const Map = dynamic(() => import("@/app/component/LeafletMap"), {
   ssr: false,
   loading: () => <p>Loading map...</p>,
 });
-
-const predefinedLocations = [
-  { name: "มหาวิทยาลัยธรรมศาสตร์ รังสิต", lat: 14.0254, long: 100.6164 },
-  { name: "อาคารเรียนรวมสังคมศาสตร์ 3 (SC3)", lat: 14.07049939996706, long: 100.6059014796119 },
-  { name: "อาคารบรรยายเรียนรวม 1 (บร.1)", lat: 14.0724923207153, long: 100.6022268532616 },
-  { name: "อาคารบรรยายเรียนรวม 2 (บร.2)", lat: 14.07357983410881, long: 100.6062930821281 },
-  { name: "อาคารบรรยายเรียนรวม 3 (บร.3)", lat: 14.07252874469262, long: 100.6062930821281 },
-  { name: "อาคารบรรยายเรียนรวม 4 (บร.4)", lat: 14.07243508302493, long: 100.608079433332 },
-  { name: "อาคารบรรยายเรียนรวม 5 (บร.5)", lat: 14.07378276665719, long: 100.6078541277748 },
-  { name: "หอสมุดป๋วย อึ๊งภากรณ์", lat: 14.0711550363869, long: 100.6022429465156 },
-  { name: "ศูนย์อาหารกรีนแคนทีน(Green canteen)", lat: 14.07330925709733, long: 100.6011539696556 },
-];
 const decryptWithCryptoJS = (encryptedCookie: string, secretKey: string): string => {
   try {
     console.log("Encrypted Cookie:", encryptedCookie);
@@ -39,6 +27,18 @@ const decryptWithCryptoJS = (encryptedCookie: string, secretKey: string): string
     return "";
   }
 };
+const predefinedLocations = [
+  { name: "มหาวิทยาลัยธรรมศาสตร์ รังสิต", lat: 14.0254, long: 100.6164 },
+  { name: "อาคารเรียนรวมสังคมศาสตร์ 3 (SC3)", lat: 14.07049939996706, long: 100.6059014796119 },
+  { name: "อาคารบรรยายเรียนรวม 1 (บร.1)", lat: 14.0724923207153, long: 100.6022268532616 },
+  { name: "อาคารบรรยายเรียนรวม 2 (บร.2)", lat: 14.07357983410881, long: 100.6062930821281 },
+  { name: "อาคารบรรยายเรียนรวม 3 (บร.3)", lat: 14.07252874469262, long: 100.6062930821281 },
+  { name: "อาคารบรรยายเรียนรวม 4 (บร.4)", lat: 14.07243508302493, long: 100.608079433332 },
+  { name: "อาคารบรรยายเรียนรวม 5 (บร.5)", lat: 14.07378276665719, long: 100.6078541277748 },
+  { name: "หอสมุดป๋วย อึ๊งภากรณ์", lat: 14.0711550363869, long: 100.6022429465156 },
+  { name: "ศูนย์อาหารกรีนแคนทีน(Green canteen)", lat: 14.07330925709733, long: 100.6011539696556 },
+];
+
 const EditReportPage = ({ params }: { params: { id: string } }) => {
   const [userIdEdit, setUserIdEdit] = useState<string | null>(null);
   const [adminIdEdit, setAdminIdEdit] = useState("");
@@ -47,6 +47,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
   const [tel, setTel] = useState("");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState("");
+  const [markerText, setMarkerText] = useState("");
   const [existingImage, setExistingImage] = useState("");
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState("");
@@ -65,12 +66,14 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
   const [isImagePopupVisible, setIsImagePopupVisible] = useState(false); // New state for the image popup
   const { id } = params;
   const router = useRouter();
+  const  [adminUsername, setaAminUsername] = useState<number>(0);
 
   const fetchPost = async (id: Number) => {
     try {
       const res = await axios.get(`/api/posts/${id}`);
       setUserIdEdit(res.data.userIdEdit);
       setTeluser(res.data.teluser);
+      setMarkerText(res.data.markerText);
       setTitle(res.data.title);
       setLocation(res.data.location);
       setDescription(res.data.description);
@@ -79,7 +82,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
     } catch (error) {
       console.error(error);
     }
-  };
+  }; 
 
   useEffect(() => {
     if (id) {
@@ -98,7 +101,6 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
     setAdminIdEdit(admin);
 
     const userIdFromCookie = Cookies.get("user_id");
-    
     if (userIdFromCookie) {
       const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
       setUserIdEdit(decryptedUserId);
@@ -128,7 +130,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
       setLat(selectedLocation.lat);
       setLong(selectedLocation.long);
       setLocation(selectedLocation.name);
-      setMapKey((prevKey) => prevKey + 1);
+      setMapKey((prevKey) => prevKey + 1); // Refresh map with new position
     }
   }, [selectedLocation]);
 
@@ -149,12 +151,12 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
     try {
       await axios.put(`/api/posts/${id}`, {
         userIdEdit,
-        adminIdEdit,
         title,
         username,
         tel,
         teluser,
         category,
+        markerText,
         image: downloadURL,
         status,
         description,
@@ -168,7 +170,6 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
       alert("Something went wrong");
     }
   }
-  
 
   const handleMapClick = (newPosition: LatLngTuple) => {
     setLat(newPosition[0]);
@@ -202,13 +203,12 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
       </div>
     );
   }
-  
 
   return (
     <>
       <Navbar />
       <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-        <div className="w-3/4 max-w-lg rounded-lg bg-white p-4">
+      <div className="overflow-y-auto overflow-auto max-h-screen w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">
           <div className="flex justify-end">
             <button
               onClick={() => window.history.back()}
@@ -231,7 +231,8 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
     key={mapKey}
     onMapClick={handleMapClick}
     onLocationUpdate={handleMapClick}
-    style={{ height: "100px", width: "100%" }}
+    markerText={markerText}
+    style={{ height: "200px", width: "100%" }}
   />
 </div> 
 <div className="mb-1">
@@ -285,8 +286,22 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
 
 
 
-            <div className="mb-1">
-    <label className="mb-1 block text-sm font-bold text-gray-700">
+    <div className="mb-1">
+    
+    <div className="mb-4">
+        <label className="mb-2 block text-sm font-bold text-gray-700">
+          รายละเอียดตำแหน่งเพิ่มเติม (เช่น ชั้นที่ ...)
+        </label>
+        <div className="mb-2">
+          <input
+            type="text"
+            value={markerText}
+            onChange={(e) => setMarkerText(e.target.value)}
+            placeholder="ข้อความที่จะแสดงบนหมุด"
+            className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+          />
+        </div>
+        <label className="mb-1 block text-sm font-bold text-gray-700">
       สถานที่พบของหาย
     </label>
     <select
@@ -307,6 +322,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
       ))}
     </select>
   </div>
+  </div>
  
 
             <div className="mb-1">
@@ -323,10 +339,10 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
                 </div>
               )}
              <input
-      ref={inputRef}
-      type="file"
-      className="file-input file-input-bordered file-input-info w-full max-w-xs"
-    />
+                ref={inputRef}
+                type="file"
+                className="file-input file-input-bordered file-input-info w-full max-w-xs h-9 text-sm"
+            />
             </div>
 
             {isImagePopupVisible && (
@@ -341,17 +357,18 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
       <img
         src={existingImage}
         alt="Old Post Image"
-        className="w-full h-auto items-center"
-        style={{ height: "100%", width: "100%" }}
+        className="mx-auto w-full h-auto items-center"
+        style={{ height: "40%", width: "50%" }}
       />
     </div>
   </div>
 )}
 
+
             <div className="mb-1">
               <button
                 type="submit"
-                className="w-full px-4 py-2 text-sm font-bold text-white bg-green-600 rounded-lg hover:bg-green-700"
+                className="w-full px-4 py-3 text-sm font-bold text-white bg-green-600 rounded-lg hover:bg-green-700"
               >
                 อัพเดทข้อมูล
               </button>

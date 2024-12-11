@@ -47,6 +47,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
   const [tel, setTel] = useState("");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState("");
+  const [markerText, setMarkerText] = useState("");
   const [existingImage, setExistingImage] = useState("");
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState("");
@@ -73,6 +74,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
       setUserIdEdit(res.data.userIdEdit);
       setTeluser(res.data.teluser);
       setStatus(res.data.status);
+      setMarkerText(res.data.markerText);
       setTitle(res.data.title);
       setUsername(res.data.username);
       setaAminUsername(res.data.adminUsername)
@@ -157,6 +159,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
         tel,
         teluser,
         category,
+        markerText,
         image: downloadURL,
         status,
         description,
@@ -208,7 +211,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
     <>
       <Navbar />
       <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-        <div className="w-3/4 max-w-lg rounded-lg bg-white p-2">
+      <div className="overflow-y-auto overflow-auto max-h-screen w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">
           <div className="flex justify-end">
             <button
               onClick={() => window.history.back()}
@@ -231,7 +234,8 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
     key={mapKey}
     onMapClick={handleMapClick}
     onLocationUpdate={handleMapClick}
-    style={{ height: "100px", width: "100%" }}
+    markerText={markerText}
+    style={{ height: "200px", width: "100%" }}
   />
 </div> 
 <div className="mb-1">
@@ -285,8 +289,22 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
 
 
 
-            <div className="mb-1">
-    <label className="mb-1 block text-sm font-bold text-gray-700">
+    <div className="mb-1">
+    
+    <div className="mb-4">
+        <label className="mb-2 block text-sm font-bold text-gray-700">
+          รายละเอียดตำแหน่งเพิ่มเติม (เช่น ชั้นที่ ...)
+        </label>
+        <div className="mb-2">
+          <input
+            type="text"
+            value={markerText}
+            onChange={(e) => setMarkerText(e.target.value)}
+            placeholder="ข้อความที่จะแสดงบนหมุด"
+            className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+          />
+        </div>
+        <label className="mb-1 block text-sm font-bold text-gray-700">
       สถานที่พบของหาย
     </label>
     <select
@@ -307,6 +325,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
       ))}
     </select>
   </div>
+  </div>
  
 
             <div className="mb-1">
@@ -323,10 +342,10 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
                 </div>
               )}
              <input
-      ref={inputRef}
-      type="file"
-      className="file-input file-input-bordered file-input-info w-full max-w-xs"
-    />
+                ref={inputRef}
+                type="file"
+                className="file-input file-input-bordered file-input-info w-full max-w-xs h-9 text-sm"
+            />
             </div>
 
             {isImagePopupVisible && (
@@ -352,7 +371,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
             <div className="mb-1">
               <button
                 type="submit"
-                className="w-full px-4 py-2 text-sm font-bold text-white bg-green-600 rounded-lg hover:bg-green-700"
+                className="w-full px-4 py-3 text-sm font-bold text-white bg-green-600 rounded-lg hover:bg-green-700"
               >
                 อัพเดทข้อมูล
               </button>

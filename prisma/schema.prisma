@@ -32,6 +32,7 @@ model Post {
   						tel          String
  						teluser String// เพิ่มเบอร์มือถือของผู้ใช้ 
   						category     String
+						otherCategory String?
   						image        String
   						imageAdmin String? //เพิ่มรูปภาพเเนบรูปหลังฐานที่จะเเสดงเฉพาะadmin เท่านั้น
   						status       String

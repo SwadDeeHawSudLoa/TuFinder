@@ -44,6 +44,7 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
         <option value="เอกสารสำคัญ">เอกสารสำคัญ</option>
         <option value="สิ่งของส่วนบุคคล">สิ่งของส่วนบุคคล</option>
         <option value="อุปกรณ์อิเล็กทรอนิกส์">อุปกรณ์อิเล็กทรอนิกส์</option>
+        <option value="อื่นๆ">อื่นๆ</option>
       </select>
 
       <select

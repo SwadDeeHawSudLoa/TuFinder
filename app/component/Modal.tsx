@@ -23,6 +23,7 @@ interface Post1 {
   tel: string;
   teluser: string;
   category: string;
+  otherCategory: string;
   image: string;
   imageAdmin?: string;
   status: string;
@@ -149,6 +150,9 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
           </p>
           <p>
             <strong>หมวดหมู่:</strong> {post.category}
+          </p>
+          <p>
+            <strong></strong> {post.otherCategory}
           </p>
         </div>
 
