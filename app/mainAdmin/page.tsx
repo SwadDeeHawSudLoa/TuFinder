@@ -5,7 +5,6 @@ import Modal from "../component/Modal";
 import Image from "next/image";
 import axios from "axios";
 import FilterSearch from "../component/FilterSearch";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Pagination from "../component/Pagination";
 import Navbar from "../component/AdminNavbar";
@@ -113,27 +112,26 @@ const PostList: React.FC = () => {
     setShowModal(false);
     setSelectedPost(null);
   };
-  const handleEditClick = () => {
-    router.push("/edit/${post.post_id}");
-  };
 
   return (
     <>
       <Navbar />
-    <div className="mt-11 flex justify-self-center items-center"><img
-            className="h-10 w-10 text-gray-100"
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Emblem_of_Thammasat_University.svg/1024px-Emblem_of_Thammasat_University.svg.png"
-            alt="logo"
-          /><span className="text-2xl font-semibold">TuItemFinder</span></div>
+      <div className="mt-11 flex justify-self-center items-center">
+        <img
+          className="h-10 w-10 text-gray-100"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Emblem_of_Thammasat_University.svg/1024px-Emblem_of_Thammasat_University.svg.png"
+          alt="logo"
+        />
+        <span className="text-2xl font-semibold">TuItemFinder</span>
+      </div>
       <FilterSearch onSearch={handleSearch} />
       <div className="container mx-auto p-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {currentPosts.map((post) => (
-            <div className="grid rounded-lg bg-white p-4 shadow-xl hover:bg-blue-100 transition-colors duration-200"><div
+            <div
               key={post.post_id}
               className="grid rounded-lg bg-white p-4 shadow-xl hover:bg-blue-100 transition-colors duration-200"
               onClick={() => handleButtonClick(post, "status")}
-              style={{ cursor: 'pointer' }}
             >
               <div className="relative mb-4 h-48 w-full">
                 <Image
@@ -149,40 +147,35 @@ const PostList: React.FC = () => {
                 <p className="text-gray-600">{post.location}</p>
                 <p className="text-gray-600">{post.category}</p>
                 <p className="text-sm text-gray-500">
-                  {new Date(post.date).toLocaleDateString('th-TH', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
+                  {new Date(post.date).toLocaleDateString("th-TH", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
                   })}
                 </p>
               </div>
-             
-             
-            </div>
               <div className="flex flex-row gap-2">
                 <button
                   onClick={() => handleButtonClick(post, "status")}
-                  className={`focus:ring-opacity-50" flex-grow transform rounded-lg px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 ${
+                  className={`focus:ring-opacity-50 flex-grow transform rounded-lg px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 ${
                     post.status === "ถูกรับไปเเล้ว"
                       ? "bg-orange-500"
                       : post.status === "ไม่อยู่ในคลัง"
-                        ? "bg-red-500"
-                        : post.status === "อยู่ในคลัง"
-                          ? "bg-green-500"
-                          : ""
+                      ? "bg-red-500"
+                      : post.status === "อยู่ในคลัง"
+                      ? "bg-green-500"
+                      : ""
                   } w-full rounded-md px-4 py-2 text-center`}
                 >
                   {post.status}
                 </button>
                 <button
                   onClick={() => handleButtonClick(post, "ตรวจสอบ")}
-                  className=" w-full flex-grow transform rounded-md bg-blue-500 px-4 py-2 text-center font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
+                  className="w-full flex-grow transform rounded-md bg-blue-500 px-4 py-2 text-center font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
                 >
                   ตรวจสอบ
                 </button>
               </div>
-            
-            
             </div>
           ))}
         </div>
@@ -205,3 +198,4 @@ const PostList: React.FC = () => {
 };
 
 export default PostList;
+
