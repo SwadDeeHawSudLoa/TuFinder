@@ -10,7 +10,7 @@ import dynamic from "next/dynamic";
 import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import CryptoJS from "crypto-js";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
 const Map = dynamic(() => import("../component/LeafletMap"), {
   ssr: false,
