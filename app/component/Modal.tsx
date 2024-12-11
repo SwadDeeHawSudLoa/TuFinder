@@ -61,6 +61,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
   const [userid, setUserid] = useState<string | null>(null);
   const [showEvidence, setShowEvidence] = useState<boolean>(false);
   const [showEvidencePopup, setShowEvidencePopup] = useState<boolean>(false); // New state for evidence popup
+  const [showFullImage, setShowFullImage] = useState<boolean>(false); // Add this new state
   
   
   
@@ -124,7 +125,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
       aria-labelledby="modal-title"
       aria-describedby="modal-description"
     >
-      <div className="overflow-y-auto max-h-screen  max-w-lg rounded-lg bg-white p-6 shadow-lg">
+      <div className="overflow-y-auto max-h-screen max-w-lg rounded-lg bg-white p-6 shadow-lg">
         <div className="flex justify-end">
           <button
             onClick={onClose}
@@ -134,7 +135,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
             ×
           </button>
         </div>
-        <div className="relative mb-4 h-48 w-full">
+        <div className="relative mb-4 h-48 w-full cursor-pointer" onClick={() => setShowFullImage(true)}>
           <Image
             src={post.image}
             alt={post.title}
@@ -293,6 +294,28 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
                 layout="fill"
                 objectFit="contain"
                 className="rounded-lg z-500" 
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Add this new full image modal */}
+        {showFullImage && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+            <div className="relative w-[90vw] h-[90vh] bg-white rounded-lg shadow-lg">
+              <button
+                onClick={() => setShowFullImage(false)}
+                className="absolute top-2 right-2 text-xl text-black z-[60] bg-white rounded-full w-8 h-8 flex items-center justify-center"
+                aria-label="Close full image"
+              >
+                ×
+              </button>
+              <Image
+                src={post.image}
+                alt={post.title}
+                layout="fill"
+                objectFit="contain"
+                className="rounded-lg"
               />
             </div>
           </div>

@@ -163,16 +163,16 @@ useEffect(() => {
         <span className="text-2xl font-semibold">TuItemFinder</span>
       </div>
       <FilterSearch onSearch={handleSearch} />
-      <div className="container mx-auto p-4">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="w-full px-2 py-8">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mx-2">
           {currentPosts.map((post) => (
             <div
               key={post.post_id}
-              className="grid rounded-lg bg-white p-4 shadow-xl hover:bg-blue-100 transition-colors duration-200"
+              className="grid rounded-lg bg-white p-3 shadow-xl hover:bg-orange-100 transition-colors duration-200"
               
               style={{ cursor: "pointer" }}
             ><div onClick={() => handleButtonClick(post,"status")}>
-              <div className="relative mb-4 h-48 w-full">
+              <div className="relative mb-4 h-64 w-full">
                 <Image
                   src={post.image}
                   alt={post.title}

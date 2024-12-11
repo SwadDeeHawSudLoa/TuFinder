@@ -21,7 +21,7 @@ const Login = () => {
       });
 
       if (username === "123" && password === "123") {
-        const first_name = "รณพี";
+        const first_name = "รณี";
         const last_name = "ศรีนอก";
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("username", username);
@@ -67,65 +67,67 @@ const Login = () => {
   };
 
   return (
-  <section className="bg-gray-700 h-screen flex items-center justify-center">
+  <section className="bg-gradient-to-br from-orange-300 to-yellow-200 h-screen flex items-center justify-center">
     <div className="mx-auto w-full max-w-md px-4 sm:px-6 lg:px-8">
-      <a
-        href="#"
-        className="flex items-center justify-center mb-6 text-2xl font-semibold text-gray-100"
-      >
-        <img
-          className="mr-2 h-8 w-8"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Emblem_of_Thammasat_University.svg/1024px-Emblem_of_Thammasat_University.svg.png"
-          alt="logo"
-        />
-        TuItemFinder
-      </a>
-      <div className="rounded-lg bg-gray-100 shadow-lg p-8">
-        <h1 className="text-xl font-bold text-black mb-4">Sign in</h1>
-        <form className="space-y-6" onSubmit={handleLogin}>
-          <div>
-            <label
-              htmlFor="username"
-              className="block mb-2 text-sm font-medium text-gray-900"
+      <div className="rounded-lg bg-white/90 shadow-lg border border-orange-200">
+        <a
+          href="#"
+          className="flex items-center justify-center text-2xl font-semibold text-orange-800 px-4 py-4 border-b border-orange-200 hover:bg-orange-50 transition-all"
+        >
+          <img
+            className="mr-2 h-8 w-8"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Emblem_of_Thammasat_University.svg/1024px-Emblem_of_Thammasat_University.svg.png"
+            alt="logo"
+          />
+          TuItemFinder
+        </a>
+        <div className="p-8">
+          <h1 className="text-xl font-bold text-orange-800 mb-4">ลงชื่อเข้าสู่ระบบ</h1>
+          <form className="space-y-6" onSubmit={handleLogin}>
+            <div>
+              <label
+                htmlFor="username"
+                className="block mb-2 text-sm font-medium text-orange-700"
+              >
+                ชื่อผู้ใช้งาน
+              </label>
+              <input
+                type="text"
+                name="username"
+                id="username"
+                className="w-full p-2.5 rounded-lg border border-orange-200 bg-orange-50 text-gray-900 sm:text-sm focus:ring-orange-400 focus:border-orange-400"
+                placeholder="Enter your username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="password"
+                className="block mb-2 text-sm font-medium text-orange-700"
+              >
+                รหัสผ่าน
+              </label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="••••••••"
+                className="w-full p-2.5 rounded-lg border border-orange-200 bg-orange-50 text-gray-900 sm:text-sm focus:ring-orange-400 focus:border-orange-400"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-orange-500 text-white font-medium py-2.5 rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-300"
             >
-              Your username
-            </label>
-            <input
-              type="text"
-              name="username"
-              id="username"
-              className="w-full p-2.5 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 sm:text-sm focus:ring-primary-600 focus:border-primary-600"
-              placeholder="Enter your username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="password"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              placeholder="••••••••"
-              className="w-full p-2.5 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 sm:text-sm focus:ring-primary-600 focus:border-primary-600"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-red-400 text-white font-medium py-2.5 rounded-lg hover:bg-red-500 focus:outline-none focus:ring-4 focus:ring-red-300"
-          >
-            Sign in
-          </button>
-        </form>
+              เข้าสู่ระบบ
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   </section>

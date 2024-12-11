@@ -316,14 +316,14 @@ const ReportPage = () => {
 
       <div className="mb-4">
         <label className="mb-2 block text-sm font-bold text-gray-700">
-          รายละเอียดตำแหน่งเพิ่มเติม (เช่น ชั้นที่ ...)
+          รายละเอียดตำแหน่งเพิ่มเติม
         </label>
         <div className="mb-2">
           <input
             type="text"
             value={markerText}
             onChange={(e) => setMarkerText(e.target.value)}
-            placeholder="ข้อความที่จะแสดงบนหมุด"
+            placeholder="รายละเอียดตำแหน่งเพิ่มเติม"
             className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
           />
         </div>
@@ -351,7 +351,7 @@ const ReportPage = () => {
           type="submit"
           className="focus:shadow-outline rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700 focus:outline-none"
         >
-          ส่ง
+          โพสต์
         </button>
       </div>
     </form>
