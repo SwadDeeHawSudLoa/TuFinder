@@ -62,6 +62,7 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
         <option value="อาคารบรรยายเรียนรวม 5 (บร.5)">อาคารบรรยายเรียนรวม 5 (บร.5)</option>
         <option value="หอสมุดป๋วย อึ๊งภากรณ์">หอสมุดป๋วย อึ๊งภากรณ์</option>
         <option value="ศูนย์อาหารกรีนแคนทีน(Green canteen)">ศูนย์อาหารกรีนแคนทีน(Green canteen)</option>
+        <option value="อาคารโดมบริหาร">อาคารโดมบริหาร</option>
       </select>
 
       <select
