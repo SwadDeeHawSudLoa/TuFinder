@@ -131,9 +131,9 @@ const PostList: React.FC = () => {
             <div
               key={post.post_id}
               className="grid rounded-lg bg-white p-4 shadow-xl hover:bg-blue-100 transition-colors duration-200"
-              onClick={() => handleButtonClick(post, "status")}
-            >
-              <div className="relative mb-4 h-48 w-full">
+             
+            ><div onClick={() => handleButtonClick(post, "status")}>
+               <div className="relative mb-4 h-48 w-full">
                 <Image
                   src={post.image}
                   alt={post.title}
@@ -154,6 +154,8 @@ const PostList: React.FC = () => {
                   })}
                 </p>
               </div>
+            </div>
+             
               <div className="flex flex-row gap-2">
                 <button
                   onClick={() => handleButtonClick(post, "status")}

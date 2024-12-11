@@ -46,7 +46,7 @@ const PostList: React.FC = () => {
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
   const totalPages = Math.ceil(posts.length / postsPerPage);
-
+  const [modalView, setModalView] = useState<"status" | "ตรวจสอบ">("status");
   const fetchPosts = async () => {
     try {
       const res = await axios.get("/api/posts");
@@ -101,8 +101,9 @@ const PostList: React.FC = () => {
     setCurrentPage(1);
   };
 
-  const handleButtonClick = (post: Post) => {
+  const handleButtonClick = (post: Post, view: "status" | "ตรวจสอบ") => {
     setSelectedPost(post);
+    setModalView(view);
     setShowModal(true);
   };
 
@@ -129,9 +130,9 @@ const PostList: React.FC = () => {
             <div
               key={post.post_id}
               className="grid rounded-lg bg-white p-4 shadow-xl hover:bg-blue-100 transition-colors duration-200"
-              onClick={() => handleButtonClick(post)}
+              
               style={{ cursor: "pointer" }}
-            >
+            ><div onClick={() => handleButtonClick(post,"status")}>
               <div className="relative mb-4 h-48 w-full">
                 <Image
                   src={post.image}
@@ -152,8 +153,10 @@ const PostList: React.FC = () => {
                     day: "numeric",
                   })}
                 </p>
-              </div>
+              </div></div>
+              
               <button
+              onClick={() => handleButtonClick(post, "status")}
                 className={`flex-grow transform rounded-lg px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 ${
                   post.status === "ถูกรับไปเเล้ว"
                     ? "bg-orange-500 hover:bg-orange-600"
@@ -188,3 +191,5 @@ const PostList: React.FC = () => {
 };
 
 export default PostList;
+
+
