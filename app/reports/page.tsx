@@ -146,7 +146,6 @@ const ReportPage = () => {
     try {
       await axios.post("/api/posts", {
         userIdEdit,
-      adminIdEdit,
       title,
       username,
       adminusername,
