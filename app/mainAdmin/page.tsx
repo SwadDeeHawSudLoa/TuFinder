@@ -8,6 +8,9 @@ import FilterSearch from "../component/FilterSearch";
 import { useRouter } from "next/navigation";
 import Pagination from "../component/Pagination";
 import Navbar from "../component/AdminNavbar";
+import CryptoJS from "crypto-js";
+import Cookies from "js-cookie";
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
 
 interface Post {
   post_id: number;
@@ -29,7 +32,18 @@ interface Post {
   long: number;
   location: string;
 }
-
+const decryptWithCryptoJS = (encryptedCookie: string, secretKey: string): string => {
+  try {
+    console.log("Encrypted Cookie:", encryptedCookie);
+    const bytes = CryptoJS.AES.decrypt(encryptedCookie, secretKey);
+    const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+    console.log("Decrypted Text:", decryptedText);
+    return decryptedText;
+  } catch (error) {
+    console.error("Decryption failed:", error);
+    return "";
+  }
+};
 const PostList: React.FC = () => {
   const router = useRouter();
   const [posts, setPosts] = useState<Post[]>([]);
@@ -44,7 +58,21 @@ const PostList: React.FC = () => {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [modalView, setModalView] = useState<"status" | "ตรวจสอบ">("status");
   const postsPerPage = 8;
+  useEffect(() => {
+    const userIdFromCookie = Cookies.get("user_id");
+    if (userIdFromCookie) {
+      const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
+      if (decryptedUserId === "123") {
 
+      } else {
+        alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้");
+        router.push("/");
+      }
+    } else {
+      alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้");
+        router.push("/");
+    }
+  }, []);
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);

@@ -66,7 +66,21 @@ const PostList: React.FC = () => {
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
   const totalPages = Math.ceil(posts.length / postsPerPage);
+  useEffect(() => {
+    const userIdFromCookie = Cookies.get("user_id");
+    if (userIdFromCookie) {
+      const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
+      if (decryptedUserId === "123") {
 
+      } else {
+        alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้");
+        router.push("/");
+      }
+    } else {
+      alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้");
+        router.push("/");
+    }
+  }, []);
   useEffect(() => {
     const userIdFromCookie = Cookies.get("user_id");
     if (userIdFromCookie) {

@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import CryptoJS from "crypto-js";
+import { useRouter } from "next/navigation";
 const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
 const Map = dynamic(() => import("../component/LeafletMap"), {
   ssr: false,
@@ -58,7 +59,7 @@ const ReportPage = () => {
   const [long, setLong] = useState(100.6164); // Default long
   const [location, setLocation] = useState("");
   const[teluser,setTeluser] =useState("");
-  
+  const router = useRouter();
   const [adminusername,setAdminusername]=useState("");
   const [selectedLocation, setSelectedLocation] = useState<{
     name: string;
@@ -68,7 +69,21 @@ const ReportPage = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [mapKey, setMapKey] = useState<number>(0);
   const [markerText, setMarkerText] = useState("");
+  useEffect(() => {
+    const userIdFromCookie = Cookies.get("user_id");
+    if (userIdFromCookie) {
+      const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
+      if (decryptedUserId === "123") {
 
+      } else {
+        alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้");
+        router.push("/");
+      }
+    } else {
+      alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้");
+        router.push("/");
+    }
+  }, []);
   useEffect(() => {
     const statusO = "ไม่อยู่ในคลัง";
     setStatus(statusO);

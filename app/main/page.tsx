@@ -7,7 +7,22 @@ import FilterSearch from "../component/FilterSearch";
 import Modal from "../component/Modal";
 import Pagination from "../component/Pagination";
 import axios from "axios";
-
+import CryptoJS from "crypto-js";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
+const decryptWithCryptoJS = (encryptedCookie: string, secretKey: string): string => {
+  try {
+    console.log("Encrypted Cookie:", encryptedCookie);
+    const bytes = CryptoJS.AES.decrypt(encryptedCookie, secretKey);
+    const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+    console.log("Decrypted Text:", decryptedText);
+    return decryptedText;
+  } catch (error) {
+    console.error("Decryption failed:", error);
+    return "";
+  }
+};
 interface Post{
   post_id: number;
   userIdEdit?: string;
@@ -44,9 +59,17 @@ const PostList: React.FC = () => {
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-
+const router = useRouter();
   const totalPages = Math.ceil(posts.length / postsPerPage);
-
+  useEffect(() => {
+    const userIdFromCookie = Cookies.get("user_id");
+    if (userIdFromCookie) {
+     
+    } else {
+      alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้");
+        router.push("/");
+    }
+  }, []);
   // Function to fetch default posts
   const fetchPosts = async () => {
     try {

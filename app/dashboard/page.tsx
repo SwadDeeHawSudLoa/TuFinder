@@ -15,7 +15,10 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-
+import CryptoJS from "crypto-js";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
 // Register ChartJS components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -78,7 +81,18 @@ interface DashboardData {
   statusCountNotInStock: number;
   statusCountReceived: number;
 }
-
+const decryptWithCryptoJS = (encryptedCookie: string, secretKey: string): string => {
+  try {
+    console.log("Encrypted Cookie:", encryptedCookie);
+    const bytes = CryptoJS.AES.decrypt(encryptedCookie, secretKey);
+    const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+    console.log("Decrypted Text:", decryptedText);
+    return decryptedText;
+  } catch (error) {
+    console.error("Decryption failed:", error);
+    return "";
+  }
+};
 export default function DashboardAdmin() {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [recentPage, setRecentPage] = useState(1);
@@ -88,9 +102,23 @@ export default function DashboardAdmin() {
   const [showModal, setShowModal] = useState(false);
   const [timeFrame, setTimeFrame] = useState<"daily" | "monthly" | "yearly">("daily");
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
-
+const router = useRouter();
   const itemsPerPage = 5;
+  useEffect(() => {
+    const userIdFromCookie = Cookies.get("user_id");
+    if (userIdFromCookie) {
+      const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
+      if (decryptedUserId === "123") {
 
+      } else {
+        alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้");
+        router.push("/");
+      }
+    } else {
+      alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้");
+        router.push("/");
+    }
+  }, []);
   const fetchDashboardData = async () => {
     try {
       const response = await axios.get("/api/dashboarddata");

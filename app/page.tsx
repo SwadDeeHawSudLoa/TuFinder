@@ -1,4 +1,7 @@
 "use client";
+import { useRouter } from "next/navigation"
+
+
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Navbar from "./component/navbar";
@@ -6,7 +9,9 @@ import FilterSearch from "./component/FilterSearch";
 import Modal from "./component/Modal";
 import Pagination from "./component/Pagination"; // Import Pagination
 import axios from "axios";
-
+import CryptoJS from "crypto-js";
+import Cookies from "js-cookie";
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
 interface Post {
   post_id: number;
   userIdEdit?: string;
@@ -28,6 +33,18 @@ interface Post {
   location: string;
 }
 
+const decryptWithCryptoJS = (encryptedCookie: string, secretKey: string): string => {
+  try {
+    console.log("Encrypted Cookie:", encryptedCookie);
+    const bytes = CryptoJS.AES.decrypt(encryptedCookie, secretKey);
+    const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+    console.log("Decrypted Text:", decryptedText);
+    return decryptedText;
+  } catch (error) {
+    console.error("Decryption failed:", error);
+    return "";
+  }
+};
 const postsPerPage = 8; // Move postsPerPage outside the component
 
 const PostList: React.FC = () => {
@@ -39,13 +56,22 @@ const PostList: React.FC = () => {
     location: "",
     status: "",
   });
+  useEffect(() => {
+    const userIdFromCookie = Cookies.get("user_id");
+    if (userIdFromCookie) {
+      const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
+      
+    } else {
+      console.log("User ID cookie not found.");
+    }
+  }, []);
   const [showModal, setShowModal] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-
+ const router = useRouter();
   const totalPages = Math.ceil(posts.length / postsPerPage);
   const [modalView, setModalView] = useState<"status" | "ตรวจสอบ">("status");
   const fetchPosts = async () => {
@@ -57,7 +83,19 @@ const PostList: React.FC = () => {
       console.error("Error fetching posts:", error);
     }
   };
-
+useEffect(() => {
+  const userIdFromCookie = Cookies.get("user_id");
+  if (userIdFromCookie) {
+    const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
+    if (decryptedUserId === "123") {
+      router.push("/mainAdmin");
+    } else {
+      router.push("/main");
+    }
+  } else {
+    console.log("User ID cookie not found.");
+  }
+}, []);
   const fetchSearchResults = async (searchFilters: {
     title: string;
     category: string;
