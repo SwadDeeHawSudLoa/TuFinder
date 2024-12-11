@@ -57,6 +57,7 @@ const ReportPage = () => {
   const [long, setLong] = useState(100.6164); // Default long
   const [location, setLocation] = useState("");
   const[teluser,setTeluser] =useState("");
+  const [otherCategory, setOtherCategory] = useState("");
   
   const [adminusername,setAdminusername]=useState("");
   const [selectedLocation, setSelectedLocation] = useState<{
@@ -152,6 +153,7 @@ const ReportPage = () => {
       tel,
       teluser,
       category,
+      otherCategory,
         image: downloadURL,
         status,
         description,

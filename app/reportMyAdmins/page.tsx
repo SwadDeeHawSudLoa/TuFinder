@@ -49,6 +49,7 @@ const ReportPage = () => {
   const [username, setUsername] = useState("");
   const [tel, setTel] = useState("");
   const [category, setCategory] = useState("");
+  const [otherCategory, setOtherCategory] = useState("");
   const [image, setImage] = useState("");
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState("");
@@ -143,14 +144,14 @@ const ReportPage = () => {
 
     try {
       await axios.post("/api/posts", {
-        
-      adminIdEdit,
-      title,
-      username,
-      adminusername,
-      tel,
-      teluser,
-      category,
+        adminIdEdit,
+        title,
+        username,
+        adminusername,
+        tel,
+        teluser,
+        category,
+        otherCategory,
         image: downloadURL,
         status,
         description,
@@ -257,6 +258,16 @@ const ReportPage = () => {
           <option value="อุปกรณ์อิเล็กทรอนิกส์">อุปกรณ์อิเล็กทรอนิกส์</option>
           <option value="อื่นๆ">อื่นๆ</option>
         </select>
+        
+        {category === "อื่นๆ" && (
+          <input
+            type="text"
+            value={otherCategory}
+            onChange={(e) => setOtherCategory(e.target.value)}
+            placeholder="กรุณาระบุหมวดหมู่อื่นๆ"
+            className="mt-2 w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+          />
+        )}
       </div>
 
       <div className="mb-4">
