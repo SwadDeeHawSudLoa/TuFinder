@@ -241,7 +241,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
             </div>
           </>
         ) : (
-          isAdmin && (
+           (
             <>
               <div className="text-left max-h-32 max-w overflow-y-auto whitespace-normal rounded bg-slate-200 p-4">
                 <p className="text-left">
@@ -249,32 +249,25 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
                 </p>
               </div>
 
-              <div className="mt-4 flex items-center justify-between space-x-2">
+                <div className="mt-4 flex items-center justify-between space-x-2">
                 <button
                   onClick={() => handleAddPictureClick(post.post_id)}
                   className="flex-grow transform rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
                 >
                   เเนบรูป
                 </button>
-                {renderStatusButton(
-                  post,
-                  "ถูกรับไปเเล้ว",
-                  "ถูกรับไปเเล้ว",
-                  "bg-orange-500",
-                )}
-                {renderStatusButton(
-                  post,
-                  "ไม่อยู่ในคลัง",
-                  "ไม่อยู่ในคลัง",
-                  "bg-red-500",
-                )}
-                {renderStatusButton(
-                  post,
-                  "อยู่ในคลัง",
-                  "อยู่ในคลัง",
-                  "bg-green-500",
-                )}
-              </div>
+                <select
+                  onChange={(e) => handleUpdateClick(post, e.target.value)}
+                  className="flex-grow transform rounded-lg bg-gray-200 px-4 py-2 font-semibold text-black transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50"
+                >
+                  <option value="" disabled selected>
+                  เลือกสถานะ
+                  </option>
+                  <option value="ถูกรับไปเเล้ว">ถูกรับไปเเล้ว</option>
+                  <option value="ไม่อยู่ในคลัง">ไม่อยู่ในคลัง</option>
+                  <option value="อยู่ในคลัง">อยู่ในคลัง</option>
+                </select>
+                </div>
             </>
           )
         )}

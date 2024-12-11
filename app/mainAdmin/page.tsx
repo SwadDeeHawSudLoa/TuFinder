@@ -120,7 +120,7 @@ const PostList: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="mt-11 flex justify-self-center items-center"><img
+    <div className="mt-11 flex justify-self-center items-center"><img
             className="h-10 w-10 text-gray-100"
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Emblem_of_Thammasat_University.svg/1024px-Emblem_of_Thammasat_University.svg.png"
             alt="logo"
@@ -129,10 +129,10 @@ const PostList: React.FC = () => {
       <div className="container mx-auto p-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {currentPosts.map((post) => (
-            <div
+            <div className="grid rounded-lg bg-white p-4 shadow-xl hover:bg-blue-100 transition-colors duration-200"><div
               key={post.post_id}
               className="grid rounded-lg bg-white p-4 shadow-xl hover:bg-blue-100 transition-colors duration-200"
-              onClick={() => handleButtonClick(post, "ตรวจสอบ")}
+              onClick={() => handleButtonClick(post, "status")}
               style={{ cursor: 'pointer' }}
             >
               <div className="relative mb-4 h-48 w-full">
@@ -156,6 +156,9 @@ const PostList: React.FC = () => {
                   })}
                 </p>
               </div>
+             
+             
+            </div>
               <div className="flex flex-row gap-2">
                 <button
                   onClick={() => handleButtonClick(post, "status")}
@@ -173,11 +176,13 @@ const PostList: React.FC = () => {
                 </button>
                 <button
                   onClick={() => handleButtonClick(post, "ตรวจสอบ")}
-                  className="w-full flex-grow transform rounded-md bg-blue-500 px-4 py-2 text-center font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
+                  className=" w-full flex-grow transform rounded-md bg-blue-500 px-4 py-2 text-center font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
                 >
                   ตรวจสอบ
                 </button>
               </div>
+            
+            
             </div>
           ))}
         </div>
