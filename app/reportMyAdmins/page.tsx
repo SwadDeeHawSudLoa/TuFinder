@@ -20,7 +20,7 @@ const predefinedLocations = [
   { name: "มหาวิทยาลัยธรรมศาสตร์ รังสิต", lat: 14.07219002764917, long: 100.6055881707834 },
   { name: "อาคารเรียนรวมสังคมศาสตร์ 3 (SC3)", lat: 14.07049939996706, long: 100.6059014796119 },
   { name: "อาคารบรรยายเรียนรวม 1 (บร.1)", lat: 14.0724923207153, long: 100.6022268532616 },
-  { name: "อาคา���บรรยายเรียนรวม 2 (บร.2)", lat: 14.07357983410881, long: 100.6062930821281 },
+  { name: "อาคารบรรยายเรียนรวม 2 (บร.2)", lat: 14.07357983410881, long: 100.6062930821281 },
   { name: "อาคารบรรยายเรียนรวม 3 (บร.3)", lat: 14.07252874469262, long: 100.6062930821281 },
   { name: "อาคารบรรยายเรียนรวม 4 (บร.4)", lat: 14.07243508302493, long: 100.608079433332 },
   { name: "อาคารบรรยายเรียนรวม 5 (บร.5)", lat: 14.07378276665719, long: 100.6078541277748 },
@@ -239,7 +239,7 @@ const ReportPage = () => {
     }
   };
 
-  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     isDrawingRef.current = true;
     draw(e);
   };
@@ -248,7 +248,7 @@ const ReportPage = () => {
     isDrawingRef.current = false;
   };
 
-  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     if (!isDrawingRef.current || !ctx || !originalImage) return;
 
     const canvas = canvasRef.current;
@@ -257,8 +257,17 @@ const ReportPage = () => {
     const rect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
-    const x = (e.clientX - rect.left) * scaleX;
-    const y = (e.clientY - rect.top) * scaleY;
+    let x, y;
+
+    if (e.type === 'mousemove' || e.type === 'mousedown') {
+      const mouseEvent = e as React.MouseEvent<HTMLCanvasElement>;
+      x = (mouseEvent.clientX - rect.left) * scaleX;
+      y = (mouseEvent.clientY - rect.top) * scaleY;
+    } else {
+      const touchEvent = e as React.TouchEvent<HTMLCanvasElement>;
+      x = (touchEvent.touches[0].clientX - rect.left) * scaleX;
+      y = (touchEvent.touches[0].clientY - rect.top) * scaleY;
+    }
 
     // วาดรูปภาพต้นฉบับใหม่ในบริเวณที่จะเบลอ
     ctx.save();
@@ -485,18 +494,21 @@ const ReportPage = () => {
 
             <div className="relative border border-gray-300 rounded">
               <canvas
-                ref={canvasRef}
-                onMouseDown={startDrawing}
-                onMouseUp={stopDrawing}
-                onMouseMove={draw}
-                onMouseLeave={stopDrawing}
-                style={{ 
-                  cursor: 'crosshair',
-                  maxWidth: '100%',
-                  maxHeight: '70vh',
-                  width: 'auto',
-                  height: 'auto'
-                }}
+              ref={canvasRef}
+              onMouseDown={startDrawing}
+              onMouseUp={stopDrawing}
+              onMouseMove={draw}
+              onMouseLeave={stopDrawing}
+              onTouchStart={startDrawing}
+              onTouchEnd={stopDrawing}
+              onTouchMove={draw}
+              style={{ 
+                cursor: 'crosshair',
+                maxWidth: '100%',
+                maxHeight: '70vh',
+                width: 'auto',
+                height: 'auto'
+              }}
               />
             </div>
 
