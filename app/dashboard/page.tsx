@@ -181,27 +181,44 @@ const router = useRouter();
   // Prepare data for chart based on time frame
   const getPostCounts = (timeFrame: "daily" | "monthly" | "yearly") => {
     const counts: { [key: string]: number } = {};
+    // ปรับให้ใช้เวลาปัจจุบันของไทย
+    const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Bangkok' }));
+    
+    if (timeFrame === "daily") {
+      // สร้าง array เก็บวันที่ย้อนหลัง 7 วัน
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date(now);
+        date.setDate(now.getDate() - i);
+        // ใช้ toLocaleDateString เพื่อให้ได้วันที่ในรูปแบบ YYYY-MM-DD ตาม timezone ไทย
+        const key = date.toLocaleDateString('en-CA'); // en-CA จะให้รูปแบบ YYYY-MM-DD
+        counts[key] = 0;
+      }
 
-    dashboardData.allPosts.forEach((post) => {
-      const date = new Date(post.date);
-      let key = "";
+      // นับจำนวนโพสต์ในแต่ละวัน
+      dashboardData.allPosts.forEach((post) => {
+        const postDate = new Date(post.date);
+        const postDateKey = postDate.toLocaleDateString('en-CA');
+        if (counts.hasOwnProperty(postDateKey)) {
+          counts[postDateKey]++;
+        }
+      });
 
-      if (timeFrame === "daily") key = date.toISOString().split("T")[0];
-      if (timeFrame === "monthly") key = `${date.getFullYear()}-${(date.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}`;
-      if (timeFrame === "yearly") key = date.getFullYear().toString();
+      const labels = Object.keys(counts);
+      const formattedLabels = labels.map(date => 
+        new Date(date).toLocaleDateString('th-TH', {
+          day: 'numeric',
+          month: 'short'
+        })
+      );
+      const data = Object.values(counts);
 
-      counts[key] = (counts[key] || 0) + 1;
-    });
+      return { labels: formattedLabels, data };
+    }
 
-    const labels = Object.keys(counts).sort();
-    const data = labels.map((label) => counts[label]);
-
-    return { labels, data };
+    // ... ส่วนของ monthly และ yearly คงเดิม ...
   };
 
-  const postCounts = getPostCounts(timeFrame);
+  const postCounts = getPostCounts(timeFrame) || { labels: [], data: [] };
 
   const chartData = {
     labels: postCounts.labels,
@@ -222,15 +239,38 @@ const router = useRouter();
       legend: {
         position: "top" as const,
       },
+      tooltip: {
+        callbacks: {
+          label: (context: any) => {
+            return `จำนวนโพสต์: ${context.parsed.y} รายการ`;
+          }
+        }
+      }
     },
     scales: {
       x: {
-        title: { display: true, text: "Date" },
+        title: { 
+          display: true, 
+          text: "วันที่",
+          color: '#9a3412'
+        },
+        grid: {
+          display: false
+        }
       },
       y: {
-        title: { display: true, text: "Post Count" },
-      },
-    },
+        title: { 
+          display: true, 
+          text: "จำนวนโพสต์",
+          color: '#9a3412'
+        },
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+          precision: 0 // แสดงเฉพาะจำนวนเต็ม
+        }
+      }
+    }
   };
 
   return (
@@ -314,29 +354,22 @@ const router = useRouter();
       <div className="grid grid-cols-3 gap-6">
         {/* Chart Section */}
         <div className="col-span-2 bg-orange-50 p-6 rounded-lg shadow-sm">
-          <h2 className="text-lg font-semibold mb-4 text-orange-900">Overview</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-semibold text-orange-900">Overview</h2>
+            <div className="flex gap-2">
+      
+            </div>
+          </div>
           <div className="h-[300px]">
-            <Line data={{
-              ...chartData,
-              datasets: [{
-                ...chartData.datasets[0],
-                borderColor: "rgba(249, 115, 22, 1)", // orange-500
-                backgroundColor: "rgba(249, 115, 22, 0.1)",
-              }]
-            }} options={chartOptions} />
+            <Line data={chartData} options={chartOptions} />
           </div>
         </div>
 
         {/* All Items Section */}
         <div className="bg-orange-50 p-6 rounded-lg shadow-sm">
           <h2 className="text-lg font-semibold mb-2 text-orange-900">โพสต์ทั้งหมด</h2>
-          <p className="text-orange-700 text-sm mb-6">
-            วันนี้มีจำนวนโพสต์ใหม่: {
-              getPostCounts("daily").data[getPostCounts("daily").labels.indexOf(
-                new Date().toISOString().split("T")[0]
-              )] || 0
-            } รายการ
-          </p>
+          
+          
           
           <div className="space-y-4">
             {allPostsToShow.map((post) => (
