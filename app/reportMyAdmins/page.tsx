@@ -20,7 +20,7 @@ const predefinedLocations = [
   { name: "มหาวิทยาลัยธรรมศาสตร์ รังสิต", lat: 14.07219002764917, long: 100.6055881707834 },
   { name: "อาคารเรียนรวมสังคมศาสตร์ 3 (SC3)", lat: 14.07049939996706, long: 100.6059014796119 },
   { name: "อาคารบรรยายเรียนรวม 1 (บร.1)", lat: 14.0724923207153, long: 100.6022268532616 },
-  { name: "อาคารบรรยายเรียนรวม 2 (บร.2)", lat: 14.07357983410881, long: 100.6062930821281 },
+  { name: "อาคา���บรรยายเรียนรวม 2 (บร.2)", lat: 14.07357983410881, long: 100.6062930821281 },
   { name: "อาคารบรรยายเรียนรวม 3 (บร.3)", lat: 14.07252874469262, long: 100.6062930821281 },
   { name: "อาคารบรรยายเรียนรวม 4 (บร.4)", lat: 14.07243508302493, long: 100.608079433332 },
   { name: "อาคารบรรยายเรียนรวม 5 (บร.5)", lat: 14.07378276665719, long: 100.6078541277748 },
@@ -128,6 +128,41 @@ const ReportPage = () => {
       setMapKey((prevKey) => prevKey + 1);
     }
   }, [selectedLocation]);
+
+  useEffect(() => {
+    if (originalImage && canvasRef.current) {
+      const canvas = canvasRef.current;
+      const context = canvas.getContext('2d');
+      
+      // คำนวณขนาดที่เหมาะสม
+      const maxWidth = window.innerWidth * 0.9; // 90% ของความกว้างหน้าจอ
+      const maxHeight = window.innerHeight * 0.6; // 60% ของความสูงหน้าจอ
+      
+      let newWidth = originalImage.width;
+      let newHeight = originalImage.height;
+      
+      // ปรับขนาดให้พอดีกับหน้าจอ
+      if (newWidth > maxWidth) {
+        const ratio = maxWidth / newWidth;
+        newWidth = maxWidth;
+        newHeight = newHeight * ratio;
+      }
+      
+      if (newHeight > maxHeight) {
+        const ratio = maxHeight / newHeight;
+        newHeight = maxHeight;
+        newWidth = newWidth * ratio;
+      }
+      
+      canvas.width = newWidth;
+      canvas.height = newHeight;
+      
+      if (context) {
+        context.drawImage(originalImage, 0, 0, newWidth, newHeight);
+        setCtx(context);
+      }
+    }
+  }, [originalImage]);
 
   async function handleSubmit(
     event: FormEvent<HTMLFormElement>,
@@ -469,7 +504,7 @@ const ReportPage = () => {
             
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
-                ระดับความเบลอ: {blurRadius}px
+                ระดับ���วามเบลอ: {blurRadius}px
               </label>
               <input
                 type="range"
@@ -499,15 +534,25 @@ const ReportPage = () => {
               onMouseUp={stopDrawing}
               onMouseMove={draw}
               onMouseLeave={stopDrawing}
-              onTouchStart={startDrawing}
-              onTouchEnd={stopDrawing}
-              onTouchMove={draw}
+              onTouchStart={(e) => {
+                e.preventDefault(); // ป้องกันการเลื่อนหน้าจอ
+                startDrawing(e);
+              }}
+              onTouchEnd={(e) => {
+                e.preventDefault();
+                stopDrawing();
+              }}
+              onTouchMove={(e) => {
+                e.preventDefault();
+                draw(e);
+              }}
               style={{ 
                 cursor: 'crosshair',
                 maxWidth: '100%',
                 maxHeight: '70vh',
                 width: 'auto',
-                height: 'auto'
+                height: 'auto',
+                touchAction: 'none' // ป้องกันการ zoom และ scroll ใน iOS
               }}
               />
             </div>
