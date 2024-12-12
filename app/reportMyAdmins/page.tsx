@@ -11,6 +11,7 @@ import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import CryptoJS from "crypto-js";
 const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
+import { useRouter } from "next/navigation";
 const Map = dynamic(() => import("../component/LeafletMap"), {
   ssr: false,
   loading: () => <p>Loading map...</p>,
@@ -58,7 +59,7 @@ const ReportPage = () => {
   const [long, setLong] = useState(100.6164); // Default long
   const [location, setLocation] = useState("");
   const[teluser,setTeluser] =useState("");
-  
+  const router = useRouter();
   const [adminusername,setAdminusername]=useState("");
   const [selectedLocation, setSelectedLocation] = useState<{
     name: string;
@@ -70,6 +71,21 @@ const ReportPage = () => {
   const [markerText, setMarkerText] = useState("");
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [showImageModal, setShowImageModal] = useState(false);
+  useEffect(() => {
+    const userIdFromCookie = Cookies.get("user_id");
+    if (userIdFromCookie) {
+      const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
+      if (decryptedUserId === "123") {
+
+      } else {
+        alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้");
+        router.push("/");
+      }
+    } else {
+      alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้");
+        router.push("/");
+    }
+  }, []);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const isDrawingRef = useRef(false);
   const [blurRadius, setBlurRadius] = useState(20);
