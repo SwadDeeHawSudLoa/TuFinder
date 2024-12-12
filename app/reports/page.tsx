@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import CryptoJS from "crypto-js";
+import { useRouter } from "next/navigation";  
 const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
 const Map = dynamic(() => import("../component/LeafletMap"), {
   ssr: false,
@@ -59,6 +60,7 @@ const ReportPage = () => {
   const [location, setLocation] = useState("");
   const[teluser,setTeluser] =useState("");
   
+  const router = useRouter();
   const [adminusername,setAdminusername]=useState("");
   const [selectedLocation, setSelectedLocation] = useState<{
     name: string;
@@ -69,6 +71,15 @@ const ReportPage = () => {
   const [mapKey, setMapKey] = useState<number>(0);
   const [markerText, setMarkerText] = useState("");
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  useEffect(() => {
+    const userIdFromCookie = Cookies.get("user_id");
+    if (userIdFromCookie) {
+     
+    } else {
+      alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้");
+        router.push("/");
+    }
+  }, []);
   const [showImageModal, setShowImageModal] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const isDrawingRef = useRef(false);
@@ -92,6 +103,8 @@ const ReportPage = () => {
       }
     }
     fetchAdminUserName();
+    const admin = "123";
+    setAdminIdEdit(admin);
     const phoneAdmin = "043311286";
     setTel(phoneAdmin);
     const userIdFromCookie = Cookies.get("user_id");
