@@ -20,7 +20,7 @@ const predefinedLocations = [
   { name: "มหาวิทยาลัยธรรมศาสตร์ รังสิต", lat: 14.07219002764917, long: 100.6055881707834 },
   { name: "อาคารเรียนรวมสังคมศาสตร์ 3 (SC3)", lat: 14.07049939996706, long: 100.6059014796119 },
   { name: "อาคารบรรยายเรียนรวม 1 (บร.1)", lat: 14.0724923207153, long: 100.6022268532616 },
-  { name: "อาคารบรรยายเรียนรวม 2 (บร.2)", lat: 14.07357983410881, long: 100.6062930821281 },
+  { name: "อาคา���บรรยายเรียนรวม 2 (บร.2)", lat: 14.07357983410881, long: 100.6062930821281 },
   { name: "อาคารบรรยายเรียนรวม 3 (บร.3)", lat: 14.07252874469262, long: 100.6062930821281 },
   { name: "อาคารบรรยายเรียนรวม 4 (บร.4)", lat: 14.07243508302493, long: 100.608079433332 },
   { name: "อาคารบรรยายเรียนรวม 5 (บร.5)", lat: 14.07378276665719, long: 100.6078541277748 },
@@ -76,6 +76,7 @@ const ReportPage = () => {
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
   const [originalImage, setOriginalImage] = useState<HTMLImageElement | null>(null);
   const [editedImage, setEditedImage] = useState<string | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
 
   useEffect(() => {
     const statusO = "ไม่อยู่ในคลัง";
@@ -187,17 +188,17 @@ const ReportPage = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Check file type
+      // ตรวจสอบประเภทไฟล์
       if (!file.type.startsWith('image/')) {
         alert('กรุณาอัพโหลดไฟล์รูปภาพเท่านั้น');
         if (inputRef.current) {
-          inputRef.current.value = '';  // Clear the input
+          inputRef.current.value = '';
         }
         return;
       }
 
-      // Check file size (e.g., limit to 5MB)
-      const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+      // ตรวจสอบขนาดไฟล์
+      const maxSize = 5 * 1024 * 1024;
       if (file.size > maxSize) {
         alert('ขนาดไฟล์ต้องไม่เกิน 5MB');
         if (inputRef.current) {
@@ -206,35 +207,35 @@ const ReportPage = () => {
         return;
       }
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result as string);
-        setEditedImage(reader.result as string);
-        setShowImageModal(true);
+      // สร้าง URL สำหรับรูปภาพ
+      const objectUrl = URL.createObjectURL(file);
+      setImagePreviewUrl(objectUrl);
 
-        const img = new Image();
-        img.src = reader.result as string;
-        img.onload = () => {
-          setOriginalImage(img);
-          if (canvasRef.current) {
-            const canvas = canvasRef.current;
-            const context = canvas.getContext('2d');
-            if (context) {
-              canvas.width = img.width;
-              canvas.height = img.height;
-              context.drawImage(img, 0, 0);
-              setCtx(context);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          setPreviewImage(e.target.result as string);
+          setEditedImage(e.target.result as string);
+          
+          const img = new Image();
+          img.src = e.target.result as string;
+          img.onload = () => {
+            setOriginalImage(img);
+            if (canvasRef.current) {
+              const canvas = canvasRef.current;
+              const context = canvas.getContext('2d');
+              if (context) {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                context.drawImage(img, 0, 0);
+                setCtx(context);
+              }
             }
-          }
-        };
-      };
-      reader.onerror = () => {
-        alert('เกิดข้อผิดพลาดในการอ่านไฟล์ กรุณาลองใหม่อีกครั้ง');
-        if (inputRef.current) {
-          inputRef.current.value = '';
+          };
         }
       };
       reader.readAsDataURL(file);
+      setShowImageModal(true);
     }
   };
 
@@ -447,12 +448,12 @@ const ReportPage = () => {
   </div>
 </div>
 
-      {showImageModal && previewImage && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="relative bg-white p-6 rounded-lg">
+      {showImageModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto overflow-x-hidden">
+          <div className="relative bg-white p-6 rounded-lg max-h-[90vh] overflow-y-auto w-[90vw] max-w-3xl">
             <button
               onClick={() => setShowImageModal(false)}
-              className="absolute top-2 right-2 text-xl font-bold text-gray-600 hover:text-gray-800"
+              className="absolute top-2 right-2 text-xl font-bold text-gray-600 hover:text-gray-800 z-10"
             >
               ×
             </button>
@@ -470,6 +471,17 @@ const ReportPage = () => {
                 className="w-full"
               />
             </div>
+
+            {imagePreviewUrl && (
+              <div className="mb-4">
+                <img 
+                  src={imagePreviewUrl} 
+                  alt="Preview" 
+                  className="max-w-full h-auto"
+                  style={{ maxHeight: '300px' }}
+                />
+              </div>
+            )}
 
             <div className="relative border border-gray-300 rounded">
               <canvas
