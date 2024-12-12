@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState, useRef } from "react";
 import Navbar from "../component/AdminNavbar";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -10,7 +10,6 @@ import dynamic from "next/dynamic";
 import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import CryptoJS from "crypto-js";
-import { useRouter } from "next/navigation";
 const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
 const Map = dynamic(() => import("../component/LeafletMap"), {
   ssr: false,
@@ -59,7 +58,7 @@ const ReportPage = () => {
   const [long, setLong] = useState(100.6164); // Default long
   const [location, setLocation] = useState("");
   const[teluser,setTeluser] =useState("");
-  const router = useRouter();
+  
   const [adminusername,setAdminusername]=useState("");
   const [selectedLocation, setSelectedLocation] = useState<{
     name: string;
@@ -69,21 +68,15 @@ const ReportPage = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [mapKey, setMapKey] = useState<number>(0);
   const [markerText, setMarkerText] = useState("");
-  useEffect(() => {
-    const userIdFromCookie = Cookies.get("user_id");
-    if (userIdFromCookie) {
-      const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
-      if (decryptedUserId === "123") {
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const isDrawingRef = useRef(false);
+  const [blurRadius, setBlurRadius] = useState(20);
+  const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
+  const [originalImage, setOriginalImage] = useState<HTMLImageElement | null>(null);
+  const [editedImage, setEditedImage] = useState<string | null>(null);
 
-      } else {
-        alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้");
-        router.push("/");
-      }
-    } else {
-      alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้");
-        router.push("/");
-    }
-  }, []);
   useEffect(() => {
     const statusO = "ไม่อยู่ในคลัง";
     setStatus(statusO);
@@ -146,11 +139,14 @@ const ReportPage = () => {
     }
 
     let downloadURL = "";
-    const file = inputRef.current?.files ? inputRef.current.files[0] : null;
-    if (file) {
+    if (editedImage) {
       try {
-        const fileRef = ref(storage, `images/${file.name}`);
-        await uploadBytes(fileRef, file);
+        const response = await fetch(editedImage);
+        const blob = await response.blob();
+        const fileName = `edited_${Date.now()}.jpg`;
+        
+        const fileRef = ref(storage, `images/${fileName}`);
+        await uploadBytes(fileRef, blob);
         downloadURL = await getDownloadURL(fileRef);
       } catch (error) {
         console.error("File upload error:", error);
@@ -186,6 +182,91 @@ const ReportPage = () => {
     setLat(newPosition[0]);
     setLong(newPosition[1]);
     setMapKey((prevKey) => prevKey + 1); // Refresh map with new position
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Check file type
+      if (!file.type.startsWith('image/')) {
+        alert('กรุณาอัพโหลดไฟล์รูปภาพเท่านั้น');
+        if (inputRef.current) {
+          inputRef.current.value = '';  // Clear the input
+        }
+        return;
+      }
+
+      // Check file size (e.g., limit to 5MB)
+      const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+      if (file.size > maxSize) {
+        alert('ขนาดไฟล์ต้องไม่เกิน 5MB');
+        if (inputRef.current) {
+          inputRef.current.value = '';
+        }
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result as string);
+        setEditedImage(reader.result as string);
+        setShowImageModal(true);
+
+        const img = new Image();
+        img.src = reader.result as string;
+        img.onload = () => {
+          setOriginalImage(img);
+          if (canvasRef.current) {
+            const canvas = canvasRef.current;
+            const context = canvas.getContext('2d');
+            if (context) {
+              canvas.width = img.width;
+              canvas.height = img.height;
+              context.drawImage(img, 0, 0);
+              setCtx(context);
+            }
+          }
+        };
+      };
+      reader.onerror = () => {
+        alert('เกิดข้อผิดพลาดในการอ่านไฟล์ กรุณาลองใหม่อีกครั้ง');
+        if (inputRef.current) {
+          inputRef.current.value = '';
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    isDrawingRef.current = true;
+    draw(e);
+  };
+
+  const stopDrawing = () => {
+    isDrawingRef.current = false;
+  };
+
+  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDrawingRef.current || !ctx || !originalImage) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
+
+    // วาดรูปภาพต้นฉบับใหม่ในบริเวณที่จะเบลอ
+    ctx.save();
+    ctx.filter = `blur(${blurRadius}px)`;
+    ctx.beginPath();
+    ctx.arc(x, y, 20, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.drawImage(originalImage, 0, 0, canvas.width, canvas.height);
+    ctx.restore();
   };
 
   // ฟังก์ชันสำหรับตรวจจับตำแหน่งของผู้ใช้
@@ -322,14 +403,14 @@ const ReportPage = () => {
 
       <div className="mb-4">
         <label className="mb-2 block text-sm font-bold text-gray-700">
-         รายละเอียดตำแหน่งเพิ่มเติม
+         รายละเอียดตำแหน่งเพิ่มเติม (เช่น ชั้นที่ ...)
         </label>
         <div className="mb-2">
           <input
             type="text"
             value={markerText}
             onChange={(e) => setMarkerText(e.target.value)}
-            placeholder="รายละเอียดตำแหน่งเพิ่มเติม (เช่น ชั้นที่ ...)"
+            placeholder="ข้อความที่จะแสดงบนหมุด"
             className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
           />
         </div>
@@ -348,6 +429,8 @@ const ReportPage = () => {
         <input
           ref={inputRef}
           type="file"
+          accept="image/*"
+          onChange={handleFileChange}
           className="file-input file-input-bordered file-input-info w-full max-w-xs"
         />
       </div>
@@ -357,12 +440,84 @@ const ReportPage = () => {
           type="submit"
           className="focus:shadow-outline rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700 focus:outline-none"
         >
-          โพสต์
+          ส่ง
         </button>
       </div>
     </form>
   </div>
 </div>
+
+      {showImageModal && previewImage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="relative bg-white p-6 rounded-lg">
+            <button
+              onClick={() => setShowImageModal(false)}
+              className="absolute top-2 right-2 text-xl font-bold text-gray-600 hover:text-gray-800"
+            >
+              ×
+            </button>
+            
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                ระดับความเบลอ: {blurRadius}px
+              </label>
+              <input
+                type="range"
+                min="1"
+                max="50"
+                value={blurRadius}
+                onChange={(e) => setBlurRadius(Number(e.target.value))}
+                className="w-full"
+              />
+            </div>
+
+            <div className="relative border border-gray-300 rounded">
+              <canvas
+                ref={canvasRef}
+                onMouseDown={startDrawing}
+                onMouseUp={stopDrawing}
+                onMouseMove={draw}
+                onMouseLeave={stopDrawing}
+                style={{ 
+                  cursor: 'crosshair',
+                  maxWidth: '100%',
+                  maxHeight: '70vh',
+                  width: 'auto',
+                  height: 'auto'
+                }}
+              />
+            </div>
+
+            <div className="mt-4 flex justify-center gap-2">
+              <button
+                onClick={() => {
+                  const canvas = canvasRef.current;
+                  if (canvas) {
+                    const editedImageUrl = canvas.toDataURL('image/jpeg');
+                    setEditedImage(editedImageUrl);
+                    setPreviewImage(editedImageUrl);
+                    setShowImageModal(false);
+                  }
+                }}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                ยืนยัน
+              </button>
+              <button
+                onClick={() => {
+                  if (ctx && originalImage && canvasRef.current) {
+                    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+                    ctx.drawImage(originalImage, 0, 0, canvasRef.current.width, canvasRef.current.height);
+                  }
+                }}
+                className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+              >
+                รีเซ็ต
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </>
   );
