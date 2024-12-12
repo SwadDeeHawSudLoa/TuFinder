@@ -43,62 +43,56 @@ const Navbar: React.FC = () => {
     <>
       <button
         onClick={handleReportClick}
-        className="flex w-full items-center rounded-lg p-3 hover:bg-gray-100"
+        className="flex w-full items-center rounded-lg p-3 transition-all duration-300 hover:bg-white/20 hover:shadow-lg hover:scale-105"
       >
-        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="h-6 w-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
         </svg>
-        <span className="ml-3 text-small">แจ้งพบของหาย</span>
+        <span className="ml-3 text-black font-medium">แจ้งพบของหาย</span>
       </button>
 
       {isLoggedIn && !isAdmin && (
         <a
           href="/myposts"
-          className="flex w-full items-center rounded-lg p-3 hover:bg-gray-100"
+          className="flex w-full items-center rounded-lg p-3 transition-all duration-300 hover:bg-white/20 hover:shadow-lg hover:scale-105"
         >
-          <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-            />
+          <svg className="h-6 w-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          <span className="ml-3 text-small">โพสต์ของฉัน</span>
+          <span className="ml-3 text-black font-medium">โพสต์ของฉัน</span>
         </a>
-        
       )}
     </>
   );
 
   return (
     <>
-    <button
-  id="menu-button"
-  onClick={() => setIsMenuOpen(!isMenuOpen)}
-  className={`fixed left-4 top-4 z-50 rounded-lg bg-orange-400 p-3 shadow-lg lg:hidden ${
-    isMenuOpen ? "hidden" : "block"
-  }`}
->
-  <svg
-    className="h-6 w-6"
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M4 6h16M4 12h16M4 18h16"
-    />
-  </svg>
-</button>
+      <button
+        id="menu-button"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        className={`fixed left-4 top-4 z-50 rounded-lg bg-gradient-to-r from-orange-500 to-orange-400 p-3 shadow-lg transition-all duration-300 hover:shadow-orange-300/50 hover:scale-105 lg:hidden ${
+          isMenuOpen ? "hidden" : "block"
+        }`}
+      >
+        <svg
+          className="h-6 w-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
 
       {/* Sidebar for Mobile */}
       <div
         id="sidebar"
-        className={`fixed left-0 top-0 z-40 h-screen w-64 transform bg-orange-400 shadow-lg transition-transform duration-300 lg:hidden ${
+        className={`fixed left-0 top-0 z-40 h-screen w-64 transform bg-gradient-to-b from-orange-400 to-orange-500 shadow-lg transition-transform duration-300 lg:hidden ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -150,45 +144,46 @@ const Navbar: React.FC = () => {
       </div>
 
       {/* Horizontal Navbar for Desktop */}
-      <div className="hidden lg:flex lg:justify-between lg:items-center lg:py-4 lg:px-8 lg:bg-orange-400 lg:shadow-md">
-        <a href="/main" className="flex items-center">
+      <div className="hidden lg:flex lg:justify-between lg:items-center lg:py-4 lg:px-8 lg:bg-[#FF8C32] lg:shadow-lg">
+        <a href="/main" className="flex items-center group">
           <img
-            className="mr-2 h-8 w-8 text-gray-100"
+            className="mr-2 h-8 w-8 transition-transform duration-300 group-hover:scale-110"
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Emblem_of_Thammasat_University.svg/1024px-Emblem_of_Thammasat_University.svg.png"
             alt="logo"
           />
-          <span className="text-xl font-semibold">TuItemFinder</span>
+          <span className="text-xl font-semibold text-black">TuItemFinder</span>
         </a>
+        
         <nav className="flex space-x-4">
           <NavigationLinks />
           {isLoggedIn ? (
-              <button
-                onClick={handleLogout}
-                className="flex w-full items-center rounded-lg p-3 hover:bg-gray-100"
-              >
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
-                <span className="ml-3">Logout</span>
-              </button>
-            ) : (
-              <a
-                href="/login"
-                className="flex w-full items-center rounded-lg p-3 hover:bg-green-500"
-              >
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                </svg>
-                <span className="ml-3">Login</span>
-              </a>
-            )}
+            <button
+              onClick={handleLogout}
+              className="flex items-center rounded-lg p-3 transition-all duration-300 hover:bg-red-500/20 hover:shadow-lg hover:scale-105"
+            >
+              <svg className="h-6 w-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              <span className="ml-3 text-black font-medium">Logout</span>
+            </button>
+          ) : (
+            <a
+              href="/login"
+              className="flex items-center rounded-lg p-3 transition-all duration-300 hover:bg-green-500/20 hover:shadow-lg hover:scale-105"
+            >
+              <svg className="h-6 w-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+              </svg>
+              <span className="ml-3 text-black font-medium">Login</span>
+            </a>
+          )}
         </nav>
       </div>
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="relative w-11/12 max-w-lg rounded-lg bg-white p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+          <div className="relative w-11/12 max-w-lg rounded-xl bg-white p-8 shadow-2xl transform transition-all duration-300 hover:scale-[1.02]">
             <h1 className="mb-4 text-center text-xl font-bold md:text-3xl">
               หากคุณต้องการเเจ้งพบของหาย
               <br />
@@ -223,7 +218,7 @@ const Navbar: React.FC = () => {
               </button>
             </div>
             <button
-              className="absolute right-2 top-2 rounded-full border-black px-3 py-2 text-lg text-black"
+              className="absolute right-3 top-3 rounded-full p-2 text-gray-500 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700"
               onClick={closeModal}
             >
               &#x2715;
