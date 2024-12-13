@@ -19,20 +19,23 @@ interface Post {
   adminIdEdit?: string;
   title: string;
   username: string;
-  adminusername?: string; // เพิ่มชื่อ admin
+  adminusername?: string;
   tel: string;
-  teluser: string; // เพิ่มเบอร์มือถือของผู้ใช้
+  teluser: string;
   category: string;
+  otherCategory: string;
   image: string;
-  imageAdmin?: string; // เพิ่มรูปภาพเเนบรูปหลังฐานที่จะเเสดงเฉพาะadminเท่านั้น
+  imageAdmin?: string;
   status: string;
   description: string;
   date: Date;
   lat: number;
   long: number;
   location: string;
-  otherCategory: string;
+  markerText?: string;
+  locationINV? :  String
 }
+
 const decryptWithCryptoJS = (encryptedCookie: string, secretKey: string): string => {
   try {
     console.log("Encrypted Cookie:", encryptedCookie);

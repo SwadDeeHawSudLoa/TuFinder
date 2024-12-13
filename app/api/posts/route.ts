@@ -43,6 +43,7 @@ export async function POST(request: Request) {
       long,
       location,
       markerText,
+      locationINV ,
     } = await request.json();
 
     // Create a new post, Prisma will automatically handle post_id
@@ -65,6 +66,7 @@ export async function POST(request: Request) {
         long,
         location,
         markerText,
+        locationINV ,
       },
     });
 

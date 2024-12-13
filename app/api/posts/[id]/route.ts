@@ -36,7 +36,7 @@ export async function PUT(
     lat,
     long,
     location,
-    markerText,
+    markerText,locationINV 
   } = await request.json();
   const post_Id = Number(params.id);
   const updatePost = await prisma.post.update({
@@ -58,6 +58,7 @@ export async function PUT(
       long,
       location,
       markerText,
+      locationINV ,
     },
   });
   return Response.json(updatePost);

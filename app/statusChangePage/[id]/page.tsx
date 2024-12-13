@@ -1,53 +1,53 @@
 "use client";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-async function handleUpdateClick(postId: number, status: string): Promise<void> {
-  await fetchpostId(postId, status);
+interface Post {
+  post_id: number;
 }
 
-async function fetchpostId(postId: number, status: string) {
-  try {
-    await axios.put(`/api/statusPosts/${postId}`, { status });
-    window.location.href = "/myposts";
-  } catch (error) {
-    console.error("Error submitting post:", error);
-    alert("Something went wrong");
-  }
+interface FormEvent {
+  preventDefault: () => void;
 }
+
 
 const ChangeStatusPage = ({ params }: { params: { id: string } }) => {
+  const router = useRouter();
   const { id } = params;
   const [status, setStatus] = useState("");
-
+  const [locationINV, setlocationINV] = useState("");
   useEffect(() => {
     if (id) {
       fetchPost(parseInt(id));
     }
   }, [id]);
 
-  const renderStatusButton = (
-    post: number,
-    status: string,
-    label: string,
-    color: string,
-  ) => (
-    <button
-      className={`${color} mx-1 flex-grow transform rounded-lg px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-opacity-50`}
-      onClick={() => handleUpdateClick(post, status)}
-    >
-      {label}
-    </button>
-  );
-
   const fetchPost = async (id: Number) => {
     try {
       const res = await axios.get(`/api/posts/${id}`);
       setStatus(res.data.status);
+      setlocationINV(res.data.locationINV);
     } catch (error) {
       console.error(error);
     }
   };
+
+  async function handleSubmit(
+    event: FormEvent
+  ): Promise<void> {
+    event.preventDefault();
+    
+    try {
+      await axios.put(`/api/posts/${id}`, {
+        status: status,
+        locationINV: locationINV,
+      }); 
+      router.push("/myposts");
+    } catch (error) {
+      console.error("Error submitting post:", error);
+    }
+  }
 
   return (
     <>
@@ -78,19 +78,41 @@ const ChangeStatusPage = ({ params }: { params: { id: string } }) => {
           >
             <strong>สถานะปัจจุบัน:</strong> {status}
           </p>
-          <div className="mt-4 flex flex-col items-center justify-between space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
-            <select
-              className="w-full sm:flex-grow transform rounded-lg px-4 py-2 font-semibold text-black bg-red-200 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-opacity-50"
-              value={status}
-              onChange={(e) => handleUpdateClick(parseInt(id), e.target.value)}
-            >
-              <option value="" disabled>
-                Select status
-              </option>
-              <option value="ถูกรับไปเเล้ว">ถูกรับไปเเล้ว</option>
-              <option value="ไม่อยู่ในคลัง">ไม่อยู่ในคลัง</option>
-            </select>
-          </div>
+          <form onSubmit={handleSubmit} className="flex-grow flex justify-center items-center flex-col rounded-lg bg-gray-200 px-4 py-2 font-semibold text-black ">
+<select value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className="flex-grow border-2 border-black transform rounded-lg bg-gray-200 px-4 py-2 font-semibold text-black transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50"
+                >
+                  <option value="" disabled selected>
+                  เลือกสถานะ
+                  </option>
+                  <option value="ถูกรับไปเเล้ว">ถูกรับไปเเล้ว</option>
+                  <option value="ไม่อยู่ในคลัง">ไม่อยู่ในคลัง</option>
+                  
+                </select>
+                {status == "อยู่ในคลัง" && (
+                  <>
+                  <label >เลือกสถานที่ศูนย์เก็บของหาย</label>
+                  <select
+                  value={locationINV}
+                  onChange={(e) => setlocationINV(e.target.value)}
+                  className="flex-grow border-2 border-black transform rounded-lg bg-gray-200 px-4 py-2 font-semibold text-black transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50"
+                >
+                  <option value="" disabled selected>
+                  สถานที่             </option>
+                  <option value="อาคารโดมบริหาร">อาคารโดมบริหาร</option>
+                  <option value="SC3">SC3</option>
+                
+                </select>
+                  </>
+                )}
+
+         
+            <button type="submit" className="mt-3 flex-grow items-center transform rounded-lg bg-green-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50">
+              อัพเดตสถานะ
+            </button>
+          </form>
+                
         </div>
       </div>
     </>

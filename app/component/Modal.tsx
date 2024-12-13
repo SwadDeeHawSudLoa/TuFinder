@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FormEvent } from "react";
 import Image from "next/image";
 import axios from "axios";
 import dynamic from "next/dynamic";
@@ -33,6 +33,7 @@ interface Post1 {
   long: number;
   location: string;
   markerText?: string;
+  locationINV? :  String
 }
 
 interface ModalProps {
@@ -62,8 +63,40 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
   const [showEvidence, setShowEvidence] = useState<boolean>(false);
   const [showEvidencePopup, setShowEvidencePopup] = useState<boolean>(false); // New state for evidence popup
   const [showFullImage, setShowFullImage] = useState<boolean>(false); // Add this new state
-  
-  
+const [status, setStatus] = useState<string>("");
+const [locationINV,setlocationINV] = useState<string>("");
+
+
+  useEffect(() => {
+    if (post.post_id) {
+      fetchPost(post.post_id);
+    }
+  }, [post.post_id]);
+
+  const fetchPost = async (id: Number) => {
+    try {
+      const res = await axios.get(`/api/posts/${id}`);
+      setStatus(res.data.status);
+      setlocationINV(res.data.locationINV);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+async function handleSubmit(
+  post: Post1, status: string, locationINV: string, event: FormEvent<HTMLFormElement>
+): Promise<void> {
+  event.preventDefault();
+  fetchpostId(post, status, locationINV);
+  try {
+    await axios.put(`/api/posts/${post.post_id}`, {
+      status: status,
+      locationINV: locationINV,
+    });
+  } catch (error) {
+    console.error("Error submitting post:", error);
+  }
+}
   
 
   useEffect(() => {
@@ -82,7 +115,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
 
   if (!show || !isClient) return null;
 
-  async function fetchpostId(post: Post1, status: string) {
+  async function fetchpostId(post: Post1, status: string,locationINV: string): Promise<void> {
     try {
       await axios.put(`/api/statusPosts/${post.post_id}`, { status });
       window.location.href = "/mainAdmin";
@@ -94,8 +127,8 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
 
   const isAdmin = userid === "123";
 
-  async function handleUpdateClick(post: Post1, status: string): Promise<void> {
-    await fetchpostId(post, status);
+  async function handleUpdateClick(post: Post1, status: string,locationINV: string) {
+    fetchpostId(post, status,locationINV);
   }
 
   async function handleAddPictureClick(post_id: number) {
@@ -110,7 +143,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
   ) => (
     <button
       className={`${color} mx-1 flex-grow transform rounded-lg px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-opacity-50`}
-      onClick={() => handleUpdateClick(post, status)}
+      onClick={() => handleUpdateClick(post, status,locationINV)}
     >
       {label}
     </button>
@@ -119,7 +152,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75"
+      className="fixed text-sm inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75"
       aria-modal="true"
       role="dialog"
       aria-labelledby="modal-title"
@@ -144,7 +177,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
             className="rounded-t-lg"
           />
         </div>
-        <div className="mb-4 flex flex-row items-center justify-center space-x-4 text-xl text-black">
+        <div className="mb-4 flex flex-row items-center justify-center space-x-4 text-md text-black">
           <p><strong>ชื่อสิ่งของ:</strong>{post.title}</p>
           <p>
             <strong>สถานที่พบ:</strong> {post.location}
@@ -168,7 +201,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
 
         {view !== "ตรวจสอบ" ? (
           <>
-           <div className="text-left max-h-32 max-w overflow-y-auto whitespace-normal rounded bg-slate-200 p-4 ">
+           <div className="text-left max-h-32 text-md  max-w overflow-y-auto whitespace-normal rounded bg-slate-200 p-4 ">
   <strong>รายละเอียด:</strong> {post.description}
   
 </div>
@@ -253,7 +286,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
                   <strong>รายละเอียด:</strong> {post.description}
                 </p>
               </div>
-
+              
                 <div className="mt-4 flex items-center justify-between space-x-2">
                 <button
                   onClick={() => handleAddPictureClick(post.post_id)}
@@ -261,18 +294,49 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, post, view }) => {
                 >
                   เเนบรูป
                 </button>
-                <select
-                  onChange={(e) => handleUpdateClick(post, e.target.value)}
-                  className="flex-grow transform rounded-lg bg-gray-200 px-4 py-2 font-semibold text-black transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50"
+       
+
+
+<form onSubmit={(event) => handleSubmit(post, status, locationINV, event)} className="flex-grow  transform flex justify-center items-center flex-col rounded-lg bg-gray-200 px-4 py-2 font-semibold text-black ">
+<label >เปลี่ยนสถานะ</label>
+<select value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className="flex-grow border-2 border-black transform rounded-lg bg-gray-200 px-4 py-2 font-semibold text-black transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50"
+                
                 >
                   <option value="" disabled selected>
                   เลือกสถานะ
                   </option>
                   <option value="ถูกรับไปเเล้ว">ถูกรับไปเเล้ว</option>
                   <option value="ไม่อยู่ในคลัง">ไม่อยู่ในคลัง</option>
-                  <option value="อยู่ในคลัง">อยู่ในคลัง</option>
+                  <option value="อยู่ในคลัง" selected={true}>อยู่ในคลัง</option>
                 </select>
+                {status == "อยู่ในคลัง" && (
+                  <>
+                 <label >เลือกสถานที่ศูนย์เก็บของหาย</label>
+                  <select
+                  value={locationINV}
+                  onChange={(e) => setlocationINV(e.target.value)}
+                  className="flex-grow border-2 border-black transform rounded-lg bg-gray-200 px-4 py-2 font-semibold text-black transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50"
+                >
+                  <option value="" disabled selected>
+                  สถานที่             </option>
+                  <option value="อาคารโดมบริหาร">อาคารโดมบริหาร</option>
+                  <option value="SC3">SC3</option>
+                
+                </select>
+                  </>
+                )}
+
+         
+            <button type="submit" className="mt-2 flex-grow transform rounded-lg bg-green-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50">
+              อัพเดตสถานะ
+            </button>
+          </form>
+                
                 </div>
+
+                
             </>
           )
         )}

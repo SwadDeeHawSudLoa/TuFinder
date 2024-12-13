@@ -12,26 +12,29 @@ import { useRouter } from "next/navigation"
 import Pagination from "../component/Pagination";;
 import CryptoJS from "crypto-js";
 const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
-interface Post {
+interface Post1 {
   post_id: number;
- userIdEdit?: string;
+  userIdEdit?: string;
   adminIdEdit?: string;
- title: string;
+  title: string;
   username: string;
-  adminusername?:string;//เพิ่มชื่อ admin 8
+  adminusername?: string;
   tel: string;
- teluser: string;// เพิ่มเบอร์มือถือของผู้ใช้ 
+  teluser: string;
   category: string;
   otherCategory: string;
   image: string;
- imageAdmin?: string; //เพิ่มรูปภาพเเนบรูปหลังฐานที่จะเเสดงเฉพาะadmin เท่านั้น
+  imageAdmin?: string;
   status: string;
   description: string;
   date: Date;
   lat: number;
   long: number;
   location: string;
+  markerText?: string;
+  locationINV? :  String
 }
+
 const decryptWithCryptoJS = (encryptedCookie: string, secretKey: string): string => {
   try {
     console.log("Encrypted Cookie:", encryptedCookie);
@@ -45,7 +48,7 @@ const decryptWithCryptoJS = (encryptedCookie: string, secretKey: string): string
   }
 };
 const PostList: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post1[]>([]);
   const [adminIdEdit, setadminIdEdit] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({
@@ -55,7 +58,7 @@ const PostList: React.FC = () => {
     status: "",
   });
   const [showModal, setShowModal] = useState(false);
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [selectedPost, setSelectedPost] = useState<Post1 | null>(null);
   const postsPerPage = 8;
 
   // Ensure that useRouter is only used client-side
@@ -126,7 +129,7 @@ const PostList: React.FC = () => {
   }) => {
     try {
       const res = await axios.get("/api/search", { params: searchFilters });
-      const postsData: Post[] = res.data;
+      const postsData: Post1[] = res.data;
       setPosts(postsData);
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -146,7 +149,7 @@ const PostList: React.FC = () => {
     });
     setCurrentPage(1); // Reset to page 1 after search
   };
-  const handleButtonClick = (post: Post) => {
+  const handleButtonClick = (post: Post1) => {
     setSelectedPost(post);
     setShowModal(true);
   };
