@@ -150,7 +150,7 @@ const ReportPage = () => {
       const canvas = canvasRef.current;
       const context = canvas.getContext('2d');
       
-      // คำนวณขนาดที่เหมาะสม
+      // คำนวณขนาดที่เหม��ะสม
       const maxWidth = window.innerWidth * 0.9; // 90% ของความกว้างหน้าจอ
       const maxHeight = window.innerHeight * 0.6; // 60% ของความสูงหน้าจอ
       
@@ -389,13 +389,33 @@ const ReportPage = () => {
             <label className="w-full sm:w-32 text-sm font-bold text-gray-700">
               เบอร์มือถือของคุณ
             </label>
-            <input
-              type="text"
-              value={teluser}
-              onChange={(e) => setTeluser(e.target.value)}
-              placeholder="กรุณาระบุเบอร์มือถือ"
-              className="w-full sm:flex-grow rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
-            />
+            <div className="w-full">
+              <input
+                type="tel"
+                value={teluser}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/\D/g, '');
+                  if (value.length <= 10) {
+                    setTeluser(value);
+                  }
+                }}
+                onBlur={(e) => {
+                  if (e.target.value.length < 10) {
+                    alert("กรุณาใส่เบอร์มือถือให้ครบ 10 ตัว");
+                  }
+                }}
+                pattern="[0-9]{10}"
+                maxLength={10}
+                placeholder="กรุณาระบุเบอร์มือถือ 10 หลัก"
+                required
+                className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+              />
+              {teluser.length > 0 && teluser.length < 10 && (
+                <p className="text-red-500 text-sm mt-1">
+                  กรุณาใส่เบอร์มือถือให้ครบ 10 ตัว
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>
