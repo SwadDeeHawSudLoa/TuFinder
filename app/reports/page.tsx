@@ -105,7 +105,7 @@ const ReportPage = () => {
     fetchAdminUserName();
     const admin = "123";
     setAdminIdEdit(admin);
-    const phoneAdmin = "043311286";
+    const phoneAdmin = "0433112286";
     setTel(phoneAdmin);
     const userIdFromCookie = Cookies.get("user_id");
     if (userIdFromCookie) {
@@ -369,21 +369,22 @@ const ReportPage = () => {
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
         <div className="flex flex-col space-y-4">
-          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
-            <label className="w-full sm:w-32 text-sm font-bold text-gray-700">
-              ชื่อสิ่งของ
+          <div className="flex flex-col text-md sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
+            <label className="w-full sm:w-32  font-bold text-gray-700">
+              ชื่อสิ่งของ <label className="text-red-600 font-bold">*</label>
             </label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="กรุณาระบุชื่อสิ่งของ"
+              required
               className="w-full sm:flex-grow rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
             />
           </div>
           <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
             <label className="w-full sm:w-32 text-sm font-bold text-gray-700">
-              เบอร์มือถือของคุณ
+              เบอร์มือถือของคุณ <label className="text-red-600 text-md font-bold">*</label>
             </label>
             <div className="w-full">
               <input
@@ -407,8 +408,8 @@ const ReportPage = () => {
                 className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
               />
               {teluser.length > 0 && teluser.length < 10 && (
-                <p className="text-red-500 text-sm mt-1">
-                  กรุณาใส่เบอร์มือถือให้ครบ 10 ตัว
+                <p className="text-red-500 text-md mt-1">
+                  กรุณาใส่เบอร์มือถือให้ครบ 10 ตัว <label className="text-red-600 text-md font-bold">*</label>
                 </p>
               )}
             </div>
@@ -417,12 +418,13 @@ const ReportPage = () => {
       </div>
 
       <div className="mb-4">
-        <label className="mb-2 block text-sm font-bold text-gray-700">
-          หมวดหมู่
+        <label className="mb-2 block text-md font-bold text-gray-700">
+          หมวดหมู่ <label className="text-red-600 text-md font-bold">*</label>
         </label>
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
+          required
           className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
         >
           <option value="">กรุณาเลือกหมวดหมู่</option>
@@ -438,13 +440,14 @@ const ReportPage = () => {
             value={otherCategory}
             onChange={(e) => setOtherCategory(e.target.value)}
             placeholder="กรุณาระบุหมวดหมู่อื่นๆ"
+            required
             className="mt-2 w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
           />
         )}
       </div>
 
       <div className="mb-4">
-        <label className="mb-2 block text-sm font-bold text-gray-700">
+        <label className="mb-2 block text-md font-bold text-gray-700">
           รายละเอียดของสภาพสิ่งของ
         </label>
         <textarea
@@ -456,8 +459,8 @@ const ReportPage = () => {
       </div>
 
       <div className="mb-4">
-        <label className="mb-2 block text-sm font-bold text-gray-700">
-          สถานที่พบของหาย
+        <label className="mb-2 block text-md font-bold text-gray-700">
+          สถานที่พบของหาย <label className="text-red-600 text-md font-bold">*</label>
         </label>
         <select
           value={selectedLocation ? selectedLocation.name : ""}
@@ -468,7 +471,7 @@ const ReportPage = () => {
             setSelectedLocation(selected || null);
           }}
           className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
-        >
+          required >
           <option value="">กรุณาเลือกสถานที่</option>
           {predefinedLocations.map((loc) => (
             <option key={loc.name} value={loc.name}>
@@ -508,6 +511,7 @@ const ReportPage = () => {
           type="file"
           accept="image/*"
           onChange={handleFileChange}
+          required
           className="file-input file-input-bordered file-input-info w-full max-w-xs"
         />
       </div>

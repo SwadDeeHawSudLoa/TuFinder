@@ -110,7 +110,7 @@ const ReportPage = () => {
       }
     }
     fetchAdminUserName();
-    const phoneAdmin = "043311286";
+    const phoneAdmin = "0433112286";
     setTel(phoneAdmin);
     const userIdFromCookie = Cookies.get("user_id");
     if (userIdFromCookie) {
@@ -373,160 +373,164 @@ const ReportPage = () => {
       แจ้งพบของสูญหาย
     </h2>
     <form onSubmit={handleSubmit}>
-      <div className="mb-4">
-        <div className="flex flex-col space-y-4">
-          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
-            <label className="w-full sm:w-32 text-sm font-bold text-gray-700">
-              ชื่อสิ่งของ
-            </label>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="กรุณาระบุชื่อสิ่งของ"
-              className="w-full sm:flex-grow rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
-            />
-          </div>
-          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
-            <label className="w-full sm:w-32 text-sm font-bold text-gray-700">
-              เบอร์มือถือของคุณ
-            </label>
-            <div className="w-full">
-              <input
-                type="tel"
-                value={teluser}
-                onChange={(e) => {
-                  const value = e.target.value.replace(/\D/g, '');
-                  if (value.length <= 10) {
-                    setTeluser(value);
-                  }
-                }}
-                onBlur={(e) => {
-                  if (e.target.value.length < 10) {
-                    alert("กรุณาใส่เบอร์มือถือให้ครบ 10 ตัว");
-                  }
-                }}
-                pattern="[0-9]{10}"
-                maxLength={10}
-                placeholder="กรุณาระบุเบอร์มือถือ 10 หลัก"
-                required
-                className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
-              />
-              {teluser.length > 0 && teluser.length < 10 && (
-                <p className="text-red-500 text-sm mt-1">
-                  กรุณาใส่เบอร์มือถือให้ครบ 10 ตัว
-                </p>
-              )}
+          <div className="mb-4">
+            <div className="flex flex-col space-y-4">
+              <div className="flex flex-col text-md sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                <label className="w-full sm:w-32  font-bold text-gray-700">
+                  ชื่อสิ่งของ <label className="text-red-600 font-bold">*</label>
+                </label>
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="กรุณาระบุชื่อสิ่งของ"
+                  required
+                  className="w-full sm:flex-grow rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+                />
+              </div>
+              <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                <label className="w-full sm:w-32 text-sm font-bold text-gray-700">
+                  เบอร์มือถือของคุณ <label className="text-red-600 text-md font-bold">*</label>
+                </label>
+                <div className="w-full">
+                  <input
+                    type="tel"
+                    value={teluser}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, '');
+                      if (value.length <= 10) {
+                        setTeluser(value);
+                      }
+                    }}
+                    onBlur={(e) => {
+                      if (e.target.value.length < 10) {
+                        alert("กรุณาใส่เบอร์มือถือให้ครบ 10 ตัว");
+                      }
+                    }}
+                    pattern="[0-9]{10}"
+                    maxLength={10}
+                    placeholder="กรุณาระบุเบอร์มือถือ 10 หลัก"
+                    required
+                    className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+                  />
+                  {teluser.length > 0 && teluser.length < 10 && (
+                    <p className="text-red-500 text-md mt-1">
+                      กรุณาใส่เบอร์มือถือให้ครบ 10 ตัว <label className="text-red-600 text-md font-bold">*</label>
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className="mb-4">
-        <label className="mb-2 block text-sm font-bold text-gray-700">
-          หมวดหมู่
-        </label>
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
-        >
-          <option value="">กรุณาเลือกหมวดหมู่</option>
-          <option value="เอกสารสำคัญ">เอกสารสำคัญ</option>
-          <option value="สิ่งของส่วนบุคคล">สิ่งของส่วนบุคคล</option>
-          <option value="อุปกรณ์อิเล็กทรอนิกส์">อุปกรณ์อิเล็กทรอนิกส์</option>
-          <option value="อื่นๆ">อื่นๆ</option>
-        </select>
-        
-        {category === "อื่นๆ" && (
-          <input
-            type="text"
-            value={otherCategory}
-            onChange={(e) => setOtherCategory(e.target.value)}
-            placeholder="กรุณาระบุหมวดหมู่อื่นๆ"
-            className="mt-2 w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
-          />
-        )}
-      </div>
-
-      <div className="mb-4">
-        <label className="mb-2 block text-sm font-bold text-gray-700">
-          รายละเอียดของสภาพสิ่งของ
-        </label>
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="กรุณาระบุรายละเอียด"
-          className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="mb-2 block text-sm font-bold text-gray-700">
-          สถานที่พบของหาย
-        </label>
-        <select
-          value={selectedLocation ? selectedLocation.name : ""}
-          onChange={(e) => {
-            const selected = predefinedLocations.find(
-              (loc) => loc.name === e.target.value
-            );
-            setSelectedLocation(selected || null);
-          }}
-          className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
-        >
-          <option value="">กรุณาเลือกสถานที่</option>
-          {predefinedLocations.map((loc) => (
-            <option key={loc.name} value={loc.name}>
-              {loc.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="mb-4">
-        <label className="mb-2 block text-sm font-bold text-gray-700">
-         รายละเอียดตำแหน่งเพิ่มเติม (เช่น ชั้นที่ ...)
-        </label>
-        <div className="mb-2">
-          <input
-            type="text"
-            value={markerText}
-            onChange={(e) => setMarkerText(e.target.value)}
-            placeholder="ข้อความที่จะแสดงบนหมุด"
-            className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
-          />
-        </div>
-        <Map
-          posix={[lat, long]}
-          zoom={13}
-          key={mapKey}
-          onMapClick={handleMapClick}
-          onLocationUpdate={handleMapClick}
-          markerText={markerText}
-          style={{ height: "200px", width: "100%" }}
-        />
-      </div>
-
-      <div className="mb-4 flex justify-between">
-        <input
-          ref={inputRef}
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="file-input file-input-bordered file-input-info w-full max-w-xs"
-        />
-      </div>
-
-      <div className="flex justify-center">
-        <button
-          type="submit"
-          className="focus:shadow-outline rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700 focus:outline-none"
-        >
-          ส่ง
-        </button>
-      </div>
-    </form>
+    
+          <div className="mb-4">
+            <label className="mb-2 block text-md font-bold text-gray-700">
+              หมวดหมู่ <label className="text-red-600 text-md font-bold">*</label>
+            </label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+              className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+            >
+              <option value="">กรุณาเลือกหมวดหมู่</option>
+              <option value="เอกสารสำคัญ">เอกสารสำคัญ</option>
+              <option value="สิ่งของส่วนบุคคล">สิ่งของส่วนบุคคล</option>
+              <option value="อุปกรณ์อิเล็กทรอนิกส์">อุปกรณ์อิเล็กทรอนิกส์</option>
+              <option value="อื่นๆ">อื่นๆ</option>
+            </select>
+            
+            {category === "อื่นๆ" && (
+              <input
+                type="text"
+                value={otherCategory}
+                onChange={(e) => setOtherCategory(e.target.value)}
+                placeholder="กรุณาระบุหมวดหมู่อื่นๆ"
+                required
+                className="mt-2 w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+              />
+            )}
+          </div>
+    
+          <div className="mb-4">
+            <label className="mb-2 block text-md font-bold text-gray-700">
+              รายละเอียดของสภาพสิ่งของ
+            </label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="กรุณาระบุรายละเอียด"
+              className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+            />
+          </div>
+    
+          <div className="mb-4">
+            <label className="mb-2 block text-md font-bold text-gray-700">
+              สถานที่พบของหาย <label className="text-red-600 text-md font-bold">*</label>
+            </label>
+            <select
+              value={selectedLocation ? selectedLocation.name : ""}
+              onChange={(e) => {
+                const selected = predefinedLocations.find(
+                  (loc) => loc.name === e.target.value
+                );
+                setSelectedLocation(selected || null);
+              }}
+              className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+              required >
+              <option value="">กรุณาเลือกสถานที่</option>
+              {predefinedLocations.map((loc) => (
+                <option key={loc.name} value={loc.name}>
+                  {loc.name}
+                </option>
+              ))}
+            </select>
+          </div>
+    
+          <div className="mb-4">
+            <label className="mb-2 block text-sm font-bold text-gray-700">
+             รายละเอียดตำแหน่งเพิ่มเติม (เช่น ชั้นที่ ...)
+            </label>
+            <div className="mb-2">
+              <input
+                type="text"
+                value={markerText}
+                onChange={(e) => setMarkerText(e.target.value)}
+                placeholder="ข้อความที่จะแสดงบนหมุด"
+                className="w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+              />
+            </div>
+            <Map
+              posix={[lat, long]}
+              zoom={13}
+              key={mapKey}
+              onMapClick={handleMapClick}
+              onLocationUpdate={handleMapClick}
+              markerText={markerText}
+              style={{ height: "200px", width: "100%" }}
+            />
+          </div>
+    
+          <div className="mb-4 flex justify-between">
+            <input
+              ref={inputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              required
+              className="file-input file-input-bordered file-input-info w-full max-w-xs"
+            />
+          </div>
+    
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="focus:shadow-outline rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700 focus:outline-none"
+            >
+              ส่ง
+            </button>
+          </div>
+        </form>
   </div>
 </div>
 

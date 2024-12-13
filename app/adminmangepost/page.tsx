@@ -149,7 +149,7 @@ const PostList: React.FC = () => {
   async function handleDeleteClick(post_id: number): Promise<void> {
     try {
       await axios.delete(`/api/posts/${post_id}`);
-      window.location.href = "/mypostMyadmin";
+      window.location.href = "/adminmangepost";
     } catch (error) {
       console.error("Error fetching user name", error);
     }
