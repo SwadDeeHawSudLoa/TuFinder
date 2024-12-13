@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Modal from "../component/Modal";
+import axios from "axios";
 
 interface PostModalProps {
   isOpen: boolean;
@@ -63,6 +64,15 @@ export default function PostModal({ isOpen, onClose, posts, onCheckClick }: Post
     setShowModal(false);
     setSelectedPost(null);
   };
+
+  async function handleDeleteClick(post_id: number): Promise<void> {
+    try {
+      await axios.delete(`/api/posts/${post_id}`);
+      window.location.href = "/mypostMyadmin";
+    } catch (error) {
+      console.error("Error fetching user name", error);
+    }
+  }
   
 
   return (
@@ -140,6 +150,25 @@ export default function PostModal({ isOpen, onClose, posts, onCheckClick }: Post
                   </div>
 
                   <div className="mt-6 flex justify-end">
+                  <button
+    onClick={() => handleDeleteClick(post.post_id)}
+    className="inline-flex items-center px-6 py-2.5 rounded-full text-white bg-red-900 hover:bg-red-700 transition-all duration-200 transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+  >
+    <span className="mr-2">ลบโพสต์</span>
+    <svg 
+      className="w-4 h-4" 
+      fill="none" 
+      stroke="currentColor" 
+      viewBox="0 0 24 24"
+    >
+      <path 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+        strokeWidth="2" 
+        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" 
+      />
+    </svg>
+  </button>
                     <button
                       onClick={() => handleButtonClick(post, "ตรวจสอบ")}
                       className="inline-flex items-center px-6 py-2.5 rounded-full text-white bg-orange-500 hover:bg-orange-600 transition-all duration-200 transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
