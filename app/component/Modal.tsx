@@ -206,7 +206,7 @@ async function handleSubmit(
   
 </div>
 <div className="flex justify-row">
-  <div className="flex justify-between w-full">
+  <div className="flex w-full">
     <p className="text-md text-gray-1000 font-bold">
       วันที่โพสต์: 
    
@@ -214,7 +214,14 @@ async function handleSubmit(
         year: 'numeric',
         month: 'long',
         day: 'numeric',
-      })}</p>{status == "อยู่ในคลัง" && (
+      })}</p>
+
+   
+  </div>
+</div>
+<div className="flex justify-row">
+  <div className="flex w-full">
+  {status == "อยู่ในคลัง" && (
                   <>
         
     <p className="text-md text-gray-1000 font-bold">
@@ -224,9 +231,8 @@ async function handleSubmit(
                   </>
                 )}
 
-   
   </div>
-</div>
+  </div>
 
             <div className="mt-4 flex justify-center">
               <button
