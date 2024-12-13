@@ -71,6 +71,7 @@ const ReportPage = () => {
   const [markerText, setMarkerText] = useState("");
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [showImageModal, setShowImageModal] = useState(false);
+  const [locationINV,setlocationINV]=useState("");
   useEffect(() => {
     const userIdFromCookie = Cookies.get("user_id");
     if (userIdFromCookie) {
@@ -95,9 +96,10 @@ const ReportPage = () => {
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
 
   useEffect(() => {
-    const statusO = "ไม่อยู่ในคลัง";
+    const statusO = "อยู่ในคลัง";
     setStatus(statusO);
-
+    const locate = "อาคารโดมบริหาร"
+    setlocationINV(locate);
     async function fetchAdminUserName() {
       try {
         const response = await axios.get(`/api/saveAdmin`);
@@ -221,7 +223,7 @@ const ReportPage = () => {
         lat,
         long,
         location,
-        markerText,
+        markerText,locationINV,
       });
       setIsSubmitted(true);
     } catch (error) {
@@ -347,7 +349,7 @@ const ReportPage = () => {
           <h2 className="mb-4 text-xl font-bold text-green-600">
             ส่งเสร็จสิ้น!
           </h2>
-          <p className="mb-4 text-black">โปรดนำของหายไปให้เจ้าหน้าที่ที่ SC1</p>
+          <p className="mb-4 text-black">โปรดนำของหายไปให้เจ้าหน้าที่ที่ {locationINV}</p>
         </div>
       </div>
     );
