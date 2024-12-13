@@ -205,14 +205,29 @@ async function handleSubmit(
   <strong>รายละเอียด:</strong> {post.description}
   
 </div>
-<p className="text-medium text-gray-1000">
-  วันที่โพสต์: 
-                  {new Date(post.date).toLocaleDateString('th-TH', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </p>
+<div className="flex justify-row">
+  <div className="flex justify-between w-full">
+    <p className="text-md text-gray-1000 font-bold">
+      วันที่โพสต์: 
+      
+    </p>{status == "อยู่ในคลัง" && (
+                  <>
+        <p className="text-md text-gray-1000 ">{new Date(post.date).toLocaleDateString('th-TH', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })}</p>
+    <p className="text-md text-gray-1000 font-bold">
+      สถานที่เก็บของหาย: 
+    </p>
+    <p className="text-md text-gray-1000">{post.locationINV}</p>
+                  </>
+                )}
+
+   
+  </div>
+</div>
+
             <div className="mt-4 flex justify-center">
               <button
                 className="rounded bg-green-400 px-4 py-2 text-gray-950"
