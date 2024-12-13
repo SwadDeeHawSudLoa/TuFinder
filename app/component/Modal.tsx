@@ -132,7 +132,15 @@ async function handleSubmit(
   }
 
   async function handleAddPictureClick(post_id: number) {
-    router.push(`/picture/${post_id}`);
+    try {
+      await axios.put(`/api/posts/${post_id}`, {
+        status: "ถูกรับไปเเล้ว"
+      });
+      
+      router.push(`/picture/${post_id}`);
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
   }
 
   const renderStatusButton = (
@@ -236,7 +244,7 @@ async function handleSubmit(
 
             <div className="mt-4 flex justify-center">
               <button
-                className="rounded bg-green-400 px-4 py-2 text-gray-950"
+                className="rounded bg-green-400 px-4 py-3 text-gray-950"
                 onClick={() => setShowContact(!showContact)}
               >
                 ติดต่อคนพบของหาย
@@ -278,9 +286,9 @@ async function handleSubmit(
                 <div className="flex justify-center">
                   <button
                     onClick={() => setShowEvidencePopup(!showEvidencePopup)} // Toggle evidence popup
-                    className="rounded bg-blue-400 px-4 py-2 text-gray-950"
+                    className="rounded bg-blue-400 px-4 py-3 text-gray-950"
                   >
-                    {showEvidencePopup ? "ซ่อนรูปหลักฐาน" : "ดูรูปหลักฐาน"}
+                    {showEvidencePopup ? "ซ่อนรูปหลักฐานการรับ" : "ดูรูปหลักฐานการรับ"}
                   </button>
                 </div>
               )}
@@ -308,55 +316,56 @@ async function handleSubmit(
                 </p>
               </div>
               
-                <div className="mt-4 flex items-center justify-between space-x-2">
-                <button
-                  onClick={() => handleAddPictureClick(post.post_id)}
-                  className="flex-grow transform rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
-                >
-                  เเนบรูป
-                </button>
-       
+                <div className="mt-4 flex flex-col gap-4">
+                  {/* Form container */}
+                  <form onSubmit={(event) => handleSubmit(post, status, locationINV, event)} 
+                    className="w-full transform rounded-lg bg-gray-50 p-6 shadow-md">
+                    <div className="mb-4">
+                      <label className="mb-2 font-medium text-gray-700">สถานะปัจจุบัน</label>
+                      <select 
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value)}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                      >
+                        <option value="" disabled>เลือกสถานะ</option>
+                        <option value="ถูกรับไปเเล้ว">ถูกรับไปเเล้ว</option>
+                        <option value="ไม่อยู่ในคลัง">ไม่อยู่ในคลัง</option>
+                        <option value="อยู่ในคลัง">อยู่ในคลัง</option>
+                      </select>
+                    </div>
 
+                    {status == "อยู่ในคลัง" && (
+                      <div className="mb-4">
+                        <label className="mb-2 font-medium text-gray-700">สถานที่ศูนย์เก็บของหาย</label>
+                        <select
+                          value={locationINV}
+                          onChange={(e) => setlocationINV(e.target.value)}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                        >
+                          <option value="" disabled>เลือกสถานที่</option>
+                          <option value="อาคารโดมบริหาร">อาคารโดมบริหาร</option>
+                          <option value="SC3">SC3</option>
+                        </select>
+                      </div>
+                    )}
 
-<form onSubmit={(event) => handleSubmit(post, status, locationINV, event)} className="flex-grow  transform flex justify-center items-center flex-col rounded-lg bg-gray-200 px-4 py-2 font-semibold text-black ">
-<label >เปลี่ยนสถานะ</label>
-<select value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                  className="flex-grow border-2 border-black transform rounded-lg bg-gray-200 px-4 py-2 font-semibold text-black transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50"
-                
-                >
-                  <option value="" disabled selected>
-                  เลือกสถานะ
-                  </option>
-                  <option value="ถูกรับไปเเล้ว">ถูกรับไปเเล้ว</option>
-                  <option value="ไม่อยู่ในคลัง">ไม่อยู่ในคลัง</option>
-                  <option value="อยู่ในคลัง" selected={true}>อยู่ในคลัง</option>
-                </select>
-                {status == "อยู่ในคลัง" && (
-                  <>
-                 <label >เลือกสถานที่ศูนย์เก็บของหาย</label>
-                  <select
-                  value={locationINV}
-                  onChange={(e) => setlocationINV(e.target.value)}
-                  className="flex-grow border-2 border-black transform rounded-lg bg-gray-200 px-4 py-2 font-semibold text-black transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50"
-                >
-                  <option value="" disabled selected>
-                  สถานที่             </option>
-                  <option value="อาคารโดมบริหาร">อาคารโดมบริหาร</option>
-                  <option value="SC3">SC3</option>
-                
-                </select>
-                  </>
-                )}
-
-         
-            <button type="submit" className="mt-2 flex-grow transform rounded-lg bg-green-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50">
-              อัพเดตสถานะ
-            </button>
-          </form>
-                
+                    <div className="flex gap-4">
+                      <button
+                        onClick={() => handleAddPictureClick(post.post_id)}
+                        type="button"
+                        className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 ease-in-out shadow-md hover:shadow-lg"
+                      >
+                        แนบรูป
+                      </button>
+                      <button 
+                        type="submit" 
+                        className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 ease-in-out shadow-md hover:shadow-lg"
+                      >
+                        อัพเดตสถานะ
+                      </button>
+                    </div>
+                  </form>
                 </div>
-
                 
             </>
           )

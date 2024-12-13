@@ -127,7 +127,7 @@ const PicturePage = ({ params }: { params: { id: string } }) => {
         imageAdmin: downloadURL,
         
       });
-      router.push("/mypostMyadmin");
+      router.push("/mainAdmin");
     } catch (error) {
       console.error("Error submitting post:", error);
       alert("Something went wrong");
