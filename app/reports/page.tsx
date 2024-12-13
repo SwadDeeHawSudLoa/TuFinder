@@ -343,7 +343,7 @@ const ReportPage = () => {
           <h2 className="mb-4 text-xl font-bold text-green-600">
             ส่งเสร็จสิ้น!
           </h2>
-          <p className="mb-4 text-black">โปรดนำของหายไปให้เจ้าหน้าที่ที่ SC1</p>
+          <p className="mb-4 text-black">โปรดนำของหายไปให้เจ้าหน้าที่ที่ อาคารโดมบริหาร</p>
         </div>
       </div>
     );
