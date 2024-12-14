@@ -98,8 +98,7 @@ const ReportPage = () => {
   useEffect(() => {
     const statusO = "อยู่ในคลัง";
     setStatus(statusO);
-    const locate = "อาคารโดมบริหาร"
-    setlocationINV(locate);
+    
     async function fetchAdminUserName() {
       try {
         const response = await axios.get(`/api/saveAdmin`);
@@ -523,6 +522,15 @@ const ReportPage = () => {
               required
               className="file-input file-input-bordered file-input-info w-full max-w-xs"
             />
+            <select
+              value={locationINV}
+              onChange={(e) => setlocationINV(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            >
+              <option value="">เลือกสถานที่</option>
+              <option value="อาคารโดมบริหาร">อาคารโดมบริหาร</option>
+              <option value="SC3">SC3</option>
+            </select>
           </div>
     
           <div className="flex justify-center">
