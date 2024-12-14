@@ -181,7 +181,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
         long,
         location,
       });
-      router.push("/mypostMyadmin");
+      window.history.back();
     } catch (error) {
       console.error("Error submitting post:", error);
       alert("Something went wrong");
@@ -343,7 +343,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
   />
 </div> 
 <div className="mb-1">
-              <label className="block text-sm font-bold text-gray-700">ชื่อสิ่งของ</label>
+              <label className="block text-sm font-bold text-gray-700">ชื่อสิ่งของ <label className="text-red-600 text-md font-bold">*</label></label>
               <input
                 type="text"
                 value={title}
@@ -354,7 +354,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
             </div>
 
             <div className="mb-1">
-              <label className="block text-sm font-bold text-gray-700">เบอร์มือถือของคุณ</label>
+              <label className="block text-sm font-bold text-gray-700">เบอร์มือถือของคุณ <label className="text-red-600 text-md font-bold">*</label></label>
               <input
                 type="text"
                 value={teluser}
@@ -366,7 +366,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
 
             <div className="mb-1">
     <label className="mb-1 block text-sm font-bold text-gray-700">
-      หมวดหมู่
+      หมวดหมู่ <label className="text-red-600 text-md font-bold">*</label>
     </label>
     <select
       value={category}
@@ -409,7 +409,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
           />
         </div>
         <label className="mb-1 block text-sm font-bold text-gray-700">
-      สถานที่พบของหาย
+      สถานที่พบของหาย <label className="text-red-600 text-md font-bold">*</label>
     </label>
     <select
       value={location}
