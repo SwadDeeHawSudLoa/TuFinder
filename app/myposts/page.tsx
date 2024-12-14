@@ -3,16 +3,15 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Navbar from "../component/navbar";
-import FilterSearch from "../component/FilterSearch";
 import Modal from "../component/Modal";
 import axios from "axios";
 import Cookies from "js-cookie";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import crypto from "crypto";
 import Pagination from "../component/Pagination";
 import CryptoJS from "crypto-js";
+
 const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
+
 interface Post {
   post_id: number;
   userIdEdit?: string;
@@ -33,7 +32,7 @@ interface Post {
   long: number;
   location: string;
   markerText?: string;
-  locationINV? :  String
+  locationINV?: string;
 }
 
 const decryptWithCryptoJS = (encryptedCookie: string, secretKey: string): string => {
@@ -62,54 +61,40 @@ const PostList: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const postsPerPage = 8;
-const [isSubmitting, setIsSubmitting] = useState(false);
+  const [activeAction, setActiveAction] = useState<{ type: string; id: number | null }>({
+    type: "",
+    id: null,
+  });
+
   const router = useRouter();
-  useEffect(() => {
-    const userIdFromCookie = Cookies.get("user_id");
-    if (userIdFromCookie) {
-     
-    } else {
-      alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้");
-        router.push("/");
-    }
-  }, []);
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-
-  const totalPages = Math.ceil(posts.length / postsPerPage);
 
   useEffect(() => {
     const userIdFromCookie = Cookies.get("user_id");
-    console.log("User ID from cookie:", userIdFromCookie);
     if (userIdFromCookie) {
       const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
       setUserIdEdit(decryptedUserId);
     } else {
-      console.error("User ID cookie not found.");
+      alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้");
+      router.push("/");
     }
   }, []);
 
   useEffect(() => {
     if (userIdEdit) {
       const isFiltersEmpty =
-        !filters.title &&
-        !filters.category &&
-        !filters.location &&
-        !filters.status;
+        !filters.title && !filters.category && !filters.location && !filters.status;
 
       if (isFiltersEmpty) {
-        fetchPost(userIdEdit); // Fetch default posts if no filters are provided
+        fetchPost(userIdEdit);
       } else {
-        fetchSearchResults(filters); // Fetch search results if filters are applied
+        fetchSearchResults(filters);
       }
     }
 
     async function fetchPost(userId: string) {
       try {
         const response = await axios.get(`/api/mypost/${userId}`);
-        const post = response.data;
-        setPosts(post);
+        setPosts(response.data);
       } catch (error) {
         console.error("Error fetching user posts", error);
       }
@@ -124,8 +109,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
   }) => {
     try {
       const res = await axios.get("/api/search", { params: searchFilters });
-      const postsData: Post[] = res.data;
-      setPosts(postsData);
+      setPosts(res.data);
     } catch (error) {
       console.error("Error fetching search results:", error);
     }
@@ -143,41 +127,52 @@ const [isSubmitting, setIsSubmitting] = useState(false);
       location: searchFilters.location || "",
       status: searchFilters.status || "",
     });
-    setCurrentPage(1); // Reset to page 1 after search
+    setCurrentPage(1);
   };
 
-  const handleButtonClick = (post: Post) => {setIsSubmitting(true);
+  const handleButtonClick = (post: Post) => {
+    setActiveAction({ type: "status", id: post.post_id });
     setSelectedPost(post);
     setShowModal(true);
-    setIsSubmitting(false);   
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedPost(null);
+    setActiveAction({ type: "", id: null });
   };
 
-  function handleEditClick(post_id: number): void { setIsSubmitting(true);
+  const handleEditClick = (post_id: number): void => {
+    setActiveAction({ type: "edit", id: post_id });
     router.push(`/edit/${post_id}`);
-    setIsSubmitting(false); // Re-enable the button
-  }
+  };
 
-  async function handleDeleteClick(post_id: number): Promise<void> {
-    setIsSubmitting(true); // Disable the button
+  const handleDeleteClick = async (post_id: number): Promise<void> => {
+    setActiveAction({ type: "delete", id: post_id });
     try {
       await axios.delete(`/api/posts/${post_id}`);
       window.location.href = "/myposts";
     } catch (error) {
       console.error("Error deleting post", error);
-    }finally{
-      setIsSubmitting(false); // Re-enable the button
+    } finally {
+      setActiveAction({ type: "", id: null });
     }
-  }
+  };
 
-  async function handleChamgeStatusClick(posts: Post){ setIsSubmitting(true);
-    router.push(`/statusChangePage/${posts.post_id}`);
-    setIsSubmitting(false); // Re-enable the button
-  }
+  const handleChangeStatusClick = async (post: Post): Promise<void> => {
+    setActiveAction({ type: "changeStatus", id: post.post_id });
+    try {
+      router.push(`/statusChangePage/${post.post_id}`);
+    } finally {
+     
+    }
+  };
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+
+  const totalPages = Math.ceil(posts.length / postsPerPage);
 
   return (
     <>
@@ -202,43 +197,49 @@ const [isSubmitting, setIsSubmitting] = useState(false);
                 <p className="mb-2 text-gray-600">{post.category}</p>
               </div>
               <button
+                disabled={activeAction.type === "status" && activeAction.id === post.post_id}
                 onClick={() => handleButtonClick(post)}
-                className={`focus:ring-opacity-50" flex-grow transform rounded-lg px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 ${
+                className={`flex-grow transform rounded-lg px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 ${
                   post.status === "ถูกรับไปเเล้ว"
                     ? "bg-orange-500"
                     : post.status === "ไม่อยู่ในคลัง"
                     ? "bg-red-500"
-                    : post.status === "อยู่ในคลัง"
-                    ? "bg-green-500"
-                    : ""
-                } w-full rounded-md px-4 py-2 text-center`}
+                    : "bg-green-500"
+                }`}
               >
-                {post.status}
+                {activeAction.type === "status" && activeAction.id === post.post_id
+                  ? "กำลังดำเนินการ..."
+                  : post.status}
               </button>
-              <button disabled={isSubmitting}
+              <button
+                disabled={activeAction.type === "edit" && activeAction.id === post.post_id}
                 onClick={() => handleEditClick(post.post_id)}
                 className="mt-2 flex-grow transform rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
               >
-                เเก้ไขโพสต์
+                {activeAction.type === "edit" && activeAction.id === post.post_id
+                  ? "กำลังเปิด..."
+                  : "เเก้ไขโพสต์"}
               </button>
               <div className="flex flex-row">
-              <button disabled={isSubmitting}
-                onClick={() => handleChamgeStatusClick(post)}
-                className="mt-2 flex-grow transform rounded-lg bg-yellow-400 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
-              >
-                เปลี่ยนเเปลงสถานะ
-              </button>
-              <button
-  onClick={() => handleDeleteClick(post.post_id)}
-  disabled={isSubmitting}
-  className={`mt-2 flex-grow transform rounded-lg bg-red-700 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 ${
-      isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:bg-red-800"
-    }`}
->
-  {isSubmitting ? "กำลังลบ..." : "ลบโพสต์"}
-</button>
+                <button
+                  disabled={activeAction.type === "changeStatus" && activeAction.id === post.post_id}
+                  onClick={() => handleChangeStatusClick(post)}
+                  className="mt-2 flex-grow transform rounded-lg bg-yellow-400 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
+                >
+                  {activeAction.type === "changeStatus" && activeAction.id === post.post_id
+                    ? "กำลังเปิด..."
+                    : "เปลี่ยนเเปลงสถานะ"}
+                </button>
+                <button
+                  disabled={activeAction.type === "delete" && activeAction.id === post.post_id}
+                  onClick={() => handleDeleteClick(post.post_id)}
+                  className="mt-2 flex-grow transform rounded-lg bg-red-700 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out"
+                >
+                  {activeAction.type === "delete" && activeAction.id === post.post_id
+                    ? "กำลังลบ..."
+                    : "ลบโพสต์"}
+                </button>
               </div>
-             
             </div>
           ))}
         </div>
@@ -252,8 +253,8 @@ const [isSubmitting, setIsSubmitting] = useState(false);
         <Modal
           show={showModal}
           onClose={handleCloseModal}
-          post={selectedPost}
           view={"status"}
+          post={selectedPost}
         />
       )}
     </>
