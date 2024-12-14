@@ -376,7 +376,7 @@ const ReportPage = () => {
     </h2>
     <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-4 text-md">
               <div className="flex flex-col text-md sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
                 <label className="w-full sm:w-32  font-bold text-gray-700">
                   ชื่อสิ่งของ <label className="text-red-600 font-bold">*</label>
@@ -391,7 +391,7 @@ const ReportPage = () => {
                 />
               </div>
               <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                <label className="w-full sm:w-32 text-sm font-bold text-gray-700">
+                <label className="w-full sm:w-32 text-md font-bold text-gray-700">
                   เบอร์มือถือของคุณ <label className="text-red-600 text-md font-bold">*</label>
                 </label>
                 <div className="w-full">
@@ -490,7 +490,7 @@ const ReportPage = () => {
           </div>
     
           <div className="mb-4">
-            <label className="mb-2 block text-sm font-bold text-gray-700">
+            <label className="mb-2 block text-md font-bold text-gray-700">
              รายละเอียดตำแหน่งเพิ่มเติม (เช่น ชั้นที่ ...)
             </label>
             <div className="mb-2">
@@ -513,7 +513,7 @@ const ReportPage = () => {
             />
           </div>
     
-          <div className="mb-4 flex justify-between">
+          <div className="mb-4 flex justify-center text-md flex-col">
             <input
               ref={inputRef}
               type="file"
@@ -522,7 +522,9 @@ const ReportPage = () => {
               required
               className="file-input file-input-bordered file-input-info w-full max-w-xs"
             />
+            <label >เลือกสถานที่เก็บ <label className="text-red-600 text-md font-bold">*</label></label>
             <select
+            required
               value={locationINV}
               onChange={(e) => setlocationINV(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
