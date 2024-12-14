@@ -88,7 +88,7 @@ const ReportPage = () => {
   const [originalImage, setOriginalImage] = useState<HTMLImageElement | null>(null);
   const [editedImage, setEditedImage] = useState<string | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   useEffect(() => {
     const statusO = "ไม่อยู่ในคลัง";
     setStatus(statusO);
@@ -185,7 +185,7 @@ const ReportPage = () => {
       alert("กรุณากรอกข้อมูลให้ครบทุกช่อง");
       return;
     }
-
+    setIsSubmitting(true); // Disable the button
     let downloadURL = "";
     if (editedImage) {
       try {
@@ -198,6 +198,7 @@ const ReportPage = () => {
         downloadURL = await getDownloadURL(fileRef);
       } catch (error) {
         console.error("File upload error:", error);
+        setIsSubmitting(false); // Re-enable the button
       }
     }
 
@@ -223,7 +224,10 @@ const ReportPage = () => {
     } catch (error) {
       console.error("Error submitting post:", error);
       alert("Something went wrong");
+    }  finally {
+      setIsSubmitting(false); // Re-enable the button
     }
+  
   }
 
   const handleMapClick = (newPosition: LatLngTuple) => {
@@ -383,7 +387,7 @@ const ReportPage = () => {
             />
           </div>
           <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
-            <label className="w-full sm:w-32 text-sm font-bold text-gray-700">
+            <label className="w-full sm:w-32 text-md font-bold text-gray-700">
               เบอร์มือถือของคุณ <label className="text-red-600 text-md font-bold">*</label>
             </label>
             <div className="w-full">
@@ -482,7 +486,7 @@ const ReportPage = () => {
       </div>
 
       <div className="mb-4">
-        <label className="mb-2 block text-sm font-bold text-gray-700">
+        <label className="mb-2 block text-md font-bold text-gray-700">
          รายละเอียดตำแหน่งเพิ่มเติม (เช่น ชั้นที่ ...)
         </label>
         <div className="mb-2">
@@ -517,12 +521,15 @@ const ReportPage = () => {
       </div>
 
       <div className="flex justify-center">
-        <button
-          type="submit"
-          className="focus:shadow-outline rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700 focus:outline-none"
-        >
-          ส่ง
-        </button>
+      <button
+  type="submit"
+  disabled={isSubmitting}
+  className={`mt-4 w-full rounded-lg bg-green-500 px-4 py-2 text-white ${
+      isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:bg-green-600"
+    }`}
+>
+  {isSubmitting ? "กำลังส่ง..." : "ส่ง"}
+</button>
       </div>
     </form>
   </div>

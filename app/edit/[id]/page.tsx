@@ -63,6 +63,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
     long: number;
   } | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [mapKey, setMapKey] = useState<number>(0);
   const [isImagePopupVisible, setIsImagePopupVisible] = useState(false); // New state for the image popup
   const { id } = params;
@@ -147,7 +148,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
   async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
     let downloadURL = existingImage;
-    
+    setIsSubmitting(true); // Disable the button
     if (editedImage) {
       try {
         const response = await fetch(editedImage);
@@ -159,6 +160,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
         downloadURL = await getDownloadURL(fileRef);
       } catch (error) {
         console.error("File upload error:", error);
+        setIsSubmitting(false); // Re-enable the button
       }
     }
 
@@ -182,6 +184,8 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
     } catch (error) {
       console.error("Error submitting post:", error);
       alert("Something went wrong");
+    }finally{
+      setIsSubmitting(false); // Re-enable the button
     }
   }
 
@@ -469,14 +473,17 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
   </div>
 )}
 
-            <div className="mb-1">
-              <button
-                type="submit"
-                className="w-full px-4 py-3 text-sm font-bold text-white bg-green-600 rounded-lg hover:bg-green-700"
-              >
-                อัพเดทข้อมูล
-              </button>
-            </div>
+<div className="flex justify-center">
+      <button
+  type="submit"
+  disabled={isSubmitting}
+  className={`mt-4 w-full rounded-lg bg-green-500 px-4 py-2 text-white ${
+      isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:bg-green-600"
+    }`}
+>
+  {isSubmitting ? "กำลังอัพเดต..." : "อัพเตดข้อมูล"}
+</button>
+      </div>
           </form>
         </div>
       </div>

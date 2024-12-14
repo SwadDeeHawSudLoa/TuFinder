@@ -14,11 +14,13 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
   const [status, setStatus] = useState("");
-
+const [isSubmitting, setIsSubmitting] = useState(false);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     // Call the parent component's onSearch function with all filter value
     onSearch({ title, category, location, status });
+    setTimeout(() => setIsSubmitting(false), 1000); // Adjust the delay as needed
   };
 
   return (
@@ -79,11 +81,13 @@ export default function FilterSearch({ onSearch }: FilterSearchProps) {
         <option value="ถูกรับไปเเล้ว">สถานะถูกรับไปเเล้ว</option>
       </select>
 
-      <button
+      <button   disabled={isSubmitting}
         type="submit"
-        className="w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600 "
+        className={`mt-2 flex-grow transform rounded-lg bg-green-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 ${
+          isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:bg-green-600"
+        }`}
       >
-        ค้นหา
+       {isSubmitting ? "กำลัง..." : "ค้นหา"}
       </button>
     </form>
   );

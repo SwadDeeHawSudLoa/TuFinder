@@ -60,7 +60,7 @@ const PostList: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post1 | null>(null);
   const postsPerPage = 8;
-
+const [isSubmitting, setIsSubmitting] = useState(false);
   // Ensure that useRouter is only used client-side
   const router = useRouter();
 
@@ -149,9 +149,10 @@ const PostList: React.FC = () => {
     });
     setCurrentPage(1); // Reset to page 1 after search
   };
-  const handleButtonClick = (post: Post1) => {
+  const handleButtonClick = (post: Post1) => {setIsSubmitting(true);
     setSelectedPost(post);
     setShowModal(true);
+    setIsSubmitting(false);
   };
 
   const handleCloseModal = () => {
@@ -159,16 +160,20 @@ const PostList: React.FC = () => {
     setSelectedPost(null);
   };
 
-  function handleEditClick(post_id: number): void {
+  function handleEditClick(post_id: number): void {setIsSubmitting(true);
     router.push(`/editAAdmin/${post_id}`);
+    setIsSubmitting(false); // Re-enable the button
   }
 
   async function handleDeleteClick(post_id: number): Promise<void> {
+    setIsSubmitting(true); // Disable the button while submitting
     try {
       await axios.delete(`/api/posts/${post_id}`);
       window.location.href = "/mypostMyadmin";
     } catch (error) {
       console.error("Error fetching user name", error);
+    }finally{
+      setIsSubmitting(false); // Re-enable the button
     }
   }
 
@@ -198,7 +203,7 @@ const PostList: React.FC = () => {
               <p className="text-gray-600">{post.location}</p>
               <p className="text-gray-600">{post.category}</p>
             </div>
-            <button
+            <button disabled={isSubmitting}
               onClick={() => handleButtonClick(post)}
               className={`flex-grow transform rounded-lg px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 ${
                 post.status === "ถูกรับไปเเล้ว"
@@ -212,18 +217,21 @@ const PostList: React.FC = () => {
             >
               {post.status}
             </button>
-            <button
+            <button disabled={isSubmitting}
               onClick={() => handleEditClick(post.post_id)}
               className="mt-2 flex-grow transform rounded-md bg-blue-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
             >
               เเก้ไขโพสต์
             </button>
             <button
-              onClick={() => handleDeleteClick(post.post_id)}
-              className="mt-2 flex-grow transform rounded-lg bg-red-900 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
-            >
-              ลบโพสต์
-            </button>
+  onClick={() => handleDeleteClick(post.post_id)}
+  disabled={isSubmitting}
+  className={`mt-2 flex-grow transform rounded-lg bg-red-700 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 ${
+      isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:bg-red-800"
+    }`}
+>
+  {isSubmitting ? "กำลังลบ..." : "ลบโพสต์"}
+</button>
           </div>
         ))}
       </div>

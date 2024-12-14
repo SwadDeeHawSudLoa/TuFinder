@@ -79,33 +79,33 @@ const ChangeStatusPage = ({ params }: { params: { id: string } }) => {
             <strong>สถานะปัจจุบัน:</strong> {status}
           </p>
           <form onSubmit={handleSubmit} className="flex-grow flex justify-center items-center flex-col rounded-lg bg-gray-200 px-4 py-2 font-semibold text-black ">
-<select value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                  className="flex-grow border-2 border-black transform rounded-lg bg-gray-200 px-4 py-2 font-semibold text-black transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50"
-                >
-                  <option value="" disabled selected>
-                  เลือกสถานะ
-                  </option>
-                  <option value="ถูกรับไปเเล้ว">ถูกรับไปเเล้ว</option>
-                  <option value="ไม่อยู่ในคลัง">ไม่อยู่ในคลัง</option>
-                  
-                </select>
-                {status == "อยู่ในคลัง" && (
-                  <>
-                  <label >เลือกสถานที่ศูนย์เก็บของหาย</label>
-                  <select
-                  value={locationINV}
-                  onChange={(e) => setlocationINV(e.target.value)}
-                  className="flex-grow border-2 border-black transform rounded-lg bg-gray-200 px-4 py-2 font-semibold text-black transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50"
-                >
-                  <option value="" disabled selected>
-                  สถานที่             </option>
-                  <option value="อาคารโดมบริหาร">อาคารโดมบริหาร</option>
-                  <option value="SC3">SC3</option>
-                
-                </select>
-                  </>
-                )}
+          <select 
+  value={status} // Bind the select value to the status state
+  onChange={(e) => setStatus(e.target.value)}
+  className="flex-grow border-2 border-black transform rounded-lg bg-gray-200 px-4 py-2 font-semibold text-black transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50"
+>
+  <option value="">เลือกสถานะ</option>
+  <option value="ถูกรับไปเเล้ว">ถูกรับไปเเล้ว</option>
+  <option value="ไม่อยู่ในคลัง">ไม่อยู่ในคลัง</option>
+</select>
+
+{status === "อยู่ในคลัง" && (
+  <>
+    <label>เลือกสถานที่ศูนย์เก็บของหาย</label>
+    <select
+      value={locationINV} // Bind the select value to the locationINV state
+      onChange={(e) => setlocationINV(e.target.value)}
+      className="flex-grow border-2 border-black transform rounded-lg bg-gray-200 px-4 py-2 font-semibold text-black transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50"
+    >
+      <option value="" disabled>
+        สถานที่
+      </option>
+      <option value="อาคารโดมบริหาร">อาคารโดมบริหาร</option>
+      <option value="SC3">SC3</option>
+    </select>
+  </>
+)}
+
 
          
             <button type="submit" className="mt-3 flex-grow items-center transform rounded-lg bg-green-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50">

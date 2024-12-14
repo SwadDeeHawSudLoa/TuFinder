@@ -7,10 +7,10 @@ const Login = () => {
   const router = useRouter();
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState("");
-
+const [isSubmitting, setIsSubmitting] = useState(false);
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setIsSubmitting(true);
     try {
       const response = await fetch("/api/loginer", {
         method: "POST",
@@ -37,6 +37,7 @@ const Login = () => {
           }),
         });
         router.push("/mainAdmin");
+        setIsSubmitting(false);
       } else if (response.ok) {
         const data = await response.json();
         const [first_Name, last_Name] = data.displayname_th.split(" ");
@@ -57,12 +58,15 @@ const Login = () => {
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("username", username);
         router.push("/main");
+        setIsSubmitting(false);
       } else {
         alert("Invalid username or password");
+        setIsSubmitting(false);
       }
     } catch (error) {
       console.error("An error occurred:", error);
       alert("Login failed");
+      setIsSubmitting(false);
     }
   };
 
@@ -122,9 +126,12 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-orange-500 text-white font-medium py-2.5 rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-300"
+              disabled={isSubmitting}
+              className={`w-full mt-2 flex-grow transform rounded-lg bg-orange-500 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 ${
+                isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:bg-orange-600"
+              }`}
             >
-              เข้าสู่ระบบ
+                {isSubmitting ? "กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ"}
             </button>
           </form>
         </div>
