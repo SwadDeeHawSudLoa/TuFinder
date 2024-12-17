@@ -155,6 +155,7 @@ useEffect(() => {
   };
 
   return (
+    
     <>
       <Navbar />
       <div className="mt-11 flex justify-self-center items-center">
