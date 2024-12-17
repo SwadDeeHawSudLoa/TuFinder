@@ -150,7 +150,7 @@ const PostList: React.FC = () => {
       <Navbar />
       <div className="mt-11 flex justify-self-center items-center">
        
-        <span className="text-2xl font-semibold">TuItemFinder</span>
+        
       </div>
       <FilterSearch onSearch={handleSearch} />
       <div className="w-full px-2 py-8">
