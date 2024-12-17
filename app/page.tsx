@@ -158,12 +158,7 @@ useEffect(() => {
     <>
       <Navbar />
       <div className="mt-11 flex justify-self-center items-center">
-        <img
-          className="h-10 w-10 text-gray-100"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Emblem_of_Thammasat_University.svg/1024px-Emblem_of_Thammasat_University.svg.png"
-          alt="logo"
-        />
-        <span className="text-2xl font-semibold">TuItemFinder</span>
+       
       </div>
       <FilterSearch onSearch={handleSearch} />
       <div className="w-full px-2 py-8">
