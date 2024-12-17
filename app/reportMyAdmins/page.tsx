@@ -576,6 +576,7 @@ const ReportPage = () => {
 
             {imagePreviewUrl && (
               <div className="mb-4">
+                <h2 className="text-2xl font-bold text-orange-600">รูปภาพที่คุณแนบ</h2>
                 <img 
                   src={imagePreviewUrl} 
                   alt="Preview" 
@@ -584,7 +585,7 @@ const ReportPage = () => {
                 />
               </div>
             )}
-
+            <h2 className="text-2xl font-bold text-orange-600">เลือกจุดที่คุณต้องการเบลอ</h2>
             <div className="relative border border-gray-300 rounded">
               <canvas
               ref={canvasRef}
