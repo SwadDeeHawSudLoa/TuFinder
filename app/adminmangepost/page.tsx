@@ -244,4 +244,5 @@ const [activeAction, setActiveAction] = useState<{ type: string; id: number | nu
   );
 };
 
+
 export default PostList;
