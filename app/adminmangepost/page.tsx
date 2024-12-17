@@ -140,7 +140,14 @@ const [activeAction, setActiveAction] = useState<{ type: string; id: number | nu
     setActiveAction({ type: "status", id: post.post_id });
     setShowModal(true);
   };
-
+  const handleChangeStatusClick = async (post: Post): Promise<void> => {
+    setActiveAction({ type: "changeStatus", id: post.post_id });
+    try {
+      router.push(`/statusChangePage/${post.post_id}`);
+    } finally {
+     
+    }
+  };
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedPost(null);
@@ -214,15 +221,26 @@ const [activeAction, setActiveAction] = useState<{ type: string; id: number | nu
                   ? "กำลังเปิด..."
                   : "เเก้ไขโพสต์"}
               </button>
-              <button
-                disabled={activeAction.type === "delete" && activeAction.id === post.post_id}
-                onClick={() => handleDeleteClick(post.post_id)}
-                className="mt-2 flex-grow transform rounded-lg bg-red-700 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
-              >
-                {activeAction.type === "delete" && activeAction.id === post.post_id
-                  ? "กำลังลบ..."
-                  : "ลบโพสต์"}
-              </button>
+              <div className="flex flex-row">
+                <button
+                  disabled={activeAction.type === "changeStatus" && activeAction.id === post.post_id}
+                  onClick={() => handleChangeStatusClick(post)}
+                  className="mt-2 flex-grow transform rounded-lg bg-yellow-400 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
+                >
+                  {activeAction.type === "changeStatus" && activeAction.id === post.post_id
+                    ? "กำลังเปิด..."
+                    : "เปลี่ยนเเปลงสถานะ"}
+                </button>
+                <button
+                  disabled={activeAction.type === "delete" && activeAction.id === post.post_id}
+                  onClick={() => handleDeleteClick(post.post_id)}
+                  className="mt-2 flex-grow transform rounded-lg bg-red-700 px-4 py-2 font-semibold text-white transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-opacity-90 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
+                >
+                  {activeAction.type === "delete" && activeAction.id === post.post_id
+                    ? "กำลังลบ..."
+                    : "ลบโพสต์"}
+                </button>
+                </div>
           </div>
         ))}
       </div>

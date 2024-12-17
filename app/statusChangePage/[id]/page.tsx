@@ -1,7 +1,10 @@
 "use client";
 import axios from "axios";
+import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import CryptoJS from "crypto-js";
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "your-secret-key";
 
 interface Post {
   post_id: number;
@@ -10,6 +13,18 @@ interface Post {
 interface FormEvent {
   preventDefault: () => void;
 }
+const decryptWithCryptoJS = (encryptedCookie: string, secretKey: string): string => {
+  try {
+    console.log("Encrypted Cookie:", encryptedCookie);
+    const bytes = CryptoJS.AES.decrypt(encryptedCookie, secretKey);
+    const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+    console.log("Decrypted Text:", decryptedText);
+    return decryptedText;
+  } catch (error) {
+    console.error("Decryption failed:", error);
+    return "";
+  }
+};
 
 
 const ChangeStatusPage = ({ params }: { params: { id: string } }) => {
@@ -17,6 +32,23 @@ const ChangeStatusPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const [status, setStatus] = useState("");
   const [locationINV, setlocationINV] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => { 
+    
+    const userIdFromCookie = Cookies.get("user_id");
+    
+    if (userIdFromCookie) {
+      const decryptedUserId = decryptWithCryptoJS(userIdFromCookie, SECRET_KEY);
+    setIsAdmin(decryptedUserId === "123"); 
+  }
+   
+  
+  
+  
+  
+  })
+    
+  
   useEffect(() => {
     if (id) {
       fetchPost(parseInt(id));
@@ -87,6 +119,7 @@ const ChangeStatusPage = ({ params }: { params: { id: string } }) => {
   <option value="">เลือกสถานะ</option>
   <option value="ถูกรับไปเเล้ว">ถูกรับไปเเล้ว</option>
   <option value="ไม่อยู่ในคลัง">ไม่อยู่ในคลัง</option>
+  {isAdmin && <option value="อยู่ในคลัง">อยู่ในคลัง</option>}
 </select>
 
 {status === "อยู่ในคลัง" && (
