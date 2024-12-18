@@ -73,7 +73,7 @@ const ChangeStatusPage = ({ params }: { params: { id: string } }) => {
         status,
         locationINV,
       });
-      router.push("/myposts");
+   window.history.back();
     } catch (error) {
       console.error("Error submitting post:", error);
     }

@@ -95,17 +95,17 @@ const Navbar: React.FC = () => {
             <svg className="h-6 w-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
-            <span className="ml-3 text-black font-medium">จัดการโพสต์</span>
+            <span className="ml-3 text-black text-md">จัดการโพสต์</span>
             <svg className="ml-2 h-4 w-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
           {isDropdownOpen && (
-            <div className="absolute left-0 mt-2 w-full rounded-lg bg-white shadow-lg">
+            <div className="text-md absolute left-0 mt-2 w-full rounded-lg bg-white shadow-lg">
               <a href="/adminmangepost" className="block w-full rounded-lg p-3 transition-all duration-300 hover:bg-orange-100 hover:shadow-md">
                 จัดการโพสต์
               </a>
-              <a href="/mypostMyadmin" className="block w-full rounded-lg p-3 transition-all duration-300 hover:bg-orange-100 hover:shadow-md">
+              <a href="/mypostMyadmin" className="text-md block w-full rounded-lg p-3 transition-all duration-300 hover:bg-orange-100 hover:shadow-md">
                 โพสต์ของฉัน
               </a>
             </div>
@@ -113,18 +113,18 @@ const Navbar: React.FC = () => {
         </div>
       )}
 
-      <a href="/checkuser" className="flex w-full items-center rounded-lg p-3 transition-all duration-300 hover:bg-white/20 hover:shadow-lg hover:scale-105">
+      <a href="/checkuser" className="text-md flex w-full items-center rounded-lg p-3 transition-all duration-300 hover:bg-white/20 hover:shadow-lg hover:scale-105">
         <svg className="h-6 w-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
         </svg>
-        <span className="ml-3 text-black font-medium">ตรวจสอบผู้ใช้</span>
+        <span className="ml-3 text-black text-md">ตรวจสอบผู้ใช้</span>
       </a>
 
       <a href="/dashboard" className="flex w-full items-center rounded-lg p-3 transition-all duration-300 hover:bg-white/20 hover:shadow-lg hover:scale-105">
         <svg className="h-6 w-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
         </svg>
-        <span className="ml-3 text-black font-medium">Dashboard</span>
+        <span className="ml-3 text-black text-md">Dashboard</span>
       </a>
     </>
   );
@@ -185,22 +185,22 @@ const Navbar: React.FC = () => {
             {isLoggedIn ? (
               <button
                 onClick={handleLogout}
-                className="text-sm flex w-full items-center rounded-lg p-3 hover:bg-red-500"
+                className="text-md flex w-full items-center rounded-lg p-3 hover:bg-red-500"
               >
                 <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
-                <span className="ml-3">Logout</span>
+                <span className="text-md ml-3">Logout</span>
               </button>
             ) : (
               <a
                 href="/login"
-                className=" text-sm flex w-full items-center rounded-lg p-3 hover:bg-gray-100"
+                className=" text-md flex w-full items-center rounded-lg p-3 hover:bg-gray-100"
               >
                 <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                 </svg>
-                <span className="ml-3">Login</span>
+                <span className="text-md ml-3">Login</span>
               </a>
             )}
           </nav>
@@ -228,7 +228,7 @@ const Navbar: React.FC = () => {
               <svg className="h-6 w-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>
-              <span className="ml-3 text-black font-medium">Logout</span>
+              <span className="ml-3 text-md text-black ">Logout</span>
             </button>
           ) : (
             <a
@@ -238,7 +238,7 @@ const Navbar: React.FC = () => {
               <svg className="h-6 w-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
               </svg>
-              <span className="ml-3 text-black font-medium">Login</span>
+              <span className="ml-3 text-black text-md">Login</span>
             </a>
           )}
         </nav>
@@ -268,7 +268,7 @@ const Navbar: React.FC = () => {
                 ดูหมุด
               </button>
               <button
-                className="mb-4 rounded-lg bg-yellow-400 px-6 py-3 text-lg text-black hover:bg-yellow-600"
+                className=" mb-4 rounded-lg bg-yellow-400 px-6 py-3 text-md text-black hover:bg-yellow-600"
                 onClick={() => {
                   window.location.href = "/login";
                 }}
@@ -277,7 +277,7 @@ const Navbar: React.FC = () => {
               </button>
             </div>
             <button
-              className="absolute right-2 top-2 rounded-full border-black px-3 py-2 text-lg text-black"
+              className="absolute right-2 top-2 rounded-full border-black px-3 py-2 text-md text-black"
               onClick={closeModal}
             >
               &#x2715;
