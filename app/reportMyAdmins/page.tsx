@@ -336,27 +336,6 @@ const ReportPage = () => {
 
   // ฟังก์ชันสำหรับตรวจจับตำแหน่งของผู้ใช้
 
-  if (isSubmitted) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-        <div className="w-3/4 max-w-lg rounded-lg bg-white p-6 text-center">
-          <div className="flex justify-end">
-            <button
-              onClick={() => window.history.back()}
-              className="rounded text-xl text-black"
-            >
-              ×
-            </button>
-          </div>
-          <h2 className="mb-4 text-xl font-bold text-green-600">
-            ส่งเสร็จสิ้น!
-          </h2>
-          <p className="mb-4 text-black">โปรดนำของหายไปให้เจ้าหน้าที่ที่ {locationINV}</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <>
       <Navbar />
