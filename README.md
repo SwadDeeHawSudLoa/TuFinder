@@ -4,9 +4,16 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 # Special Project 2
  รายชื่อสมาชิก
 
-1.)นาย ณัชธนกฤตย์ ชาตะมีนา 6409650204
+1.)นาย ณัชธนกฤตย์ ชาตะมีนา 6409650204 
 
 2.)นาย เสฐียรพงษ์ เกตุวิวัฒน์  6409650360
+
+# ช่องทางติดต่อ 
+
+tel:0982192286
+
+gmail:richy.8.2545@gmail.com
+
 # สไลน์งานโปรเจค
 
 https://www.canva.com/design/DAGEDpR1boU/a2fKnQ_CDVWHu_0ncbneuA/edit?utm_content=DAGEDpR1boU&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
