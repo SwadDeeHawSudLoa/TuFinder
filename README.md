@@ -11,6 +11,11 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 https://www.canva.com/design/DAGEDpR1boU/a2fKnQ_CDVWHu_0ncbneuA/edit?utm_content=DAGEDpR1boU&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
+# Deployment ที่ใช้
+
+https://vercel.com/richy2545s-projects/tu-finder-final
+
+
 First, run the development server:
 
 ```bash
