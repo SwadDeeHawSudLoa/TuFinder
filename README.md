@@ -1,6 +1,15 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
+# Special Project 2
+ รายชื่อสมาชิก
+
+1.)นาย ณัชธนกฤตย์ ชาตะมีนา 6409650204
+
+2.)นาย เสฐียรพงษ์ เกตุวิวัฒน์  6409650360
+# สไลน์งานโปรเจค
+
+https://www.canva.com/design/DAGEDpR1boU/a2fKnQ_CDVWHu_0ncbneuA/edit?utm_content=DAGEDpR1boU&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 First, run the development server:
 
