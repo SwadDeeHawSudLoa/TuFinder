@@ -78,8 +78,8 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
   const [originalImage, setOriginalImage] = useState<HTMLImageElement | null>(null);
   const [editedImage, setEditedImage] = useState<string | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
-
-  const fetchPost = async (id: Number) => {
+  const [otherCategory, setOtherCategory] = useState("");
+const fetchPost = async (id: Number) => {
     try {
       const res = await axios.get(`/api/posts/${id}`);
       setUserIdEdit(res.data.userIdEdit);
@@ -90,6 +90,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
       setDescription(res.data.description);
       setCategory(res.data.category);
       setExistingImage(res.data.image);
+      setOtherCategory(res.data.otherCategory);
     } catch (error) {
       console.error(error);
     }
@@ -172,6 +173,7 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
         tel,
         teluser,
         category,
+        otherCategory,
         markerText,
         image: downloadURL,
         status,
@@ -378,7 +380,17 @@ const EditReportPage = ({ params }: { params: { id: string } }) => {
       <option value="เอกสารสำคัญ">เอกสารสำคัญ</option>
       <option value="สิ่งของส่วนบุคคล">สิ่งของส่วนบุคคล</option>
       <option value="อุปกรณ์อิเล็กทรอนิกส์">อุปกรณ์อิเล็กทรอนิกส์</option>
+      <option value="อื่นๆ">อื่นๆ</option>
     </select>
+    {category === "อื่นๆ" && ( <input
+                type="text"
+                value={otherCategory}
+                onChange={(e) => setOtherCategory(e.target.value)}
+                placeholder="กรุณาระบุหมวดหมู่อื่นๆ"
+                required
+                className="mt-2 w-full rounded-lg border px-3 py-2 text-gray-700 focus:border-blue-500 focus:outline-none"
+              />
+            )}
   </div>
             <div className="mb-1">
               <label className="text-sm font-bold text-gray-700">รายละเอียดเพิ่มเติม</label>
