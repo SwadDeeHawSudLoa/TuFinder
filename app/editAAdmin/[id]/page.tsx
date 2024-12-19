@@ -168,7 +168,7 @@ const [otherCategory, setOtherCategory] = useState("");
 
     try {
       await axios.put(`/api/posts/${id}`, {
-        adminIdEdit,
+     
         title,
         username,
         adminUsername,
